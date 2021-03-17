@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset = 'uft-8'>
+  </head>
   <body>
     <h1>Gango Studio</h1>
       <p><a href = "UntitledFrameset-2.html">主站</a>
@@ -14,6 +17,6 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 0.0.1</h6>
+    <h6>Ver 0.1.1</h6>
   </body>
 </html>
