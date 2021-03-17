@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset = 'uft-8'/>
+    <meta charset = 'gb2312'/>
   </head>
   <body>
     <h1>Gango Studio</h1>
