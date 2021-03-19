@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
   <head>
     <meta charset = 'gb2312'/>
@@ -17,6 +17,6 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 0.1.1</h6>
+    <h6>Ver 0.2.1</h6>
   </body>
 </html>
