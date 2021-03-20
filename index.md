@@ -5,8 +5,8 @@
   </head>
   <body>
     <h1>Gango Studio</h1>
-      <p><a href = "UntitledFrameset-2.html">主站</a>
-      </p>
+      <h3><a href = "UntitledFrameset-2.html">主站</a>
+      </h3>
     <h1>发展历史</h1>
       <p>下一个版本再写</p>
     <h1>"产品"</h1>
