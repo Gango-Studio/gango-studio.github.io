@@ -10,9 +10,13 @@
     <h1>友链</h1>
       <p>
         <a href = "https://www.github.com">GitHub</a>
+        <br/>
         <a href = "https://wwww.apple.com">Apple</a>
+        <br/>
         <a href = "https://wwww.mi.com">小米</a>
+        <br/>
         <a href = "https://wwww.bilibili.com">哔哩哔哩</a>
+        <br/>
         <a href = "https://www.nicovideo.jp">NicoNico</a>
       </p>
     <h1>发展历史</h1>
