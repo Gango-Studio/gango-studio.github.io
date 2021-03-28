@@ -11,11 +11,11 @@
       <p>
         <a href = "https://www.github.com">GitHub</a>
         <br/>
-        <a href = "https://wwww.apple.com">Apple</a>
+        <a href = "https://www.apple.com">Apple</a>
         <br/>
-        <a href = "https://wwww.mi.com">小米</a>
+        <a href = "https://www.mi.com">小米</a>
         <br/>
-        <a href = "https://wwww.bilibili.com">哔哩哔哩</a>
+        <a href = "https://www.bilibili.com">哔哩哔哩</a>
         <br/>
         <a href = "https://www.nicovideo.jp">NicoNico</a>
       </p>
