@@ -2,12 +2,6 @@
 <html>
   <head>
     <meta charset = 'gb2312'/>
-    <style>
-       a:link{color:Blue;}
-       a:visited{color:Purple;}
-       a:hover{color:LightSkyBlue;}
-       a:active{color:Red;}
-    </style>
   </head>
   <body>
     <h1>Gango Studio</h1>
