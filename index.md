@@ -7,12 +7,20 @@
     <h1>Gango Studio</h1>
       <h3><a href = "UntitledFrameset-2.html">主站</a>
       </h3>
+    <h1>友链</h1>
+      <p>
+        <a href = "https://www.github.com">GitHub</a>
+        <a href = "https://wwww.apple.com">Apple</a>
+        <a href = "https://wwww.mi.com">小米</a>
+        <a href = "https://wwww.bilibili.com">哔哩哔哩</a>
+        <a href = "https://www.nicovideo.jp">NicoNico</a>
+      </p>
     <h1>发展历史</h1>
       <p>下一个版本再写</p>
     <br/> 
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.2.5</h6>
+    <h6>Ver 1.3.0</h6>
   </body>
 </html>
