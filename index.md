@@ -6,6 +6,8 @@
   <body>
     <h1>Gango Studio</h1>
       <h3><a href = "UntitledFrameset-2.html">主站</a>
+        <br/>
+        <a href = "blog.html">博客</a>
       </h3>
     <h1>友链</h1>
       <p>
