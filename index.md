@@ -20,12 +20,16 @@
         <br/>
         <a href = "https://www.nicovideo.jp">NicoNico</a>
       </p>
+    <h1>公告</h1>
+      <p>   1.本网站Ver1.5版本已完成，因屏幕配适问题，现已知iOS12及以下版本苹果手机出现frameset问题.<br/>因为在多个浏览器中出现此问题，疑似不可抗力,正在研究中<br/>        2021.4.4</p>
     <h1>发展历史</h1>
-      <p>下一个版本再写</p>
+      <p>2017    成立Gango Studio 软件开发组</p>
+       <br/>
+      <p>2019    新增VLOG产品线 更名为 Gango Studios</p> 
     <br/> 
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.5.0  21#4#3 </h6>
+    <h6>Ver 1.5.0  KYOTO    21#4#4 </h6>
   </body>
 </html>
