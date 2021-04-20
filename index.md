@@ -8,6 +8,10 @@
       <h2><a href = "UntitledFrameset-2.html">主站</a>
         <br/>
       </h2>
+    <h1>Gango 服务</h1>
+    <h3><a href = "serve/blank.html">浏览器起始页</a>
+        <br/>
+    </h3>
     <h1>公告</h1>
       <p>   1.本网站Ver1.5版本已完成，因屏幕配适问题，现已知iOS12及以下版本苹果手机出现frameset问题.<br/>因为在多个浏览器中出现此问题，疑似不可抗力,正在研究中<br/>        2021.4.4</p>
     <h1>发展历史</h1>
