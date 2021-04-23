@@ -9,7 +9,7 @@
         <br/>
       </h2>
     <h1>Gango 服务</h1>
-    <h3><a href = "serves/blank.html">浏览器起始页</a>
+    <h3><a href = "serves/blank.html">浏览器主页</a>
         <br/>
     </h3>
     <h1>公告</h1>
