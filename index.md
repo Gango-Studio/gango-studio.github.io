@@ -44,6 +44,6 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.5.0  KYOTO    21#4#19 </h6>
+    <h6>Ver 1.6.0  BeiJing & TianJin-Binhai    21#4#19 </h6>
   </body>
 </html>
