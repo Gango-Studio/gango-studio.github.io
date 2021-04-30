@@ -13,6 +13,8 @@
         <br/>
     </h3>
     <h1>公告</h1>
+      <p>frameset问题已发现解决方案，我们将于近日推出解决frameset后的版本<br/>        2021.4.30</p>
+      <br/>
       <p>   1.本网站Ver1.5版本已完成，因屏幕配适问题，现已知iOS12及以下版本苹果手机出现frameset问题.<br/>因为在多个浏览器中出现此问题，疑似不可抗力,正在研究中<br/>        2021.4.4</p>
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件，偶尔做VLOG......【doge】</p>
@@ -44,6 +46,6 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.6.0  BeiJing & TianJin-Binhai    21#4#19 </h6>
+    <h6>Ver 1.6.0  BeiJing & TianJin-Binhai    21#5#1 </h6>
   </body>
 </html>
