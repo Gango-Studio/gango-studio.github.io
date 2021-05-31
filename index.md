@@ -7,8 +7,7 @@
     <h1>Gango Studios</h1>
       <h2><a href = "UntitledFrameset-2.html">主站</a>
         <br/>
-      </h2>
-     
+      </h2>     
     <h1>Gango 服务</h1>
     <h3><a href = "serves/blank.html">浏览器主页</a>
         <br/>
