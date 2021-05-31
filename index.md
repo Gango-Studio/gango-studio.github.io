@@ -4,6 +4,7 @@
     <meta charset = 'gb2312'/>
   </head>
   <body>
+    <h1 align="center">🎈🎈🎈儿童节🎈🎈🎈</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "UntitledFrameset-2.html">主站</a>
         <br/>
