@@ -42,6 +42,6 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.6.0  TianJin-Binhai    21#6#1 <a href = "stinger/mainpage.html"></h6>
+    <h6>Ver 1.6.0  TianJin-Binhai    21#6#1 <a href = "stinger/mainpage.html">彩蛋</a></h6>
   </body>
 </html>
