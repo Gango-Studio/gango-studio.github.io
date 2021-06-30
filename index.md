@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta charset = 'gb2312'/>
-    <link rel="icon" href="" type="image/x-icon"/>
+    <link rel="icon" href="image/Gangopng.ico" type="image/x-icon"/>
   </head>
   <body>
     <h1>Gango Studios</h1>
