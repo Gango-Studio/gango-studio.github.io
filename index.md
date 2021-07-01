@@ -4,7 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body>
-    <h1 style = "color:Red;">庆祝中国共产党成立100周年</h1>
+    <h1 style = "color:Red;" align = "center">🎉🎉庆祝中国共产党成立100周年🎉🎉</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "UntitledFrameset-2.html">主站</a>
         <br/>   
