@@ -6,7 +6,7 @@
   <body>
     <h1 style = "color:Blue;" align = "center">🌴🌴Hey,Summer🌴🌴</h1>
     <h1>Gango Studios</h1>
-      <h2><a href = "UntitledFrameset-2.html">主站</a>
+      <h2><a href = "Frameset.html">主站</a>
         <br/>   
     <h1>Gango 服务</h1>
     <h3><a href = "serves/blank.html">浏览器主页</a>
