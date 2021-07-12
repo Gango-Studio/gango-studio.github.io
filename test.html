@@ -13,30 +13,6 @@
   a:hover{color:Purple;}
   a:active{color:Red;}
 </style>
-<script>
-  function interceptClickEvent(e) {
-    var href;
-    var target = e.target || e.srcElement;
-    if (target.tagName === 'A') {
-        href = target.getAttribute('href');
-        e.preventDefault();
-    }
-}
-
-document.body.addEventListener('click', interceptClickEvent);
-EventTarget.prototype.addEventListener = (function() {
-    let originEventListener = EventTarget.prototype.addEventListener;
-    return function(type, listener, option) {
-        if (type === "click" && this.constructor.name === 'HTMLDocument' && listener.toString().indexOf('yourKeyWord') < 0) {
-            console.log(listener.toString());
-            debugger ;return;
-        }
-        return originEventListener.call(this, type, listener, option);
-    }
-}
-)();
-
-</script>
 </head>
 
 <body>
@@ -80,7 +56,7 @@ EventTarget.prototype.addEventListener = (function() {
           <td width="25%"><div align="center"><img src="../../../Gango软件包/timg (1).jpg" width="207" height="216" longdesc="../../../Gango软件包/timg (1).jpg" /></div></td>
         </tr>
         <tr> 
-          <td bordercolor="#FFFFFF"><div align="center"><h4><big><a href = "https://www.bilibili.com/video/BV1SN411R7zY" target="_self">浙江vlog1&gt;</a></big></h4></div></td>
+          <td bordercolor="#FFFFFF"><div align="center"><h4><big><a href = "https://www.bilibili.com/video/BV1SN411R7zY" target="mainFrame">浙江vlog1&gt;</a></big></h4></div></td>
           <td bordercolor="#FFFFFF"><div align="center"><h4><big><a href = "https://www.bilibili.com/video/BV1dy4y1Y7AH" target="_self">浙江vlog2&gt;</a></big></h4></div></td>
           <td bordercolor="#FFFFFF"><div align="center"><h4><big><a href = "https://www.bilibili.com/video/BV1tN411Q7fj" target="_self">京都vlog&gt;</a></big></h4></div></td>
           <td bordercolor="#FFFFFF"><div align="center">敬请期待</div></td> 
