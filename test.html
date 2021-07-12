@@ -13,6 +13,30 @@
   a:hover{color:Purple;}
   a:active{color:Red;}
 </style>
+<script>
+  function interceptClickEvent(e) {
+    var href;
+    var target = e.target || e.srcElement;
+    if (target.tagName === 'A') {
+        href = target.getAttribute('href');
+        e.preventDefault();
+    }
+}
+
+document.body.addEventListener('click', interceptClickEvent);
+EventTarget.prototype.addEventListener = (function() {
+    let originEventListener = EventTarget.prototype.addEventListener;
+    return function(type, listener, option) {
+        if (type === "click" && this.constructor.name === 'HTMLDocument' && listener.toString().indexOf('yourKeyWord') < 0) {
+            console.log(listener.toString());
+            debugger ;return;
+        }
+        return originEventListener.call(this, type, listener, option);
+    }
+}
+)();
+
+</script>
 </head>
 
 <body>
