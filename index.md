@@ -9,7 +9,7 @@
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
     <h1>Gango 服务</h1>
-    <h3><a href = "serves/blank.html">浏览器主页</a>     |   <a href = "serves/weather.html">天气</a>
+    <h3><a href = "serves/blank.html">浏览器主页</a>     |   <a href = "serves/weather.html">天气</a>     |   <a href = "https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱（beta）</a>
         <br/>
     </h3>
     <h1>公告</h1>
