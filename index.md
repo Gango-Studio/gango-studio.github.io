@@ -4,7 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body><!--🌴🌴Hey,Summer🌴🌴Navy-->
-    <h1 style = "color:glod;" align = "center">Mid-Autumn Festival</h1>
+    <h1 style = "color:glod;" align = "center">🌕🌕Mid-Autumn Festival🌕🌕</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
