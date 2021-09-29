@@ -4,7 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body><!--SAE特有注释🌴🌴Hey,Summer🌴🌴Navy  国庆：🚩🚩中华人民共和国72年国庆🚩🚩  秋天限定：-->
-    <h1 style = "color:gold;" align = "center">🌕🌕Mid-Autumn Festival🌕🌕</h1>
+    <h1 style = "color:#CE1126;" align = "center">🚩🚩中华人民共和国72年国庆🚩🚩</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
