@@ -40,7 +40,7 @@
     <br/>
     <br/>
     <br/>
-    <h6>Ver 1.6.0  TianJin-Binhai    21#7#18    <a href = "stinger/mainpage.html">彩蛋</a></h6>
+    <h6>Ver 1.6.0 Enhanced  TianJin-Binhai    21#10#1    <a href = "stinger/mainpage.html">彩蛋</a></h6>
   <!--</body>-->
 <!--</html>-->
 <!-- Developed by Gango Studios , Sam Mu  -->
