@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>计算器</title>
+	<style>
+	<!--
+		.STYLE1 {font-size: xx-large}
+		.STYLE2 {font-size: x-large}
+		.STYLE3 {font-size: large}
+		-->
+  		a:link{color:Blue;}
+  		a:visited{color:Blue;}
+ 		a:hover{color:Purple;}
+  		a:active{color:Red;}
+	</style>
+	<script>
+      var numresult;
+		 var str;
+		 function onclicknum(nums) {
+	 	 	str = document.getElementById("out");
+ 		 	str.value = str.value + nums;
+		 }
+		 function onclickresult() {
+			str = document.getElementById("out");
+			numresult = eval(str.value);
+			str.value = numresult;
+     		}
+	</script>
+</head>
+<body>
+	<h1>计算器</h1>
+	<h4 class = "STYLE3"><a href = "https://gango-studio.github.io/serves/tools/indexpage.html">返回工具箱</a></h4>
+	<div class = "STYLE2" style = "text-align:center;border:1px solid #000;">
+		<div style ="border:1px solid #000;"><input  type="text" id = "out" class = "STYLE2"/></div>
+		<div>
+			<input type = "button" id ="7" value ="7" onClick="onclicknum(7)" class = "STYLE2">
+			<input type = "button" id ="8" value ="8" onClick="onclicknum(8)" class = "STYLE2">
+			<input type = "button" id ="9" value ="9" onClick="onclicknum(9)" class = "STYLE2">
+			<input type = "button" id ="mul" value ="/" onClick="onclicknum('/')" class = "STYLE2">
+		</div>
+		<br/>
+		<div>
+			<input type = "button" id ="4" value ="4" onClick="onclicknum(4)" class = "STYLE2">
+			<input type = "button" id ="5" value ="5" onClick="onclicknum(5)" class = "STYLE2">
+			<input type = "button" id ="6" value ="6" onClick="onclicknum(6)" class = "STYLE2">
+			<input type = "button" id ="tim" value ="*" onClick="onclicknum('*')" class = "STYLE2">
+		</div>
+		<br/>
+		<div>
+			<input type = "button" id ="1" value ="1" onClick="onclicknum(1)" class = "STYLE2">
+			<input type = "button" id ="2" value ="2" onClick="onclicknum(2)" class = "STYLE2">
+			<input type = "button" id ="3" value ="3" onClick="onclicknum(3)" class = "STYLE2">
+			<input type = "button" id ="sub" value ="-" onClick="onclicknum('-')" class = "STYLE2">
+		</div>
+		<br/>
+		<div>
+			<input type = "button" id ="0" value ="0" onClick="onclicknum(0)" class = "STYLE2">
+			<input type = "button" id ="point" value ="." onClick="onclicknum('.')" class = "STYLE2">
+			<input type = "button" id ="plus" value ="+" onClick="onclicknum('+')" class = "STYLE2">
+			<input type = "button" id ="eql" value ="=" onClick="onclickresult()" class = "STYLE2">
+		</div>
+	</div>
+	<p class = "STYLE2">提示：清空计算器请刷新</p>
+</body>
+</html>
