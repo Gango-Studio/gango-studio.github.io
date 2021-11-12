@@ -16,20 +16,21 @@
   a:hover{color:Purple;}
   a:active{color:Red;}
 </style>
-  <script>
-    //得到手机屏幕的宽度
-    let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
-    console.log('htmlWidth',htmlWidth)
-    //得到html的Dom元素
-    let htmlDom = document.getElementsByTagName('html')[0];
-    // if(htmlWidth>640){//超过640大小的，字体根部都是16px
-    //   htmlWidth=640;
-    //   console.log('htmlWidth-true',htmlWidth)
-    // }
-    //设置根元素字体大小
-    htmlDom.style.fontSize = htmlWidth / 40 + 'px';
- 
-  </script>
+  <script type="text/javascript">
+   (function (doc, win) {
+      var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          if (!clientWidth) return;
+          docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';//其中“20”根据你设置的html的font-size属性值做适当的变化
+        };
+
+      if (!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+</script>
 </head>
 <body>
 <form id="form1" name="form1" method="post" action="">
