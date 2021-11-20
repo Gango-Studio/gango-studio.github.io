@@ -27,6 +27,18 @@
             background-color: rgba(255, 255, 255, 0.8);
         }
     </style>
+    <script>
+           var UA=navigator.userAgent;
+           var yes = false;
+            if（UA.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+              yes = true; // 移动端
+            }else{
+              yes = false; // PC端
+            }
+           if(yes = true){
+                document.getElementById("urls").target = "_blank";
+           }
+    </script>
   </head>
   <body background="../image/background/IMG_20190821_102823.jpg">
    <div class = "nav">
@@ -43,8 +55,8 @@
     <div id = "talk">
     <h2>杂谈</h2>
     <br/>
-    <p><a href = "https://www.bilibili.com/read/cv9773295" class = "a1" target= "_self" >【杂谈】日本纪念品</a></p>
-    <p><a href = "https://www.bilibili.com/read/cv12898212" class = "a1" target= "_self" >【杂谈】关于iPod touch4(2010)</a></p>
+    <p><a href = "https://www.bilibili.com/read/cv9773295" id = "urls" class = "a1" target= "_self" >【杂谈】日本纪念品</a></p>
+    <p><a href = "https://www.bilibili.com/read/cv12898212" id = "urls" class = "a1" target= "_self" >【杂谈】关于iPod touch4(2010)</a></p>
       <br/>
       <br/>
     </div>
