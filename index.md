@@ -3,9 +3,9 @@
     <meta charset = 'gb2312'/>
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
-  <body><!--SAE特有注释🌴🌴Hey,Summer🌴🌴Navy  国庆：🚩🚩中华人民共和国72年国庆🚩🚩  秋天限定：-->
+  <body>
     <!--<h1 style = "color:black" align = "center">Celebrating Steve Jobs</h1>21.10.5to8-->
-    <h1 style = "color:#CE1126;" align = "center">🚩🚩热烈庆祝中华人民共和国成立72周年🚩🚩</h1>
+    <h1 style = "color:#CE1126;" align = "center">❄⛄Winter⛄❄</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
@@ -15,8 +15,8 @@
     </h3>
     <h1>公告</h1>
       <p>   1.2021年度大版本ver1.6.0 Enhanced 已发布。更新了近期上线的Gango产品，解决了针对小屏幕设备字体过小的问题。本版本框架兼容21#7#18<br/>        2021.10.1</p>
-      <p>   2.补丁21#7#18已发布，本版优化了frame框架，更新了Gango天气，修复了一些已知问题。<br/>        2021.7.16</p>
-      <p>   3.本次小版本更新，带来的新特性有：<br/>(1)优化针对哔哩哔哩的frame框架<br/>(2)优化框架操作逻辑，优化UX，现可以在主站任意位置返回主站或主页。<br/>        2021.8.12</p>
+      <p>   2.本次小版本更新，带来的新特性有：<br/>解决移动端博客跳转问题。版本号：21.11.9<br/>        2021.11.20</p>
+      <p>   3.补丁21#7#18已发布，本版优化了frame框架，更新了Gango天气，修复了一些已知问题。<br/>        2021.7.16</p>
       <p>   4.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br/>        2021.8.15</p>
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件，偶尔做VLOG......【doge】</p>
