@@ -1,6 +1,6 @@
 <html>
   <head>
-    <meta charset = 'gb2312'/>
+    <meta charset="UTF-8">
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body>
