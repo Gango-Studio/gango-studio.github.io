@@ -28,15 +28,15 @@
       <p>2017    成立Gango Studio 软件开发组</p>
     <h1>友链</h1>
       <p>
-        <a href = "https://www.github.com">GitHub</a>
+        <a href = "https://www.github.com" target = "_blank">GitHub</a>
         <br/>
-        <a href = "https://www.apple.com">Apple</a>
+        <a href = "https://www.apple.com" target = "_blank">Apple</a>
         <br/> 
-        <a href = "https://www.mi.com">小米</a>
+        <a href = "https://www.mi.com" target = "_blank">小米</a>
         <br/>
-        <a href = "https://www.bilibili.com">哔哩哔哩</a>
+        <a href = "https://www.bilibili.com" target = "_blank">哔哩哔哩</a>
         <br/>
-        <a href = "https://www.nicovideo.jp">NicoNico</a>
+        <a href = "https://www.nicovideo.jp" target = "_blank">NicoNico</a>
       </p>
     <br/> 
     <br/>
