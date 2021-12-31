@@ -5,7 +5,7 @@
   </head>
   <body>
     <!--<h1 style = "color:black" align = "center">Celebrating Steve Jobs</h1>21.10.5to8-->
-    <nobr><h1 style = "color:OrangeRed;" align = "center">Happy New Year</h1><nobr>
+    <nobr><h1 style = "color:OrangeRed;" align = "center">🎇Happy New Year🎇</h1><nobr>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
