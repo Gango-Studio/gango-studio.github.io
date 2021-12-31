@@ -5,7 +5,7 @@
   </head>
   <body>
     <!--<h1 style = "color:black" align = "center">Celebrating Steve Jobs</h1>21.10.5to8-->
-    <nobr><h1 style = "color:OrangeRed;" align = "center">🎇Happy New Year🎇</h1><nobr>
+    <nobr><h1 style = "color:OrangeRed;" align = "center">🎇Happy New Year🎇</h1></nobr>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
@@ -20,7 +20,7 @@
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件，偶尔做VLOG......【doge】</p>
     <br/>
-      <p>2021    终于有网站了QWQ</p>
+      <p>2021    终于有网站了QWQ</p> 
     <br/>
       <p>2019    新增VLOG产品线 更名为 Gango Studios</p>
        <br/>
