@@ -65,12 +65,10 @@
             var innerwidth = window.innerWidth;
 	   var x = 40;
             if (innerwidth >= 750){
-	        var p =document.getElementById("pro");
-		p.style.width=new String(x)+'rem';
-	    
+	        document.getElementById("pro").style.width = "40rem";
             }
             if (innerwidth <= 750){
-	              document.getElementById("pro").width ="50%";
+	              document.getElementById("pro").offsetWidth ="50%";
             }
    </script> 
 </html> 
