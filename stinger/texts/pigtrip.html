@@ -63,11 +63,14 @@
    </body>
    <script>
             var innerwidth = window.innerWidth;
-            if (innerwidth <= 750){
-	              document.getElementById("pro").width ="25rem";
-            }
+	   var x = 40;
             if (innerwidth >= 750){
-	              document.getElementById("pro").width ="40rem";
+	        var p =document.getElementById("pro");
+		p.style.width=new String(x)+'rem';
+	    
+            }
+            if (innerwidth <= 750){
+	              document.getElementById("pro").width ="50%";
             }
    </script> 
 </html> 
