@@ -42,6 +42,13 @@
                }
            </style>
            <script>
+               var innerwidth = $(window).width();
+               if (innerwidth <= 750){
+	                document.getElementById("pro").attribute = 25rem;
+               }
+               if (innerwidth >= 750){
+	                document.getElementById("pro").attribute = 40rem;
+               }
            </script> 
     </head>
     <body class = "nav" style = "width:100%;">
@@ -51,15 +58,15 @@
            <br/>
            <h4 class = "STYLE3"><a href = "https://gango-studio.github.io/stinger/mainpage.html">返回彩蛋</a></h4>
            <div align="center" style = "overflow:hidden;white-space:nowarp;">
-                  <img src="../pictures/textpic/01/pig6.jpg"/>
+                  <img src="../pictures/textpic/01/pig6.jpg" id = "pro"/>
                   <p class="STYLE3"><big><strong>我的乐高形象</big></strong></p>
-                  <img src="../pictures/textpic/01/pig2.jpg"/>
+                  <img src="../pictures/textpic/01/pig2.jpg"  id = "pro"/>
                   <p class="STYLE3"><big><strong>潇洒桐庐</big></strong></p>
-                  <img src="../pictures/textpic/01/pig3.jpg"/>
+                  <img src="../pictures/textpic/01/pig3.jpg"  id = "pro"/>
                   <p class="STYLE3"><big><strong>富春江</big></strong></p>
-                  <img src="../pictures/textpic/01/pig4.jpg"/>
+                  <img src="../pictures/textpic/01/pig4.jpg"  id = "pro"/>
                   <p class="STYLE3"><big><strong>严子陵钓台</big></strong></p>
-                  <img src="../pictures/textpic/01/pig5.jpg"/>
+                  <img src="../pictures/textpic/01/pig5.jpg"  id = "pro"/>
                   <p class="STYLE3"><big><strong>富春江（2）</big></strong></p>
            </div>
    </body>
