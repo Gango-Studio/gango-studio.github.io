@@ -37,7 +37,7 @@
                    background-color: rgba(255,240,245, 0.8);
                }
                img{
-                   width : 35rem;
+                   width : 50%;
                    display:block;
                }
            </style>
@@ -51,13 +51,13 @@
            <div align="center" style = "overflow:hidden;white-space:nowarp;">
                   <img src="../pictures/textpic/01/pig6.jpg" id = "pro"/>
                   <p class="STYLE3"><big><strong>我的乐高形象</big></strong></p>
-                  <img src="../pictures/textpic/01/pig2.jpg"  id = "pro"/>
+                  <img src="../pictures/textpic/01/pig2.jpg"  id = "pro2"/>
                   <p class="STYLE3"><big><strong>潇洒桐庐</big></strong></p>
-                  <img src="../pictures/textpic/01/pig3.jpg"  id = "pro"/>
+                  <img src="../pictures/textpic/01/pig3.jpg"  id = "pro3"/>
                   <p class="STYLE3"><big><strong>富春江</big></strong></p>
-                  <img src="../pictures/textpic/01/pig4.jpg"  id = "pro"/>
+                  <img src="../pictures/textpic/01/pig4.jpg"  id = "pro4"/>
                   <p class="STYLE3"><big><strong>严子陵钓台</big></strong></p>
-                  <img src="../pictures/textpic/01/pig5.jpg"  id = "pro"/>
+                  <img src="../pictures/textpic/01/pig5.jpg"  id = "pro5"/>
                   <p class="STYLE3"><big><strong>富春江（2）</big></strong></p>
            </div>
    </body>
@@ -65,11 +65,15 @@
             var innerwidth = window.innerWidth; 
 	   var x = 40;
             if (innerwidth >= 750){
-	        document.getElementById("pro").style.width = "40rem";
+	        document.getElementById("pro").style.width = "700px";
             }
             if (innerwidth <= 750){
             
 	              document.getElementById("pro").style.width ="80%";
+		    document.getElementById("pro2").style.width ="80%";
+		    document.getElementById("pro3").style.width ="80%";
+		    document.getElementById("pro4").style.width ="80%";
+		    document.getElementById("pro5").style.width ="80%";
            }
    </script> 
 </html> 
