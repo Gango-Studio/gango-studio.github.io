@@ -25,11 +25,11 @@
 	<script>
       		 var result;
 		 var str;
-		 function onclicknum(num) {
+		 function num(num) {
 	 	 	str = document.getElementById("out");
  		 	str.value = str.value + num;
 		 }
-		 function onclickresult() {
+		 function result() {
 			str = document.getElementById("out");
 			result = eval(str.value);
 			str.value = result;
@@ -43,37 +43,37 @@
 		<div style ="border:0px solid #000;"><input  type="text" id = "out" class = "STYLE2  nav"/></div>
 		<div>
 			<nobr>
-			<input type = "button" id ="7" value ="7" onClick="onclicknum(7)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="8" value ="8" onClick="onclicknum(8)" class = "STYLE2">&nbsp; &nbsp;
-			<input type = "button" id ="9" value ="9" onClick="onclicknum(9)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="mul" value ="/" onClick="onclicknum('/')" class = "STYLE2"> 
+			<input type = "button" id ="7" value ="7" onClick="num(7)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="8" value ="8" onClick="num(8)" class = "STYLE2">&nbsp; &nbsp;
+			<input type = "button" id ="9" value ="9" onClick="num(9)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="mul" value ="/" onClick="num('/')" class = "STYLE2"> 
 			</nobr>
 		</div>
 		<br/>
 		<div>
 			<nobr>
-			<input type = "button" id ="4" value ="4" onClick="onclicknum(4)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="5" value ="5" onClick="onclicknum(5)" class = "STYLE2">&nbsp; &nbsp;
-			<input type = "button" id ="6" value ="6" onClick="onclicknum(6)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="tim" value ="*" onClick="onclicknum('*')" class = "STYLE2">
+			<input type = "button" id ="4" value ="4" onClick="num(4)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="5" value ="5" onClick="num(5)" class = "STYLE2">&nbsp; &nbsp;
+			<input type = "button" id ="6" value ="6" onClick="num(6)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="tim" value ="*" onClick="num('*')" class = "STYLE2">
 			</nobr>
 		</div>
 		<br/>
 		<div>
 			<nobr>
-			<input type = "button" id ="1" value ="1" onClick="onclicknum(1)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="2" value ="2" onClick="onclicknum(2)" class = "STYLE2">&nbsp; &nbsp;
-			<input type = "button" id ="3" value ="3" onClick="onclicknum(3)" class = "STYLE2">&nbsp; 
-			<input type = "button" id ="sub" value ="-" onClick="onclicknum('-')" class = "STYLE2">
+			<input type = "button" id ="1" value ="1" onClick="num(1)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="2" value ="2" onClick="num(2)" class = "STYLE2">&nbsp; &nbsp;
+			<input type = "button" id ="3" value ="3" onClick="onum(3)" class = "STYLE2">&nbsp; 
+			<input type = "button" id ="sub" value ="-" onClick="num('-')" class = "STYLE2">
 			</nobr>
 		</div>
 		<br/>
 		<div>
 			<nobr>
-			<input type = "button" id ="0" value ="0" onClick="onclicknum(0)" class = "STYLE2">&nbsp;
-			<input type = "button" id ="point" value ="." onClick="onclicknum('.')" class = "STYLE2">&nbsp; &nbsp;
-			<input type = "button" id ="plus" value ="+" onClick="onclicknum('+')" class = "STYLE2">&nbsp;  
-			<input type = "button" id ="eql" value ="=" onClick="onclickresult()" style = "color:#FF8C00" class = "STYLE2">
+			<input type = "button" id ="0" value ="0" onClick="num(0)" class = "STYLE2">&nbsp;
+			<input type = "button" id ="point" value ="." onClick="num('.')" class = "STYLE2">&nbsp; &nbsp;
+			<input type = "button" id ="plus" value ="+" onClick="num('+')" class = "STYLE2">&nbsp;  
+			<input type = "button" id ="eql" value ="=" onClick="result()" style = "color:#FF8C00" class = "STYLE2">
 			</nobr>
 		</div>
 	</div>
