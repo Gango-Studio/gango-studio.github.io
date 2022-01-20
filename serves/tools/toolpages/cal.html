@@ -25,11 +25,12 @@
 	<script>
       		 var numresult;
 		 var str;
-		 str = document.getElementById("out");
-		 function onclicknum(nums) {	
+		 function onclicknum(nums) {
+			str = document.getElementById("out");
  		 	str.value += nums;
 		 }
 		 function onclickresult() {
+		 	str = document.getElementById("out");
 			numresult = eval(str.value);
 			str.value = numresult;
      		}//test
