@@ -25,15 +25,14 @@
 	<script>
       		 var numresult;
 		 var str;
-		 function onclicknum(nums) {
-	 	 	str = document.getElementById("out");
- 		 	str.value = str.value + nums;
+		 str = document.getElementById("out");
+		 function onclicknum(nums) {	
+ 		 	str.value += nums;
 		 }
 		 function onclickresult() {
-			str = document.getElementById("out");
 			numresult = eval(str.value);
 			str.value = numresult;
-     		}
+     		}//test
 	</script>
 </head>
 <body>
