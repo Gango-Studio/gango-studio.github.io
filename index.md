@@ -4,8 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body>
-    <!--<h1 style = "color:black" align = "center">Celebrating Steve Jobs</h1>21.10.5to8-->
-    <nobr><h1 style = "color:OrangeRed;" align = "center">🎇Hey,2022🎇</h1></nobr>
+    <nobr><h1 style = "color:OrangeRed;" align = "center">🎁🎉Happy Birthday~🎉🎁</h1></nobr>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
@@ -41,7 +40,7 @@
     <br/>
     <br/>
     <br/>
-    <nobr><h6><big>Ver 1.6.0 Enhanced  TianJin-Binhai    21#11#6    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
+    <nobr><h6><big>Ver 1.7.0  Nancuiping    22#1#22    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
   <!--</body>-->
 <!--</html>-->
 <!-- Developed by Gango Studios , Sam Mu  -->
