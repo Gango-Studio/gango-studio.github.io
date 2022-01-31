@@ -4,7 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
   </head>
   <body>
-    <h1 style = "color:OrangeRed;" align = "center">🎁🎉Happy Birthday~🎉🎁</h1>
+    <h1 style = "color:Red;" align = "center">🧨🧧壬寅虎年春节快乐🧧🧨</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
@@ -13,7 +13,7 @@
         <br/>
     </h3>
     <h1>公告</h1>
-      <p>   1.2021年度大版本ver1.6.0 Enhanced 已发布。更新了近期上线的Gango产品，解决了针对小屏幕设备字体过小的问题。本版本框架兼容21#7#18<br/>        2021.10.1</p>
+      <p>   1.2022年度大版本ver1.7.0 已发布<br/>        2021.10.1</p>
       <p>   2.本站21#11#6版本更新，本更新解决问题有：<br/>&nbsp;&nbsp;1.解决serves和stinger中字体过小问题。<br/>&nbsp;&nbsp;2.解决了Blog跳转问题。<br>&nbsp;&nbsp;3.优化部分界面，新增 圆角矩形 设计。<br/>        2021.12.12</p>
       <p>   3.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br/>        2021.8.15</p>
     <h1>发展历史</h1>
