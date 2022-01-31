@@ -41,6 +41,7 @@
     <br/>
     <br/>
     <nobr><h6><big>Ver 1.7.0  Nancuiping    22#1#22    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
+    <script src="https://www.apple.com.cn/home/scripts/easter-egg.built.js" type="text/javascript" charset="utf-8"></script>
   <!--</body>-->
 <!--</html>-->
 <!-- Developed by Gango Studios , Sam Mu  -->
