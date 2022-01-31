@@ -55,15 +55,9 @@
 <!--</div>-->
 
 </body>
- <script>
-            var innerwidth = window.innerWidth; 
-	           var x = 40;
-            if (innerwidth >= 750){
-	            document.getElementById("pro").style.width = "90%";
-            }
-            if (innerwidth <= 750){
-            
-	            document.getElementById("pro").style.width ="30%";//test
-           }
-</script> 
+<script>
+　
+ 　　var initScale = 1 / window.devicePixelRatio; document.write('<meta name="viewport" content="width=device-width,user-scalable=no，initial-scale='+ initScale +',minimum-scale='+ initScale +',maximum-scale='+ initScale +'">'); 
+　　 var initWidth = window.document.documentElement.clientWidth; document.getElementsByTagName('html')[0].style.fontSize = initWidth / 50 + 'px';
+</script>
 </html>
