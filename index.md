@@ -1,10 +1,10 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>-->
+    <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>🧨🧧壬寅虎年春节快乐🧧🧨-->
   </head>
   <body>
-    <h1 style = "color:Red;" align = "center">🧨🧧壬寅虎年春节快乐🧧🧨</h1>
+    <h1 style = "color:#87CEEB;" align = "center">❄️⛸️一起向未来--Beijing 2022🥇⛷️</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
