@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1 style = "color:#87CEEB;" align = "center">❄️⛸️一起向未来--Beijing 2022🥇⛷️</h1>
-    <h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C"> >>关注冬奥数据<< </a></h3>
+    <h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>
     <h1>Gango Studios</h1>
       <h2><a href = "Frameset.html">主站</a>
         <br/>   
