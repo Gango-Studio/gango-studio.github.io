@@ -53,7 +53,7 @@
  </div>
 </div>
 <div style = "width:75%;margin-left:25%;webkit-overflow-scrolling: touch;overflow-y: scroll;overflow: auto;height:auto;height:100vh;"  class = "maindiv"><!--iOS webkit-->
-  <iframe src="test.html" name="mainFrame" id="mainFrame" title="mainFrame" align = "right"  scrolling="yes" style = "height:100vh" οnlοad=this.height=iFrame1.document.body.scrollHeight onload="reinitIframe()"></iframe>
+  <iframe src="test.html" name="iFrame1" id="iFrame1" title="mainFrame" align = "right"  scrolling="yes" style = "height:100vh" οnlοad=this.height="iFrame1.document.body.scrollHeight" onload="reinitIframe()"></iframe>
 </div>
 </nobr>
 <!--</div>-->
@@ -72,7 +72,7 @@
           
           
           function reinitIframe() {         
-   		var iframe = document.getElementById("urlIframe");                
+   		var iframe = document.getElementById("iframe");                
  		try 
 		{                          
                    	var bHeight = iframe.contentWindow.document.body.scrollHeight;                
