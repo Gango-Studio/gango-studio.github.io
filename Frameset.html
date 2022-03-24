@@ -36,7 +36,7 @@
   </style>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script>
-	  $('body').on('touchmove',function(e){
+	  document.getElementById('#ifdiv').on('touchmove',function(e){
 			e.preventDefault();
 	});
   </script>
@@ -59,7 +59,7 @@
     </p><br/><br/><br/>
  </div>
 </div>
-<div style = "width:75%;margin-left:25%;webkit-overflow-scrolling: touch;overflow-y: scroll;overflow: auto;height:auto;height:100vh;"  class = "maindiv"><!--iOS webkit-->
+<div style = "width:75%;margin-left:25%;webkit-overflow-scrolling: touch;overflow-y: scroll;overflow: auto;height:auto;height:100vh;"  class = "maindiv" id ="ifdiv"><!--iOS webkit-->
   <iframe src="test.html" name="iFrame1" id="iFrame1" title="mainFrame" align = "right"  scrolling="yes" style = "height:100vh;height:100%;" οnlοad="this.height=iFrame1.document.body.scrollHeight"></iframe>
 </div>
 </nobr>
