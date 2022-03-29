@@ -35,11 +35,11 @@
                .a1:hover{color:Purple;}
                .a1:active{color:Red;}
   </style>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+<!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
   <script>
-	  function setIframeHeight('ifdiv'){
+	  function setIframeHeight("ifdiv"){
         try{
-            var iframe = document.getElementById('ifdiv');
+            var iframe = document.getElementById("ifdiv");
             if(iframe.attachEvent){
                 iframe.attachEvent("onload", function(){
                     iframe.height =  iframe.contentWindow.document.documentElement.scrollHeight;
