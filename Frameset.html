@@ -81,6 +81,9 @@
 	            document.getElementById("plus").style.width = "32%";
 		    document.getElementById("proimg").style.width = "75%";
 		    //document.getElementById("iFrame1").scrolling = "no";
+		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
+			    document.getElementById("iFrame1").scrolling = "no";
+		    }
             }
           
         
