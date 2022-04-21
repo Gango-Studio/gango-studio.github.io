@@ -91,8 +91,12 @@
 	            document.getElementById("plus").style.width = "32%";
 		    document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
-			    //test//document.getElementById("iFrame1").scrolling = "no";
 			    document.getElementById("iFrame1").id = "ios-iframe";
+			    //var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
+			    //ver = parseInt(ver[0],10)
+			    //if (ver < 14){
+				    //
+			    //}
 		    }
             }
           
