@@ -11,7 +11,7 @@
 	   height: 1px;
 	   *height: 100%;
    }
-   .ios-iframe{
+   #ios-iframe{
 	   height:100%;
 	   position:absolute;
 	   -webkit-overflow-scrolling: touch;!important
@@ -96,7 +96,7 @@
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
-			    if (ver < 14){
+			    if ((ver < 14) || (/Kindle/([d.]+)/i.test(navigator.userAgent)) ){
 				    document.getElementById("iFrame1").id = "iFrame";
 			    }
 		    }
