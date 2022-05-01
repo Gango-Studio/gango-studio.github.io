@@ -17,9 +17,9 @@
 	   -webkit-overflow-scrolling: touch;!important
 	   overflow-y: scroll;!important
 	   position: relative;
+           display:inline-block;
     }
    .maindiv{
-     display:inline-block;
      -webkit-overflow-scrolling: touch;  
      overflow-y: scroll;!important
      overflow-x: scroll;!important
@@ -27,7 +27,6 @@
      margin-left:25%;
      overflow: auto;
      height:100vh;
-     display: block;
      scrolling : auto;
    }
   .sediv{
@@ -78,7 +77,7 @@
  </div>
 </div>
 <div class = "maindiv"><!--iOS webkit-->
-  <iframe src="test.html" name="iFrame1" id="iFrame1" title="mainFrame" align = "right" style = "height:100vh;"></iframe>
+  <iframe src="test.html" name="iFrame1"  title="mainFrame" align = "right" style = "height:100vh;"></iframe>
 </div>
 </nobr>
 <!--</div>-->
@@ -95,13 +94,10 @@
 		    document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
-			    
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
 			    if (ver < 14){
-				    getElementById("iFrame1").height = getElementById("iFrame1").attr('height');
-				    var ifm= document.getElementById("iFrame1");
-				   ifm.height=document.documentElement.clientHeight;
+				    document.getElementById("iFrame1").id = "iFrame";
 			    }
 		    }
             }
