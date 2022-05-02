@@ -6,11 +6,7 @@
 <title>Gango Studios</title>
  <style>
    #iFrame1{
-	   min-width : 100%;
-	   min-height : 100%;
-	   height: 1px;
-	   *height: 100%;
-	   scrolling : no;/*test*/
+	   
    }
    #ios-iframe{
 	   height:100%;
@@ -19,6 +15,11 @@
 	   overflow-y: scroll;!important
 	   position: relative;
            display:inline-block;
+	   min-width : 100%;
+	   min-height : 100%;
+	   height: 1px;
+	   *height: 100%;
+	   scrolling : no;/*test*/
     }
    .maindiv{
      display:inline-block;
@@ -80,7 +81,7 @@
  </div>
 </div>
 <div class = "maindiv"><!--iOS webkit-->
-  <iframe src="test.html" name="iFrame1"  title="mainFrame" align = "right" style = "height:100vh;"></iframe>
+  <iframe src="test.html" name="iFrame1" id = "iFrame1" title="mainFrame" align = "right" style = "height:100vh;"></iframe>
 </div>
 </nobr>
 <!--</div>-->
