@@ -6,7 +6,10 @@
 <title>Gango Studios</title>
  <style>
    #iFrame1{
-	   
+	   min-width : 100%;
+	   min-height : 100%;
+	   height: 1px;
+	   *height: 100%;
    }
    #ios-iframe{
 	   height:100%;
@@ -100,7 +103,7 @@
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
-			    if ((ver < 14) || (/Kindle/([d.]+)/i.test(navigator.userAgent)) ){
+			    if ((ver < 14) || (/Kindle/i.test(navigator.userAgent)) ){
 				    //document.getElementById("iFrame1").id = "iFrame";
 			    }
 		    }
