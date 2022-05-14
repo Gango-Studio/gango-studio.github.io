@@ -105,14 +105,14 @@
             var innerwidth = window.innerWidth; 
             if (innerwidth >= 750){
 	            document.getElementById("pro").class = "STYLE3";
-		    document.getElementById("plus").class = "big-div";
+		    //document.getElementById("plus").class = "big-div";
 		    //document.getElementById("maindiv").width = "80%";
                     //document.getElementById("maindiv").margin-left = "20%";
             }
             if (innerwidth <= 750){
 	            document.getElementById("plus").style.width = "32%";
 		    document.getElementById("proimg").style.width = "75%";
-		    //document.getElementById("plus").style.position = "fixed";
+		    document.getElementById("plus").style.position = "fixed";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
