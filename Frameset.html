@@ -10,10 +10,6 @@
   #plus{
      /*position:fixed;*/
   }
-  .big-div{
-	  width : "80%";
-	  margin-left : "20%";
-   }
    #iFrame1{
 	   min-width : 100%;
 	   min-height : 100%;
@@ -112,13 +108,11 @@
             if (innerwidth <= 750){
 	            document.getElementById("plus").style.width = "32%";
 		    document.getElementById("proimg").style.width = "75%";
-		    //document.getElementById("plus").style.position = "fixed";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
 			    if ((ver < 14) || (/Kindle/i.test(navigator.userAgent)) ){
-				    //document.getElementById("iFrame1").id = "iFrame";
 				    document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
