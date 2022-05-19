@@ -113,7 +113,7 @@
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
 			    if ((ver < 14) || (/Kindle/i.test(navigator.userAgent)) ){
-				    document.getElementById("main-body").style.overflow-y = "hidden";
+				    //document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
 		    }
