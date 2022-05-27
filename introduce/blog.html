@@ -29,6 +29,14 @@
 	   *height: 100%;
 	   scrolling : no;/*test*/
     }*/
+    #left-div{
+	    float:left;
+	    width:25%;
+    }
+   #right-div{
+	   margin-left:25%;
+	   width:75%;
+   }
    .maindiv{
      height:100%;
      position:absolute;
@@ -84,9 +92,8 @@
   </style>
 </head>
 <body style="-webkit-overflow-scrolling:touch;overflow:hidden;height:auto;" id = "main-body">
-<!--<div style="-webkit-overflow-scrolling:touch;overflow:auto;">-->
 <nobr>
-<div  class = "maindiv" id = "plus" style = "width:20%;height:100vh;position:fixed;padding:0;margin:0;word-break:normal;overflow:auto;">
+<div  class = "maindiv" id = "plus left-div" style = "width:20%;height:100vh;position:fixed;padding:0;margin:0;word-break:normal;overflow:auto;">
  <p align="left" class="STYLE1"  style = "width:auto"><img src="../image/GANGOpng.png" alt="" width="60%" longdesc="../../../Gango软件包/u=2176059913,3523232708&amp;fm=85&amp;app=79&amp;f=JPEG.jpg" id = "proimg" style = "overflow:hidden;"/></p>
  <div class = "sediv">	
     <h1 align="left">Gango</h1>
@@ -107,7 +114,7 @@
     </p><br/><br/><br/>
  </div>
 </div>
-<div class = "maindiv"><!--iOS webkit-->
+<div class = "maindiv" id = "right-div"><!--iOS webkit-->
   <div style = "background:url(../image/background/318875779td99040f86d65d201c21700.jpg);">
    <div class = "nav">
     <h1>博客</h1>
