@@ -17,7 +17,6 @@
     }
    #right-div{
 	   margin-left:25%;
-	   display:inline-block;
 	   /*width:75%;*/
    }
    .maindiv{
@@ -145,8 +144,8 @@
                     //document.getElementById("maindiv").margin-left = "20%";
             }
             if (innerwidth <= 750){
-	            document.getElementById("left-div").style.width = parseInt(getStyle(div,"width")) + "32" + %;
-		    document.getElementById("right-div").style.margin-left = parseInt(getStyle(div,"margin-left")) + "32" + %;
+	            document.getElementById("left-div").style.width = "32%";
+		    document.getElementById("right-div").style.margin-left = "32%";
 		    document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
