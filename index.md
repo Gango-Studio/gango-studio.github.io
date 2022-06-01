@@ -4,7 +4,7 @@
     <!--<link rel="icon" href="image/GANGOpng.ico" type="image/x-icon"/>🧨🧧壬寅虎年春节快乐🧧🧨-->
   </head>
   <body>
-    <h1 style = "background-image: linear-gradient(to right,blue,orange);-webkit-background-clip: text; color: transparent;" align = "center">六·一儿童节快乐！</h1>
+    <h1 style = "background-image: linear-gradient(to right,#00799E,orange);-webkit-background-clip: text; color: transparent;" align = "center">六·一儿童节快乐！</h1>
     <!--<h1 style = "color:red;" align = "center">LIBERECO! Ni Estas La HONOJ</h1>-->
     <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
     <h3 style = "color:#4B92DB；" align = "center"><a href = "https://www.unicef.org"  target = "_blank">关注UNICEF在俄乌冲突中的对儿童的人道主义援助↗</a></h3>
