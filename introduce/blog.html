@@ -165,10 +165,11 @@
                     //document.getElementById("maindiv").margin-left = "20%";
             }
             if (innerwidth <= 750){
-	            document.getElementById("left-div").style.width = "32%";
-		    document.getElementById("right-div").style.margin-left = "32%";
-		    //document.getElementById("right-div").style.width = "68%";
-		    //document.getElementById("proimg").style.width = "75%";
+	            //document.getElementById("left-div").style.width = "32%";
+		    document.getElementById("left-div").id = 'left-div-mobile';
+		    document.getElementById("right-div").id = 'right-div-mobile';
+		    //document.getElementById("right-div").style.margin-left = "32%";
+		    document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
