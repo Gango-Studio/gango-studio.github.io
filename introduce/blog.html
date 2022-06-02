@@ -17,9 +17,26 @@
 	    float:left;
 	    display:inline-block;
     }
+    #left-div-mobile{
+	    float:left;
+	    width:32%;
+	    position:absolute;
+	    float:left;
+	    display:inline-block;
+    }
    #right-div{
 	   float:right;
+	   margin-left = 25%;
 	   width:75%;
+	   position:absolute;
+	   display:inline-block;
+	   vertical-align:"right";
+	   /*width:75%;*/
+   }
+   #right-div-mobile{
+	   float:right;
+	   width:68%;
+	   margin-left = 32%;
 	   position:absolute;
 	   display:inline-block;
 	   vertical-align:"right";
@@ -152,8 +169,8 @@
             if (innerwidth <= 750){
 	            document.getElementById("left-div").style.width = "32%";
 		    document.getElementById("right-div").style.margin-left = "32%";
-		    document.getElementById("right-div").style.width = "68%";
-		    document.getElementById("proimg").style.width = "75%";
+		    //document.getElementById("right-div").style.width = "68%";
+		    //document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
