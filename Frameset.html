@@ -143,13 +143,19 @@
 </body>
 <script>
             var innerwidth = window.innerWidth; 
-            if (innerwidth >= 750){
+	    if(/Kindle\/([\d.]+)/i.test(navigator.userAgent))
+	    {
+		    document.getElementById("plus").style.width = "32%";
+		    document.getElementById("proimg").style.width = "75%";
+		    document.getElementById("iFrame1").id = "kindle-style";
+	    }else{
+                if (innerwidth >= 750){
 	            document.getElementById("pro").class = "STYLE3";
 		    //document.getElementById("plus").class = "big-div";
 		    //document.getElementById("maindiv").width = "80%";
                     //document.getElementById("maindiv").margin-left = "20%";
-            }
-            if (innerwidth <= 750){
+               }   
+               if (innerwidth <= 750){
 	            document.getElementById("plus").style.width = "32%";
 		    document.getElementById("proimg").style.width = "75%";
 		    if(/ipad|iphone|mac/i.test(navigator.userAgent)){
@@ -161,7 +167,9 @@
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
 		    }
-            }
+                }
+	    }
+	    
           
         
 </script> 
