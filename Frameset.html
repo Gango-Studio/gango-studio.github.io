@@ -118,12 +118,12 @@
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
-			    if ((ver < 14) || (/Kindle/i.test(navigator.userAgent)) ){
+			    if (ver < 14){
 				    //document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
 			    if(/Kindle/i.test(navigator.userAgent)){
-		    			window.location="https://gango-studio.github.io/Frameset-kindle.html";
+		    			window.location.href="https://gango-studio.github.io/Frameset-kindle.html";
 	    		   }
 		    }
             }
