@@ -122,11 +122,12 @@
 				    //document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
+			    if(/Kindle/i.test(navigator.userAgent)){
+		    			window.location.href="https://gango-studio.github.io/Frameset-kindle.html";
+	    		    }
 		    }
             }
-            if(/Kindle/i.test(navigator.userAgent)){
-		    window.location.href="/Frameset-kindle.html";
-	    }
+            
         
 </script> 
 </html>
