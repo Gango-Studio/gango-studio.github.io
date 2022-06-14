@@ -121,7 +121,7 @@
 				    //document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
-			    if(/Kindle/i.test(navigator.userAgent)){
+			    if((navigator.userAgent.match(/kindle/i))){
 		    			window.location.replace("https://gango-studio.github.io/Frameset-kindle.html");
 	    		    }
 		    }
