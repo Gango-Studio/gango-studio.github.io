@@ -36,7 +36,8 @@
      -webkit-overflow-scrolling: touch;  
      overflow-y: scroll;!important
      overflow-x: scroll;!important
-     
+     width:75%;
+     margin-left:25%;
      overflow: auto;
      height:100vh;
      position: relative;
@@ -74,7 +75,7 @@
 <body style="-webkit-overflow-scrolling:touch;overflow:hidden;height:auto;" id = "main-body">
 <!--<div style="-webkit-overflow-scrolling:touch;overflow:auto;">-->
 <nobr>
-<div  class = "maindiv" id = "plus" style = "scrollbar-width:none;width:32%;height:100vh;position:fixed;padding:0;margin:0;word-break:normal;overflow:auto;">
+<div  class = "maindiv" id = "plus" style = "width:20%;height:100vh;position:fixed;padding:0;margin:0;word-break:normal;overflow:auto;">
  <p align="left" class="STYLE1"  style = "width:auto"><img src="image/GANGOpng.png" alt="" width="60%" longdesc="../../../Gango软件包/u=2176059913,3523232708&amp;fm=85&amp;app=79&amp;f=JPEG.jpg" id = "proimg" style = "overflow:hidden;"/></p>
  <div class = "sediv">	
     <h1 align="left">Gango</h1>
@@ -95,11 +96,12 @@
     </p><br/><br/><br/>
  </div>
 </div>
-<div class = "maindiv"  style = "height:100vh;margin-left: 32%;width:68%"><!--iOS webkit-->
-  <iframe src="test.html" name="iFrame1" id = "iFrame1" title="mainFrame" align = "right" style = "height:100vh;></iframe>
+<div class = "maindiv"><!--iOS webkit-->
+  <iframe src="test.html" name="iFrame1" id = "iFrame1" title="mainFrame" align = "right" style = "height:100vh;"></iframe>
 </div>
 </nobr>
 <!--</div>-->
+
 </body>
 <script>
             var innerwidth = window.innerWidth; 
@@ -116,14 +118,13 @@
 			    document.getElementById("iFrame1").id = "ios-iframe";
 			    var ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/)
 			    ver = parseInt(ver[0],10);
-			    if (ver < 14) ){
+			    if ((ver < 14) || (/Kindle/i.test(navigator.userAgent)) ){
 				    //document.getElementById("main-body").style.overflow-y = "hidden";
 				    window.parent.document.getElement('#ios-iframe').style.height = document.documentElement.offsetHeight+'px';
 			    }
 		    }
-												      
             }
-            
+          
         
 </script> 
 </html>
