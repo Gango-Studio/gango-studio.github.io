@@ -17,7 +17,7 @@
     </h3>
     <h1>公告</h1>
       <p>   1.2022年度大版本ver1.7.0 已发布<br/>更新内容：Ⅰ优化severs于stinger部分BUG。<br/>Ⅱ解决部分已知问题<br/>Ⅲ修复主站字体过小问题<br/>Ⅳ新增Gango Weather 2.0<br/>Ⅴ更新1.7版本相关内容<br/>注：部分更新项目未上线,敬请期待<br/>        2022.1.31</p>
-      <p>   2.本站已绑定新域名：www.gango.ml，现在gango-studio.github.io和www.gango.ml都可以访问本站<br/>        2022.6.29</p>
+      <p>   2.本站已绑定新域名：www.gango.ml ，现在gango-studio.github.io和www.gango.ml 都可以访问本站<br/>        2022.6.29</p>
       <p>   2.本站21#11#6版本更新，本更新解决问题有：<br/>&nbsp;&nbsp;1.解决serves和stinger中字体过小问题。<br/>&nbsp;&nbsp;2.解决了Blog跳转问题。<br>&nbsp;&nbsp;3.优化部分界面，新增 圆角矩形 设计。<br/>        2021.12.12</p>
       <p>   3.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br/>        2021.8.15</p>
     <h1>发展历史</h1>
