@@ -2,3 +2,4 @@ user-agent:*
 Disallow:/image/
 Disallow:/stinger/picture/
 Disallow:*.css$
+Disallow:/stinger/
