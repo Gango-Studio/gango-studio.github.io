@@ -3,3 +3,7 @@ Disallow:/image/
 Disallow:/stinger/picture/
 Disallow:*.css$
 Disallow:/stinger/
+Disallow:*.mp3$
+Disallow:*.mp4$
+Disallow:/stinger/sound/
+Disallow:/Frameset-kindle.html
