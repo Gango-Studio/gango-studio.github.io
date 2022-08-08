@@ -1,7 +1,6 @@
 user-agent:*
 Disallow:/image/
 Disallow:/stinger/picture/
-Disallow:*.css$
 Disallow:/stinger/
 Disallow:*.mp3$
 Disallow:*.mp4$
