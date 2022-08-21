@@ -36,11 +36,19 @@
 </nav>
  <br/>
  <div style="position: relative; padding: 30% 45%;">
-       <iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://player.bilibili.com/player.html?cid=418972073&aid=763274346&page=1&as_wide=1&high_quality=1&danmaku=0" frameborder="no" scrolling="no"></iframe>
+       <iframe class ="pro" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://player.bilibili.com/player.html?cid=418972073&aid=763274346&page=1&as_wide=1&high_quality=1&danmaku=0" frameborder="no" scrolling="no"></iframe>
 </div>
  <div style="position: relative; padding: 30% 45%;">
-       <iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://player.bilibili.com/player.html?cid=309891964&aid=502040893&page=1&as_wide=1&high_quality=1&danmaku=0" frameborder="no" scrolling="no"></iframe>
+       <iframe class ="pro"  style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="https://player.bilibili.com/player.html?cid=309891964&aid=502040893&page=1&as_wide=1&high_quality=1&danmaku=0" frameborder="no" scrolling="no"></iframe>
 </div>
 </body>
-
+ <script>
+            var innerwidth = screen.width;
+            if (innerwidth >= 750){
+	            document.getElementById("pro").style.width = "60%";
+            }
+            if (innerwidth <= 750){
+	            document.getElementById("pro").style.width ="100%";
+           }
+   </script> 
 </html>
