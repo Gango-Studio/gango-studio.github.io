@@ -53,7 +53,7 @@
 </nav>
  <br/>
  <br/>
- <div style="position: relative;text-align:center;" ><img style = "width:50%;" src = "https://gango-studio.github.io/image/CPP/屏幕截图 2020-10-13 215421.png"></img></div>                  
+ <div style="position: relative;text-align:center;" ><img id = "pro" style = "width:50%;" src = "https://gango-studio.github.io/image/CPP/屏幕截图 2020-10-13 215421.png"></img></div>                  
 <br/><br/><br/><br/>
  <div style="position: relative;text-align:center;"" >
    <h1>Courtyard</h1>
@@ -65,4 +65,15 @@
     <p class="STYLE3">Windows only</p>
  </div>
 </body>
+   <script>
+            var innerwidth = window.innerWidth; 
+	   var x = 40;
+            if (innerwidth >= 750){
+	            document.getElementById("pro").style.width = "700px";
+            }
+            if (innerwidth <= 750){
+            
+	            document.getElementById("pro").style.width ="80%";
+      }
+   </script>                    
 </html><!--出事找8/23-->
