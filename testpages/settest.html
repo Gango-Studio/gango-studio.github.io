@@ -35,8 +35,9 @@
   <!--<a class="flex-sm-fill text-sm-center nav-link" href="#">else</a>-->
 </nav>
  <br/>
- <div style="position: relative; padding: 30% 45%;text-align:center;">
-       <iframe class ="pro" style="padding-left:20%;text-align:center;position: absolute;width : 80%; height: 100%;left:0;right:0; top: 0;" src="https://player.bilibili.com/player.html?bvid=BV1tN411Q7fj" frameborder="no" scrolling="no"></iframe>
+ <div style="position: relative;text-align:center;" onclick = "window.open('https://www.bilibili.com/video/BV1264y187MR')">
+       <img id = "pro1" style = "50%;" src=""></img>
+       <p>常州Vlog</p>
 </div>
   <br/>
   <br/>
@@ -66,4 +67,15 @@
   <br/>
   <br/>
 </body>
+    <script>
+            var innerwidth = window.innerWidth; 
+	           var x = 40;
+            if (innerwidth >= 750){
+	            document.getElementById("pro1").style.width = "700px";
+            }
+            if (innerwidth <= 750){
+            
+	            document.getElementById("pro1").style.width ="80%";
+      }
+   </script> 
 </html>
