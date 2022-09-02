@@ -9,7 +9,7 @@
     <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
     <h3 style = "color:#4B92DB；" align = "center"><a href = "https://www.unicef.org"  target = "_blank">关注UNICEF在俄乌冲突中的对儿童的人道主义援助↗</a></h3>
     <h1>Gango Studios</h1>
-      <h2><a href = "Frameset.html">主站</a>
+      <h2><a href = "https://gango-studio.github.io/main.html">主站</a>
         <br/>   
     <h1>Gango 服务</h1>
     <h3><a href = "serves/blank.html" target = "_blank">浏览器主页</a>|<a href = "serves/weather.html" target = "_blank">天气</a>|<a href = "https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱</a>
