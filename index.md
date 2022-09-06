@@ -16,7 +16,7 @@
         <br/>
     </h3>
     <h1>公告</h1>
-      <p>   1.2022年度大版本ver1.7.0 已发布<br/>更新内容：Ⅰ优化severs于stinger部分BUG。<br/>Ⅱ解决部分已知问题<br/>Ⅲ修复主站字体过小问题<br/>Ⅳ新增Gango Weather 2.0<br/>Ⅴ更新1.7版本相关内容<br/>注：部分更新项目未上线,敬请期待<br/>        2022.1.31</p>
+      <p>   1.全新一代大版本ver1.8.0 已发布<br/>更新内容：ⅠStinger内容更新<br/>Ⅱ基于Bootstrap全新框架主站<br/>Ⅲ优化老旧设备与墨水屏设备使用体验<br/>Ⅳ优化Blog背景图<br/>Ⅴ优化页面设计<br/>        2022.9.6</p>
       <p>   2.本站22#9#1版本更新，本次更新带来了新的主站页面，旧页面与旧路径将在不久后删除，2022年中大版本将在Stinger图片过大问题解决后发布，敬请期待。<br/>        2022.9.2</p>
       <p>   3.本站21.7.29小版本更新，新增特性：反过度爬虫，/stinger/及所有照片文件都无法被搜索引擎爬取；另外，彩蛋区将迎来一次更新，敬请期待<br/>        2022.8.1</p>
       <p>   4.本站已绑定新域名:www.gango.ml ， 现在gango-studio.github.io和www.gango.ml 都可以访问本站<br/>        2022.6.29</p>
@@ -47,7 +47,7 @@
     <br/>
     <br/>
     <br/>
-    <nobr><h6><big>Ver 1.7.0  Nancuiping    22#9#1    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
+    <nobr><h6><big>Ver 1.8.0  Nancuiping    22#9#1    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
   <!--</body>-->
 <!--</html>-->
 <!-- Developed by Gango Studios , Sam Mu  -->
