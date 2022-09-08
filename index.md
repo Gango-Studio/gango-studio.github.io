@@ -5,6 +5,7 @@
   </head>
   <body>
     <h1 style = "color:black;" align = "center">In Memoriam Her Majesty Queen Elizabeth II</h1>
+    <h3 style = "color:black;" align = "center"><a href = "https://www.royal.uk/"  target = "_blank">In Memoriam↗</a></h3>
     <!--<h1 style = "color:#FFA500;" align = "center">🍁Autumn Comes🍁</h1>-->
     <!--<h1 style = "color:red;" align = "center">LIBERECO! Ni Estas La HONOJ</h1>-->
     <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
