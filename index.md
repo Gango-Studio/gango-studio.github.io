@@ -3,7 +3,8 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <h1 style = "color:#FFA500;" align = "center">🇺🇦🇺🇦 В Україну ще не прийшла весна 🇺🇦🇺🇦</h1>
+    <h1 style = "color:red;" align = "center">热烈庆祝中华人民共和国成立73周年</h1>
+    <h3 style = "color:red;" align = "center"><a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a><h3>
     <!--<h1 style = "color:red;" align = "center">LIBERECO! Ni Estas La HONOJ</h1>-->
     <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
     <h3 style = "color:#4B92DB；" align = "center"><a href = "https://www.unicef.org"  target = "_blank">关注UNICEF在俄罗斯对乌克兰的侵略中的对儿童的人道主义援助↗</a></h3>
