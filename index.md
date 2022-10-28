@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <h1 style = "color:red;" align = "center">热烈庆祝中华人民共和国成立73周年</h1>
+    <h1 style = "color:black;" align = "center">@天津九中<br/>这是学校<br/>不是干校</h1>
     <h3 style = "color:red;" align = "center" target = "_blank"><a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a><h3>
     <!--<h1 style = "color:red;" align = "center">LIBERECO! Ni Estas La HONOJ</h1>-->
     <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
