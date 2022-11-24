@@ -42,6 +42,8 @@
         <br/>
         <a href = "https://www.nicovideo.jp" target = "_blank">NicoNico</a>
         <br/>
+        <a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a>
+        <br/>
         <a href = "https://www.unicef.org"  target = "_blank">关注UNICEF在俄罗斯对乌克兰的侵略中的对儿童的人道主义援助↗</a>
       </p>
     <br/> 
