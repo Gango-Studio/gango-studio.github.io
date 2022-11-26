@@ -44,7 +44,7 @@
         <br/>
         <a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a>
         <br/>
-        <a href = "https://www.ukraine.ua"  target = "_blank">关注乌克兰局势↗</a>
+        <a href = "https://www.ukraine.ua"  target = "_blank">Support Ukraine</a>
       </p>
     <br/> 
     <br/>
