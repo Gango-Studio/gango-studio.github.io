@@ -47,8 +47,7 @@
         <a href = "https://www.ukraine.ua"  target = "_blank">Support Ukraine</a>
         <!--<br/>
         <a href ="https://www.zhihu.com/collection/847398712" target = "_blank">About Freedom of Iran</a>-->
-      </p>
-    <br/> 
+      </p> 
     <br/>
     <br/>
     <br/>
