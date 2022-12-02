@@ -40,13 +40,14 @@
         <br/>
         <a href = "https://www.bilibili.com" target = "_blank">哔哩哔哩</a>
         <br/>
+        <a href = "https://www.zhihu.com/knowledge-plan/hot-question/hot/0/hour" target = "_blank">知乎</a>
+        <br/>
         <a href = "https://www.nicovideo.jp" target = "_blank">NicoNico</a>
         <br/>
         <a href ="https://stevejobsarchive.com/" target = "_blank">Steve Jobs Archive</a>
         <br/>
         <a href = "https://www.ukraine.ua"  target = "_blank">Support Ukraine</a>
       </p> 
-    <br/>
     <br/>
     <br/>
     <nobr><h6><big>Ver 1.8.0  Nancuiping    22#9#6    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
