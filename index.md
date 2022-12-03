@@ -1,4 +1,4 @@
-<html style="filter: grayscale(100%);"><!--https://pic1.zhimg.com/80/v2-877222e61d52797f9bc33951fdd88eb0_720w.webp?source=1940ef5c-->
+<html style="filter: grayscale(100%);">
   <head>
     <meta charset="UTF-8">
   </head>
