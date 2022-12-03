@@ -1,17 +1,20 @@
-<html><!--https://pic1.zhimg.com/80/v2-877222e61d52797f9bc33951fdd88eb0_720w.webp?source=1940ef5c-->
+<html style="filter: grayscale(100%);"><!--https://pic1.zhimg.com/80/v2-877222e61d52797f9bc33951fdd88eb0_720w.webp?source=1940ef5c-->
   <head>
     <meta charset="UTF-8">
   </head>
   <body>
     <h1 style = "color:#A52A2A;" align = "center">🏆We're the Champions🏆</h1>
     <h3  align = "center">2022·Qatar</h3>
-    <h3  align = "center" target = "_blank"><a href = "https://tiyu.baidu.com/match/%E4%B8%96%E7%95%8C%E6%9D%AF/from/baidu_aladdin" target = "_blank">百度体育赛程↗</a>&nbsp;&nbsp;<a href = "https://www.fifaplus.com" target = "_blank">FIFA官网↗</a></h3>
+    <h3  align = "center" target = "_blank"><a href = "https://tiyu.baidu.com/match/%E4%B8%96%E7%95%8C%E6%9D%AF/from/baidu_aladdin">百度体育赛程↗</a>&nbsp;&nbsp;<a href = "https://www.fifa.com/fifaplus/">FIFA官网↗</a></h3>
     <!--<h3 style = "color:red;" align = "center" target = "_blank"><a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a><h3>-->
+    <!--<h1 style = "color:red;" align = "center">LIBERECO! Ni Estas La HONOJ</h1>-->
+    <!--<h3 style = "color:#87CEEB;" align = "center"><a href ="https://tiyu.baidu.com/beijing2022/home/tab/%E5%A5%96%E7%89%8C%E6%A6%9C" target = "_blank"> >>关注冬奥数据<< </a></h3>-->
+    <h3 style = "color:#4B92DB；" align = "center"><a href = "https://www.unicef.org"  target = "_blank">关注UNICEF在俄罗斯对乌克兰的侵略中的对儿童的人道主义援助↗</a></h3>
     <h1>Gango Studios</h1>
       <h2><a href = "https://gango-studio.github.io/main.html">主站</a>
         <br/>   
     <h1>Gango 服务</h1>
-    <h3><a href = "serves/blank.html" target = "_blank">浏览器主页</a>|<a href = "serves/weather.html" target = "_blank">天气</a>|<a href = "https://gango-studio.github.io/serves/tools/indexpage.html" target = "_blank">Gango工具箱</a>
+    <h3><a href = "serves/blank.html" target = "_blank">浏览器主页</a>|<a href = "serves/weather.html" target = "_blank">天气</a>|<a href = "https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱</a>
         <br/>
     </h3>
     <h1>公告</h1>
@@ -40,14 +43,10 @@
         <br/>
         <a href = "https://www.bilibili.com" target = "_blank">哔哩哔哩</a>
         <br/>
-        <a href = "https://www.zhihu.com/knowledge-plan/hot-question/hot/0/hour" target = "_blank">知乎</a>
-        <br/>
         <a href = "https://www.nicovideo.jp" target = "_blank">NicoNico</a>
-        <br/>
-        <a href ="https://stevejobsarchive.com/" target = "_blank">Steve Jobs Archive</a>
-        <br/>
-        <a href = "https://www.ukraine.ua"  target = "_blank">Support Ukraine</a>
-      </p> 
+      </p>
+    <br/> 
+    <br/>
     <br/>
     <br/>
     <nobr><h6><big>Ver 1.8.0  Nancuiping    22#9#6    <a href = "stinger/mainpage.html">彩蛋</a></big></h6></nobr>
