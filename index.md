@@ -1,4 +1,4 @@
-<html style="filter: grayscale(100%);">
+<html style="filter: grayscale(0%);">
   <head>
     <meta charset="UTF-8">
   </head>
