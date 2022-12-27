@@ -3,10 +3,7 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <h1 style = "color:#A52A2A;" align = "center">🏆We're the Champions🏆</h1>
-    <h3  align = "center">2022·Qatar</h3>
-    <h3  align = "center" target = "_blank"><a href = "https://tiyu.baidu.com/match/%E4%B8%96%E7%95%8C%E6%9D%AF/from/baidu_aladdin" target = "_blank">百度体育赛程↗</a>&nbsp;&nbsp;<a href = "https://www.fifaplus.com" target = "_blank">FIFA官网↗</a></h3>
-    <!--<h3 style = "color:red;" align = "center" target = "_blank"><a href ="https://stevejobsarchive.com/">Steve Jobs Archive</a><h3>-->
+    <h1 style = "color:#A52A2A;" align = "center">🎉🎇Nice to See You,2023🎇🎉</h1>
     <h1>Gango Studios</h1>
       <h2><a href = "https://gango-studio.github.io/main.html">主站</a>
         <br/>   
