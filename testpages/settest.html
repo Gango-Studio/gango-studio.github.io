@@ -79,5 +79,20 @@
 		    document.getElementById("pro4").style.width ="80%";
 		    document.getElementById("pro5").style.width ="80%";
       }
-   </script> 
+
+   </script>
+   <script language="javascript">
+              alert ("5秒后高能！");
+		var num = 5; //倒计时的秒数
+		var URL ="https://b23.tv/4ghAjQc";
+		var id = window.setInterval('doUpdate()', 1000); 
+		function doUpdate() {
+			if(num == 0) {
+				window.clearInterval(id);
+				window.location = URL; 
+			}
+			num --;
+		}
+	</script>
+
 </html>
