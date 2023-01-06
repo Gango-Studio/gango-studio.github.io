@@ -4,7 +4,7 @@
   </head>
   <body>
     <h1 style = "color:#A52A2A;" align = "center">🎉🎇Nice to See You,2023🎇🎉</h1>
-    <h2 align = "center"><a href="https://gango-studio.github.io/activity.html">2023规划</a></h2>
+    <h2 align = "center" target = "_blank"><a href="https://gango-studio.github.io/activity.html">2023规划</a></h2>
     <h1>Gango Studios</h1>
       <h2><a href = "https://gango-studio.github.io/main.html">主站</a>
         <br/>   
