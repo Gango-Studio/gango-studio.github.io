@@ -58,7 +58,9 @@
       var d = new Date();
       var gd = d.getDate();
       var gh = d.getHours();
-      
+      if (gd == "22"){document.getElementById("spc").value ="Happy";}
+      if (gd == "21" && gh >= "16"){document.getElementById("spc").value ="Happy";}
+      else{document.getElementById("spc").value ="Spring";}
     </script>
     <h1 style="color:#A52A2A;" align="center">🎉🎇Nice to See You,2023🎇🎉</h1>
     <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a></h2>
