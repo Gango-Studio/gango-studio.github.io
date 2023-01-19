@@ -106,8 +106,8 @@
       var d = new Date();
       var gd = d.getDate();
       if (gd >= "22"){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";document.getElementById("spc").style ="color:red";}
-      else if (gd >= "20" && gd <= "22"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";document.getElementById("spc").style ="color:red";}//有浏览器时间判定
-      else{document.getElementById("spc").innerHTML ="🎉🎇Nice to See You,2023🎇🎉";document.getElementById("spc").style ="color:red";}
+      else if (gd >= "20" && gd < "22"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";document.getElementById("spc").style ="color:red";}//有浏览器时间判定
+      else{document.getElementById("spc").innerHTML ="🎉🎇Nice to See You,2023🎇🎉";}
       function onc(){
         pre = !pre;
         if (pre == false && gd >= "22"){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";document.getElementById("spc").style ="color:red";}
