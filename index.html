@@ -104,7 +104,8 @@
 <script>
       var d = new Date();
       var gd = d.getDate();
-      if (gd == "20"){document.getElementById("spc").innerHTML ="Happy";}//有浏览器时间判定 日期-1
+      if (gd >= "22"){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";}
+      else if (gd >= "20" && gd <= "22"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";}//有浏览器时间判定
       else{document.getElementById("spc").innerHTML ="🎉🎇Nice to See You,2023🎇🎉";}
  </script>
 </html>
