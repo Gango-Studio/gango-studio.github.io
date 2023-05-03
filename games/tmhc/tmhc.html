@@ -100,5 +100,74 @@
             		document.getElementById("box").style.height = "90%";
 	            document.getElementById("box").style.width ="90%";
       }
-   </script>                    
+   </script>
+<!--<script>
+	var cnt = 0;
+var bo[8] = {0,0,0,0,0,0,0,0,0};
+function onclicknum(num){
+	if(bo[num] == 0){
+		if(cnt %2 ==0){
+			bo[num] = 1;
+  			//切换n
+      }else{
+			bo[num] = 2
+			//切换j
+		}
+   }
+	check();
+   cnt+=1;
+}
+function check(){
+	if(bo[0]==bo[1]==bo[2]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[3]==bo[4]==bo[5]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[6]==bo[7]==bo[8]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[0]==bo[3]==bo[6]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[1]==bo[4]==bo[7]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[2]==bo[5]==bo[8]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[0]==bo[4]==bo[8]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}else if(bo[2]==bo[4]==bo[6]){
+		if(cnt %2 ==0){
+			//提示win = n refresh
+		}else{
+    		//提示win = j refresh
+      }
+	}
+}
+</script>-->
+	
 </html>
