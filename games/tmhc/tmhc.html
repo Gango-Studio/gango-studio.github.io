@@ -108,7 +108,7 @@
 var bo = [0,0,0,0,0,0,0,0,0];
 	var num;
 	function zero(){
-		if(cnt %2 ==0){
+		if(cnt %2 ==0 && bo[num] == 0){
 			bo[num] = 1;
   			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
@@ -119,9 +119,65 @@ var bo = [0,0,0,0,0,0,0,0,0];
 	         cnt=cnt+1;
                 }
 	}
-	function one(){document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+	function one(){
+		if(cnt %2 ==0&& bo[num] == 0){
+			bo[num] = 1;
+  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+		}else{
+			bo[num] = 2;
+			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}
+	         cnt=cnt+1;
+                }
 	}
-	function two(){document.getElementById("twopic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+	function two(){
+		if(cnt %2 ==0&& bo[num] == 0){
+			bo[num] = 1;
+  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+		}else{
+			bo[num] = 2;
+			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}
+	         cnt=cnt+1;
+                }
+	}
+	function three(){
+		if(cnt %2 ==0&& bo[num] == 0){
+			bo[num] = 1;
+  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+		}else{
+			bo[num] = 2;
+			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}
+	         cnt=cnt+1;
+                }
+	}
+	function four(){
+		if(cnt %2 ==0&& bo[num] == 0){
+			bo[num] = 1;
+  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+		}else{
+			bo[num] = 2;
+			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}
+	         cnt=cnt+1;
+                }
+	}
+	function five(){
+		if(cnt %2 ==0&& bo[num] == 0){
+			bo[num] = 1;
+  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+		}else{
+			bo[num] = 2;
+			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}
+	         cnt=cnt+1;
+                }
 	}
 function check(){
 	if(bo[0]==bo[1]==bo[2]){
