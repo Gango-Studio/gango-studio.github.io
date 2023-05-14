@@ -109,24 +109,24 @@ var bo = [0,0,0,0,0,0,0,0,0];
 	var num;
 	function zero(){
 		if(cnt % 2 ==0 && bo[0] == 0){
-			bo[num] = 1;
-  			document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+			bo[0] = 1;
+  			document.getElementById("zeropic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
 		}else if(cnt % 2 ==1 && bo[0] == 0){
-			bo[num] = 2;
-			document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+			bo[0] = 2;
+			document.getElementById("zeropic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt = cnt + 1;
                 
 	}
 	function one(){
 		if(cnt %2 ==0&& bo[1] == 0){
-			bo[num] = 1;
-  			document.getElementById("twopic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+			bo[1] = 1;
+  			document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
-		}else{
-			bo[num] = 2;
-			document.getElementById("twopic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}else if(cnt % 2 ==1 && bo[1] == 0){
+			bo[1] = 2;
+			document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt=cnt+1;
                 
