@@ -116,7 +116,7 @@ var bo = [0,0,0,0,0,0,0,0,0];
 			document.getElementById("zeropic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt = cnt + 1;
-                check();
+                //check();
 	}
 	function one(){
 		if(cnt %2 ==0&& bo[1] == 0){
@@ -128,7 +128,7 @@ var bo = [0,0,0,0,0,0,0,0,0];
 			document.getElementById("onepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt=cnt+1;
-                check();
+                //check();
 	}
 	function two(){
 		if(cnt %2 ==0&& bo[2] == 0){
@@ -140,14 +140,14 @@ var bo = [0,0,0,0,0,0,0,0,0];
 			document.getElementById("twopic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt=cnt+1;
-                check();
+                //check();
 	}
 	function three(){
 		if(cnt %2 ==0&& bo[3] == 0){
 			bo[3] = 1;
   			document.getElementById("threepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
-		}else{
+		}else if(cnt % 2 ==1 && bo[3] == 0){
 			bo[3] = 2;
 			document.getElementById("threepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
@@ -156,24 +156,24 @@ var bo = [0,0,0,0,0,0,0,0,0];
 	}
 	function four(){
 		if(cnt %2 ==0&& bo[4] == 0){
-			bo[num] = 1;
-  			document.getElementById("fivepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+			bo[4] = 1;
+  			document.getElementById("fourpic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
-		}else{
-			bo[num] = 2;
-			document.getElementById("fivepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}else if(cnt % 2 ==1 && bo[4] == 0){
+			bo[4] = 2;
+			document.getElementById("fourpic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt=cnt+1;
                 
 	}
 	function five(){
 		if(cnt %2 ==0&& bo[5] == 0){
-			bo[num] = 1;
-  			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+			bo[5] = 1;
+  			document.getElementById("fivepic").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
       
-		}else{
-			bo[num] = 2;
-			document.getElementById("pic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+		}else if(cnt % 2 ==1 && bo[4] == 0){
+			bo[5] = 2;
+			document.getElementById("fivepic").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 		}
 	         cnt=cnt+1;
                 
