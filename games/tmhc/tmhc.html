@@ -40,7 +40,58 @@
        .pic{width:100%;height:100%;}
        html, body { margin:0; height:100%; }
   </style>
-	
+<script>
+	//这里逻辑很乱 一直重复造轮子 超
+function check(){
+	if(bo[0] == bo[1] == bo[2] == 1){
+		alert ("德意志国 胜利");	
+    }
+	if(bo[0] == bo[1] == bo[2] == 2){
+		alert ("日本帝国 胜利");	
+    }
+	if(bo[3]==bo[4]==bo[5] == 1){
+		alert ("德意志国 胜利");
+    }
+	if(bo[3]==bo[4]==bo[5] == 2){
+		alert ("日本帝国 胜利");
+    }
+	if(bo[6]==bo[7]==bo[8] == 1){
+		alert ("德意志国 胜利");
+    }
+	if(bo[6]==bo[7]==bo[8] == 2){
+		alert ("日本帝国 胜利");
+    }
+    if(bo[0]==bo[3]==bo[6]==1){
+		alert ("德意志国 胜利");
+	}
+	if(bo[0]==bo[3]==bo[6]==2){
+		alert ("日本帝国 胜利");
+	}
+	if(bo[1]==bo[4]==bo[7]==1){
+		alert ("德意志国 胜利");
+	}     
+	if(bo[1]==bo[4]==bo[7]==2){
+		alert ("日本帝国 胜利");
+	}
+	if(bo[2]==bo[5]==bo[8]==1){
+		alert ("德意志国 胜利");
+	}     
+	if(bo[2]==bo[5]==bo[8]==2){
+		alert ("日本帝国 胜利");
+	}
+	if(bo[0]==bo[4]==bo[8]==1){
+		alert ("德意志国 胜利");
+	}     
+	if(bo[0]==bo[4]==bo[8]==2){
+		alert ("日本帝国 胜利");
+	}
+	if(bo[2]==bo[4]==bo[6]==1){
+		alert ("德意志国 胜利");
+	}     
+	if(bo[2]==bo[4]==bo[6]==2){
+		alert ("日本帝国 胜利");
+	}
+</script>	
 </head>
 <body>
 <a href = "https://gango.ml" style="text-decoration: none;color:black"><div>
@@ -220,56 +271,5 @@
       }
               
 </script>
-<script>
-	//这里逻辑很乱 一直重复造轮子 超
-function check(){
-	if(bo[0] == bo[1] == bo[2] == 1){
-		alert ("德意志国 胜利");	
-    }
-	if(bo[0] == bo[1] == bo[2] == 2){
-		alert ("日本帝国 胜利");	
-    }
-	if(bo[3]==bo[4]==bo[5] == 1){
-		alert ("德意志国 胜利");
-    }
-	if(bo[3]==bo[4]==bo[5] == 2){
-		alert ("日本帝国 胜利");
-    }
-	if(bo[6]==bo[7]==bo[8] == 1){
-		alert ("德意志国 胜利");
-    }
-	if(bo[6]==bo[7]==bo[8] == 2){
-		alert ("日本帝国 胜利");
-    }
-    if(bo[0]==bo[3]==bo[6]==1){
-		alert ("德意志国 胜利");
-	}
-	if(bo[0]==bo[3]==bo[6]==2){
-		alert ("日本帝国 胜利");
-	}
-	if(bo[1]==bo[4]==bo[7]==1){
-		alert ("德意志国 胜利");
-	}     
-	if(bo[1]==bo[4]==bo[7]==2){
-		alert ("日本帝国 胜利");
-	}
-	if(bo[2]==bo[5]==bo[8]==1){
-		alert ("德意志国 胜利");
-	}     
-	if(bo[2]==bo[5]==bo[8]==2){
-		alert ("日本帝国 胜利");
-	}
-	if(bo[0]==bo[4]==bo[8]==1){
-		alert ("德意志国 胜利");
-	}     
-	if(bo[0]==bo[4]==bo[8]==2){
-		alert ("日本帝国 胜利");
-	}
-	if(bo[2]==bo[4]==bo[6]==1){
-		alert ("德意志国 胜利");
-	}     
-	if(bo[2]==bo[4]==bo[6]==2){
-		alert ("日本帝国 胜利");
-	}
-</script>	
+	
 </html>
