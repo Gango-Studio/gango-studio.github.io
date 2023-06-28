@@ -112,9 +112,6 @@ window.load = function check(){
 					var cnt = 0;
         				var bo = [0,0,0,0,0,0,0,0,0];
 					var num;
-					function cl(){
-						check();
-					}
 					function zero(){
 						if(cnt % 2 ==0 && bo[0] == 0){
 							bo[0] = 1;
@@ -125,7 +122,7 @@ window.load = function check(){
 							document.getElementById("pic0").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 						}
 	         				cnt = cnt + 1;
-                				cl();
+                				check();
 					}
 					function one(){
 						if(cnt %2 ==0&& bo[1] == 0){
