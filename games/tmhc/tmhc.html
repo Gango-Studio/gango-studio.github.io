@@ -70,7 +70,7 @@
 							document.getElementById("pic0").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 						}
 	         				cnt = cnt + 1;
-                				//check();
+                				check();
 					}
 					function one(){
 						if(cnt %2 ==0&& bo[1] == 0){
@@ -151,6 +151,44 @@
 			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="seven()"><img style="border:1px solid black;" id = "pic7" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
 			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="eight()"><img style="border:1px solid black;" id = "pic8" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
+			<script>
+				function six(){
+					if(cnt %2 ==0&& bo[6] == 0){
+						bo[6] = 1;
+  						document.getElementById("pic6").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[6] == 0){
+						bo[6] = 2;
+						document.getElementById("pic6").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+					}
+	         			cnt=cnt+1; 
+					check();
+				}
+				function seven(){
+					if(cnt %2 ==0&& bo[7] == 0){
+						bo[7] = 1;
+  						document.getElementById("pic7").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[7] == 0){
+						bo[7] = 2;
+						document.getElementById("pic7").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+					}
+	         			cnt=cnt+1; 
+					check();
+				}
+				function eight(){
+					if(cnt %2 ==0&& bo[8] == 0){
+						bo[8] = 1;
+  						document.getElementById("pic8").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[8] == 0){
+						bo[8] = 2;
+						document.getElementById("pic8").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+				}
+	         		cnt=cnt+1; 
+				check();
+				}
+			</script>
 		</div>
 </div>
  <br/>
@@ -183,44 +221,6 @@
               
 </script>
 <script>
-	
-	
-	function six(){
-		if(cnt %2 ==0&& bo[6] == 0){
-			bo[6] = 1;
-  			document.getElementById("pic6").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[6] == 0){
-			bo[6] = 2;
-			document.getElementById("pic6").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1; 
-		check();
-	}
-	function seven(){
-		if(cnt %2 ==0&& bo[7] == 0){
-			bo[7] = 1;
-  			document.getElementById("pic7").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[7] == 0){
-			bo[7] = 2;
-			document.getElementById("pic7").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1; 
-		check();
-	}
-	function eight(){
-		if(cnt %2 ==0&& bo[8] == 0){
-			bo[8] = 1;
-  			document.getElementById("pic8").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[8] == 0){
-			bo[8] = 2;
-			document.getElementById("pic8").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1; 
-		check();
-	}
 	//这里逻辑很乱 一直重复造轮子 超
 function check(){
 	if(bo[0] == bo[1] == bo[2] == 1){
