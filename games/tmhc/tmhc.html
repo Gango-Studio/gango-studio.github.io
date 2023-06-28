@@ -105,6 +105,44 @@
 			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="four()"><img style="border:1px solid black;" id = "pic4" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
 			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="five()"><img style="border:1px solid black;"  id = "pic5" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
+			<script>
+				function three(){
+					if(cnt %2 ==0&& bo[3] == 0){
+						bo[3] = 1;
+  						document.getElementById("pic3").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[3] == 0){
+						bo[3] = 2;
+						document.getElementById("pic3").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+					}
+	         			cnt=cnt+1; 
+		 			check();
+				}
+				function four(){
+					if(cnt %2 ==0&& bo[4] == 0){
+						bo[4] = 1;
+  						document.getElementById("pic4").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[4] == 0){
+						bo[4] = 2;
+						document.getElementById("pic4").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+					}
+	         			cnt=cnt+1;
+					check();
+				}
+				function five(){
+					if(cnt %2 ==0&& bo[5] == 0){
+						bo[5] = 1;
+  						document.getElementById("pic5").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
+      
+					}else if(cnt % 2 ==1 && bo[5] == 0){
+						bo[5] = 2;
+						document.getElementById("pic5").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
+					}
+	         			cnt=cnt+1;    
+					check();
+				}
+			</script>
 		</div>
 		<br/>
 		<div style="width:100%;height:30%">
@@ -146,42 +184,7 @@
 </script>
 <script>
 	
-	function three(){
-		if(cnt %2 ==0&& bo[3] == 0){
-			bo[3] = 1;
-  			document.getElementById("pic3").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[3] == 0){
-			bo[3] = 2;
-			document.getElementById("pic3").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1; 
-		 check();
-	}
-	function four(){
-		if(cnt %2 ==0&& bo[4] == 0){
-			bo[4] = 1;
-  			document.getElementById("pic4").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[4] == 0){
-			bo[4] = 2;
-			document.getElementById("pic4").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1;
-		check();
-	}
-	function five(){
-		if(cnt %2 ==0&& bo[5] == 0){
-			bo[5] = 1;
-  			document.getElementById("pic5").src ="https://gango.ml/games/pic/IMG_20230429_163927.jpg";
-      
-		}else if(cnt % 2 ==1 && bo[5] == 0){
-			bo[5] = 2;
-			document.getElementById("pic5").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-		}
-	         cnt=cnt+1;    
-		check();
-	}
+	
 	function six(){
 		if(cnt %2 ==0&& bo[6] == 0){
 			bo[6] = 1;
