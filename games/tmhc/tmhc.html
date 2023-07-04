@@ -124,12 +124,15 @@ window.load = function check(){
 	         				cnt = cnt + 1;
 					}
 					function check(){
-						if(bo[0] == bo[1] == bo[2] == 1){
+						if(bo[0] == bo[1] == bo[2] == 1 && cnt = 3){
 							alert ("德意志国 胜利");	
     						}
-							if(bo[0] == bo[1] == bo[2] == 2){
+						if(bo[0] == bo[1] == bo[2] == 2 && cnt = 3){
 							alert ("日本帝国 胜利");	
     						}
+						if(bo[0] == bo[3] == bo[6] == 2 && cnt == 3){
+							alert ("日本帝国 胜利");
+						}
 					}
 					function one(){
 						if(cnt %2 ==0&& bo[1] == 0){
