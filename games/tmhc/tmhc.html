@@ -105,8 +105,8 @@ window.load = function check(){
  	<div style="width:100%;height:30%">
 			<nobr>
 			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="zero();check()" ><img style="border:1px solid black;" class ="pic" id = "pic0" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="one();check()"><img style="border:1px solid black;" class ="pic"  id = "pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="two();check()"><img style="border:1px solid black;" class ="pic"  id = "pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="one();"><img style="border:1px solid black;" class ="pic"  id = "pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="two();"><img style="border:1px solid black;" class ="pic"  id = "pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
 			<script>
 					var cnt = 0;
@@ -122,6 +122,14 @@ window.load = function check(){
 							document.getElementById("pic0").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
 						}
 	         				cnt = cnt + 1;
+					}
+					function check(){
+						if(bo[0] == bo[1] == bo[2] == 1){
+							alert ("德意志国 胜利");	
+    						}
+							if(bo[0] == bo[1] == bo[2] == 2){
+							alert ("日本帝国 胜利");	
+    						}
 					}
 					function one(){
 						if(cnt %2 ==0&& bo[1] == 0){
