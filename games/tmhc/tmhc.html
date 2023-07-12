@@ -119,12 +119,18 @@ window.load = function check(){
       							if(bo[0] == bo[1] == bo[2] == 1){
 									alert ("德意志国 胜利");	
     							}
+							if(bo[0] == bo[3] == bo[6] == 1){
+									alert ("德意志国 胜利");	
+    							}
 						}else if(cnt % 2 ==1 && bo[0] == 0){
 							bo[0] = 2;
 							document.getElementById("pic0").src ="https://gango.ml/games/pic/IMG_20230429_161153.png";
-								if(bo[0] == bo[1] == bo[2] == 1){
-		alert ("德意志国 胜利");	
-    }
+							if(bo[0] == bo[1] == bo[2] == 2){
+								alert ("日本帝国 胜利");	
+    							}
+							if(bo[0] == bo[3] == bo[6] == 2){
+								alert ("日本帝国 胜利");	
+    							}
 							/*if(bo[0] == bo[1] == bo[2] == 1 && cnt = 3){
 								alert ("德意志国 胜利");	
     							}
