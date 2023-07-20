@@ -51,6 +51,17 @@
  background-color: #4CAF50;
  color: white;
  }
+	      .square {
+        width: 100px;
+        height: 100px;
+        background-color: #ccc;
+        border: 1px solid #999;
+        display: inline-block;
+      }
+
+      #container {
+        text-align: center;
+      }
        .pic{width:100%;height:100%;}
        html, body { margin:0; height:100%; }
   </style>
@@ -66,12 +77,11 @@
  <div style="width:100%;text-align:center;"><input type = "button" id ="单人游玩>" class ="button1" value ="单人游玩>" onClick="single()" class = "STYLE2">&nbsp;</div>
 	<script>function single(){alert ("没有人陪你玩吗？🤣👉🤡");}</script>
 	<br/>
- <div style="width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" class = "STYLE2 navpro" id = "box">
- 	<div style="text-align:center;width:100%;height:30%">
+ <div style="width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" class = "STYLE2 navpro " id = "box container">
 			<nobr>
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="zero();"class ="nav1" ><img style="border:0px solid black;" class ="pic" id = "pic0" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;float:left;width:30%;height:100%;text-align:center;" onClick="one();"class ="nav1"><img style="border:0px solid black;" class ="pic"  id = "pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;float:left;width:30%;height:100%;text-align:right;" onClick="two();"class ="nav1"><img style="border:0px solid black;" class ="pic"  id = "pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="zero();"class ="nav1 square" ><img style="border:0px solid black;" class ="pic" id = "pic0" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%;text-align:center;" onClick="one();"class ="nav1 square"><img style="border:0px solid black;" class ="pic"  id = "pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
+			<div style="display:inline-block;float:left;width:30%;height:100%;text-align:right;" onClick="two();"class ="nav1 square"><img style="border:0px solid black;" class ="pic"  id = "pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
 			<script>
 					var cnt = 0;
@@ -173,13 +183,11 @@
 	         				cnt=cnt+1;
 					}
 			</script>
-		</div>
 		<br/>
-		<div style="text-align:center;width:100%;height:30%">
 			<nobr>
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="three()"class ="nav1"><img style="border:0px solid black;" id = "pic3" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="four()"class ="nav1"><img style="border:0px solid black;" id = "pic4" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="five()"class ="nav1"><img style="border:0px solid black;"  id = "pic5" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="three()"class ="nav1 square"><img style="border:0px solid black;" id = "pic3" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="four()"class ="nav1 square"><img style="border:0px solid black;" id = "pic4" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="five()"class ="nav1 square"><img style="border:0px solid black;"  id = "pic5" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
 			<script>
 				function three(){
@@ -265,13 +273,11 @@
 	         			cnt=cnt+1;  
 				}
 			</script>
-		</div>
 		<br/>
-		<div style="text-align:center;width:100%;height:30%">
 			<nobr>
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="six()"class ="nav1"><img style="border:0px solid black;" id = "pic6" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="seven()"class ="nav1"><img style="border:0px solid black;" id = "pic7" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="eight()"class ="nav1"><img style="border:0px solid black;" id = "pic8" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="six()"class ="nav1 square"><img style="border:0px solid black;" id = "pic6" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="seven()"class ="nav1 square"><img style="border:0px solid black;" id = "pic7" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
+			<div style="display:inline-block;float:left;width:30%;height:100%" onClick="eight()"class ="nav1 square"><img style="border:0px solid black;" id = "pic8" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
 			</nobr>
 			<script>
 				function six(){
@@ -353,7 +359,6 @@
 	         		cnt=cnt+1; 
 				}
 			</script>
-		</div>
 </div>
 	 <br/>
 	 	<div  style="width:100%;text-align:center;"><h3>声明：本游戏灵感来源于美剧《高堡奇人》游戏内容不代表Gango.ml立场 我们坚定站在反侵略和法西斯战线上 反对种族主义 *这只是一个泛左自由壬为了乐子开发的*</h3>
