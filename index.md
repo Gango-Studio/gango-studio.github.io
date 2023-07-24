@@ -1,53 +1,3 @@
-<!DOCTYPE html>
-<html lang="en-US" style="filter: grayscale(0%);">
-<head> 
-<meta charset="UTF-8">
-<!--23/1/19为整合代码，修改为.html文件，更新框架可从其他项目fork-->
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>gango-studio.github.io | Gango-Studios的网站</title>
-<meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="gango-studio.github.io" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Gango-Studios的网站" />
-<meta property="og:description" content="Gango-Studios的网站" />
-<link rel="canonical" href="https://gango-studio.github.io" />
-<meta property="og:url" content="https://gango-studio.github.io" />
-<meta property="og:site_name" content="gango-studio.github.io" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="gango-studio.github.io" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","description":"Gango-Studios的网站","headline":"gango-studio.github.io","name":"gango-studio.github.io","url":"https://gango-studio.github.io/"}</script>
-<!-- End Jekyll SEO tag -->
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=c5e3ac8e42d1de31430a85c7ffc95906101df87a">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
-
-<!-- Setup Google Analytics -->
-
-
-
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
-
-<!-- end custom head snippets -->
-
-  </head>
-  <body>
-    <a id="skip-to-content" href="#content">Skip to the content.</a>
-
-    <header class="page-header" role="banner">
-      <h1 class="project-name">gango-studio.github.io</h1>
-      <h2 class="project-tagline">Gango-Studios的网站</h2>
-      
-      
-    </header>
-<main id="content" class="main-content" role="main">
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -118,8 +68,5 @@
         if (gd >= "20" && pre == true && gm == "0"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";document.getElementById("spc").style ="color:red";}
     }
  </script>
-</html>
-  </main>
-  </body>
 </html>
 <!-- Developed by Gango Studios , Sam Mu  -->
