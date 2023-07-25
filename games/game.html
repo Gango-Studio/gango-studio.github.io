@@ -1,54 +1,75 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html style="filter: grayscale(0%);"> 
-<head> 
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width">
-	<title>Gango Tools</title>
-	<style>
-		<!--
-		.STYLE1 {font-size: xx-large}
-		.STYLE2 {font-size: x-large}
-		.STYLE3 {font-size: large}
-		-->
-  		a:link{color:Blue;}
-  		a:visited{color:Blue;}
- 		a:hover{color:Purple;}
-  		a:active{color:Red;}
-		.nav {
-            
-                   background: #fffff5;
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gango Games</title>
+ <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>  
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
+ <style>
+  <!--
+.STYLE1 {font-size: xx-large}
+.STYLE2 {font-size: x-large}
+.STYLE3 {font-size: large}
+-->
+               a{
+                   text-decoration: none;
+                   color:blue;
                }
-		.navpro{
-			border-radius: 35px;
-			background: #d3e2ef;
-			box-shadow:  20px 20px 60px #a8b7d1,
+               .a1:visited{color:Blue;}
+               .a1:hover{color:Purple;}
+               .a1:active{color:Red;}
+          .nav1 {
+            display:block;
+            padding:20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 26px;
+            box-shadow:  20px 20px 60px #a8b7d1,
              			     -20px -20px 60px #daedff;
-		}
-		
-	</style>
+        }
+      .navs {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 26px;
+            box-shadow:  20px 20px 60px #a8b7d1,
+             			     -20px -20px 60px #daedff;
+        }
+      .mainpara{
+           padding-left : 10%;
+       }
+       html, body { margin:0; height:100%; }
+  </style>
 </head>
-<body class = "nav" style = "text-align:center">
-      <div style = "text-align:center">
-           <h1 class = "STYLE1">Gango Games</h1>
-	   <br/>
-	   <br/>
-	   
-	   <h4 style = "text-align:center" class = "STYLE2"><a style="text-decoration: none;" href="https://gango-studio.github.io/">   ◀️返回主页   </a></h4>
-           <br/>
-	   
-	      	<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-	   </div>
-      </div>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	
-
+<body>
+<a href = "https://gango-studio.github.io/" style="text-decoration: none;color:black"><div>
+       <h1 align="center">Gango</h1>
+</div></a>
+    
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<footer><div  style="background:#DCDCDC;height：100%;width:100%;"><br/></div><br/>
+    <h3  style ="padding-left : 6%;width：100% ;height:100%">Gango Studio</h3>
+    <h4 style = "width：100% ;height:100%"><a style ="color:black;text-decoration: none;padding-left : 10%;" href = "https://gango-studio.github.io">🏠主页</a></h4>
+    <div  style ="padding-left : 10%;float:left;width：100% ;height:100%">
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/main.html">🔗Vlog</h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+   <div style ="padding-left : 10%;float:left;width：100% ;height:100%">
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;"  href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+   </div>
+</footer>
 </body>
-</html> 
+   <script>
+            var innerwidth = window.innerWidth; 
+	   var x = 40;
+            if (innerwidth >= 750){
+	            document.getElementById("pro").style.width = "75%";
+            }
+            if (innerwidth <= 750){
+            
+	            document.getElementById("pro").style.width ="90%";
+      }
+   </script>                    
+</html>
