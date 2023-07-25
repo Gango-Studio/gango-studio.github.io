@@ -68,5 +68,5 @@
         if (gd >= "20" && pre == true && gm == "0"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";document.getElementById("spc").style ="color:red";}
     }
  </script>
-</html>
+
 <!-- Developed by Gango Studios , Sam Mu  -->
