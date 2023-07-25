@@ -52,7 +52,7 @@
     <br />
     <br />
     <footer class="site-footer"><span class="site-footer-credits">Ver 1.8.0  Nancuiping Date:23/1/22 <a href="stinger/mainpage.html">彩蛋</a></span>
-</body>
+<!--1-->
 <script>
       var pre = false;
       var d = new Date();
