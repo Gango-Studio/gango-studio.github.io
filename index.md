@@ -4,7 +4,7 @@
   </head>
   <body>
     
-    <h1 style="color:#A52A2A;" align="center" id = "spc" onClick = "onc()">🎉🎇Nice to See You,2023🎇🎉</h1>
+    <h1 style="color:#00FA9A；" align="center" id = "spc" onClick = "onc()"></h1>
     <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>
     <h1>Gango Studios</h1>
       <h2><a href="https://gango-studio.github.io/main.html">主站</a>
@@ -15,11 +15,11 @@
     </h3>
     <h1>公告</h1>
       <p>   1.全新一代大版本ver1.8.0 已发布<br />更新内容：ⅠStinger内容更新<br />Ⅱ基于Bootstrap全新框架主站<br />Ⅲ优化老旧设备与墨水屏设备使用体验<br />Ⅳ优化Blog背景图<br />Ⅴ优化页面设计<br />        2022.9.6</p>
-      <p>   2.本站22#9#1版本更新，本次更新带来了新的主站页面，旧页面与旧路径将在不久后删除，2022年中大版本将在Stinger图片过大问题解决后发布，敬请期待。<br />        2022.9.2</p>
-      <p>   3.本站21.7.29小版本更新，新增特性：反过度爬虫，/stinger/及所有照片文件都无法被搜索引擎爬取；另外，彩蛋区将迎来一次更新，敬请期待<br />        2022.8.1</p>
-      <p>   4.本站已绑定新域名:www.gango.ml ， 现在gango-studio.github.io和www.gango.ml 都可以访问本站<br />        2022.6.29</p>
-      <p>   5.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br />        2021.8.15</p>
-      <p>   6.经本站测试发现，某些设备下(如Kindle),Gango 服务中的模块较小，因设备自身原因，难以修复，请谅解。可通过适当放大解决<br />        2022.8.17</p>
+      <p>   3.本站22#9#1版本更新，本次更新带来了新的主站页面，旧页面与旧路径将在不久后删除，2022年中大版本将在Stinger图片过大问题解决后发布，敬请期待。<br />        2022.9.2</p>
+      <p>   4.本站21.7.29小版本更新，新增特性：反过度爬虫，/stinger/及所有照片文件都无法被搜索引擎爬取；另外，彩蛋区将迎来一次更新，敬请期待<br />        2022.8.1</p>
+      <p>   5.(已失效)本站已绑定新域名:www.gango.ml ， 现在gango-studio.github.io和www.gango.ml 都可以访问本站<br />        2022.6.29</p>
+      <p>   6.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br />        2021.8.15</p>
+      <p>   7.经本站测试发现，某些设备下(如Kindle),Gango 服务中的模块较小，因设备自身原因，难以修复，请谅解。可通过适当放大解决<br />        2022.8.17</p>
 
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件，偶尔做VLOG......【doge】</p>
@@ -52,8 +52,7 @@
     <br />
     <br />
     <footer class="site-footer"><span class="site-footer-credits">Ver 1.8.0  Nancuiping Date:23/1/22 <a href="stinger/mainpage.html">彩蛋</a></span>
-<!--1-->
-<script>
+<!--<script>
       var pre = false;
       var d = new Date();
       var gd = d.getDate();
@@ -67,6 +66,6 @@
         if (pre == false && gd >= "22" && gm == "0"){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";document.getElementById("spc").style ="color:red";}
         if (gd >= "20" && pre == true && gm == "0"){document.getElementById("spc").innerHTML ="🧨祝大家癸卯兔年春节快乐🧨";document.getElementById("spc").style ="color:red";}
     }
- </script>
+ </script>-->
 
 <!-- Developed by Gango Studios , Sam Mu  -->
