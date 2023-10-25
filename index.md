@@ -6,7 +6,7 @@
     
     <h1 style="color:#00FA9A；" align="center" id = "spc" onClick = "onc()">Summer 2023</h1>
     <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>
-    <h1>Gango Studios</h1>
+    <h1>Gango Studios & Sam Mu</h1>
       <h2><a href="https://gango-studio.github.io/main.html">主站</a>
         <br />   
     <h1>Gango 服务</h1>
