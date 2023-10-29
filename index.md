@@ -24,6 +24,10 @@
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件剪视频，偶尔写写文章......【doge】</p>
     <br />
+      <p>2023/1/1    重启video项目，开始发布AMV1月21日知乎账号和bilibili账号与gango.ml分离。<br/>（除夕Bilibili账号改名Sam_Mu。Gango.ml仅作为网站开发和软件开发的账号。3月不再使用老Logo与头像。</p> 
+    <br />
+      <p>2022/6/28 启用域名gango.ml。同时改名Gango.ml</p> 
+    <br />
       <p>2022/1  对全站设计进行改版。五月解决主站字体过小问题。9月重新基于Bootstrap开发新的主站架构。</p> 
     <br />
       <p>2021    发布GangoWeather Gango Search 和Gango 工具箱</p> 
