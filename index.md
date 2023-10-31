@@ -4,7 +4,7 @@
   </head>
   <body>
     
-    <h1 style="color:RoyalBlue;" align="center" id = "spc" onClick = "onc()"><a target="_blank" href="https://space.bilibili.com/1933356847" style="text-decoration: none;color:black">关注Sam Mu谢谢喵~</a></h1>
+    <h1 style="color:#4169E1;" align="center" id = "spc" onClick = "onc()"><a target="_blank" href="https://space.bilibili.com/1933356847" style="text-decoration: none;color:black">关注Sam Mu谢谢喵~</a></h1>
     <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>
     <h1>Gango Studios & Sam Mu</h1>
       <h2><a href="https://gango-studio.github.io/main.html">主站</a>
