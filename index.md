@@ -4,8 +4,8 @@
   </head>
   <body>
     
-    <nobr><a target="_blank" href="https://space.bilibili.com/1933356847" style="text-decoration: none;"><h1 style="color:#1E90FF;display: inline" align="center" id = "spc" onClick = "onc()">关注Sam Mu</h1><h1 style="color:#FF4500;display: inline" align="center"  >谢谢喵~</h1></a></nobr>
-    <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>
+    <nobr align="center"><a target="_blank" align="center" href="https://space.bilibili.com/1933356847" style="text-decoration: none;"><h1 style="color:#1E90FF;display: inline" align="center" id = "spc" onClick = "onc()">关注Sam Mu</h1><h1 style="color:#FF4500;display: inline" align="center"  >谢谢喵~</h1></a></nobr>
+    <!--<h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2023规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>-->
     <h1>Gango Studios & Sam Mu</h1>
       <h2><a href="https://gango-studio.github.io/main.html">主站</a>
         <br />   
