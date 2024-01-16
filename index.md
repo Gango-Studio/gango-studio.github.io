@@ -64,6 +64,12 @@
     <br />
     <br />
     <footer class="site-footer"><span class="site-footer-credits">Ver 1.8.0  Nancuiping Date:23/1/22 <a href="stinger/mainpage.html">彩蛋</a></span>
+    <script>
+      var pre = false;
+      var d = new Date();
+      var gd = d.getDate();
+      var gm = d.getMonth();
+      if (gd >= "22" && gm == "0"){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";document.getElementById("spc").style ="color:red";}</script>
 <!--<script>
       var pre = false;
       var d = new Date();
