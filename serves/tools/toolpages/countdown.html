@@ -25,7 +25,7 @@
 	<script>
       		var second = document.getElementById("out").value; 
 		 setTimeout(function out(){ 
-			 if(second > 0){second = second - 1;document.getElementById("output").innerHTML = second;}else if (second < 0){alart("倒计时结束");}
+			 if(second > 0){second = second - 1;second = document.getElementById("output");}else if (second < 0){alart("倒计时结束");}
 			 },1000)
 	</script>
 </head>
@@ -34,7 +34,7 @@
 	<div class = "STYLE3 nav" style = "text-align:center;border:1px solid #000;margin:0 auto;vertical-align:middle;">
 	<div style ="border:0px solid #000;"><input  type="text" id = "out" class = "STYLE2  nav"/></div>
 	<input type = "button" id ="start" value ="start" onClick="start()" class = "STYLE2">&nbsp;
-        <h3 id = "output"></h3>
+        <div style ="border:0px solid #000;"><input  type="text" id = "output" class = "STYLE2  nav"/></div>
 	</div>
 	<p class = "STYLE2"></p>
 </body>
