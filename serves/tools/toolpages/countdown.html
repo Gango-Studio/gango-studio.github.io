@@ -23,14 +23,17 @@
 	       
 	</style>
 	<script>
-      		 
+      		var second = document.getElementById("out").value; 
+		var date = new Date(second).getTime();
 	</script>
 </head>
 <body>
 	<h1><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a>计算器</h1>
 	<div class = "STYLE3 nav" style = "text-align:center;border:1px solid #000;margin:0 auto;vertical-align:middle;">
-		
+	<div style ="border:0px solid #000;"><input  type="date" id = "out" class = "STYLE2  nav"/></div>
+	<input type = "button" id ="start" value ="start" onClick="start()" class = "STYLE2">&nbsp;
+        <h3 id = "output"></h3>
 	</div>
-	<p class = "STYLE2">提示：清空计算器请刷新:)</p>
+	<p class = "STYLE2"></p>
 </body>
 </html> 
