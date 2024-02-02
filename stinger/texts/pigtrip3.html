@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html style="filter: grayscale(0%);">
+    <head>
+           <title>Gango Studios</title>
+           <meta charset="UTF-8">
+           <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                      <style>
+               <!--
+                .STYLE1 {font-size: xx-large}
+                .STYLE2 {font-size: x-large}
+                .STYLE3 {font-size: large}
+               -->
+               a{
+                   color:Blue;
+               }
+               html,body{
+                   overflow:hidden;
+                   overflow-y:auto;
+                   white-space:nowarp;
+                   ::-webkit-scollbar{
+                            display:none;
+                    }
+               }
+               .div{
+                   ::-webkit-scollbar{
+                        display:none;
+                    }
+                   overflow:hidden;
+                   white-space:nowarp;
+               }
+               a:link{text-decoration:none;}
+               a:hover{text-decoration:underline;}
+	       a:active {text-decoration: none;}
+               .nav {
+            
+                   background-color: rgba(255,240,245, 0.8);
+               }
+               img{
+                   width : 50%;
+                   display:block;
+               }
+           </style>
+    </head>
+    <body class = "nav">
+           <h1 style = "color:pink" class = "STYLE1"><a style="color:blue;" href="https://gango-studio.github.io/stinger/mainpage.html">彩蛋小站🐷></a>🐷🐖Pige-2022天津滨海🐖🐷</h1>
+           <br/>
+           <br/>
+	   <br/>
+           <div align="center" style = "overflow:hidden;white-space:nowarp;vertical-align:middle;">
+                  <img src="../pictures/textpic/06/01.jpg" id = "pro"/>
+                  <p class="STYLE3"><big><strong>南京阅江楼</big></strong></p>
+                  <img src="../pictures/textpic/06/02.jpg"  id = "pro2"/>
+                  <p class="STYLE3"><big><strong>南京大报恩寺</big></strong></p>
+                  <img src="../pictures/textpic/06/04.jpg"  id = "pro3"/>
+                  <p class="STYLE3"><big><strong>香港南丫岛</big></strong></p>
+                  <img src="../pictures/textpic/06/05.jpg"  id = "pro4"/>
+                  <p class="STYLE3"><big><strong>香港街景</big></strong></p>
+                  <img src="../pictures/textpic/06/06.jpg"  id = "pro5"/>
+                  <p class="STYLE3"><big><strong>秦皇岛合影</big></strong></p>
+           </div>
+   </body>
+   <script>
+            var innerwidth = window.innerWidth; 
+	   var x = 40;
+            if (innerwidth >= 750){
+	            document.getElementById("pro").style.width = "700px";
+		    document.getElementById("pro2").style.width ="700px";
+		    document.getElementById("pro3").style.width ="700px";
+		    document.getElementById("pro4").style.width ="700px";
+		    document.getElementById("pro5").style.width ="700px";
+            }
+            if (innerwidth <= 750){
+            
+	            document.getElementById("pro").style.width ="80%";
+		    document.getElementById("pro2").style.width ="80%";
+		    document.getElementById("pro3").style.width ="80%";
+		    document.getElementById("pro4").style.width ="80%";   
+		    document.getElementById("pro5").style.width ="80%";
+      }
+   </script> 
+</html> 
