@@ -63,7 +63,7 @@
   <br/>
   <br/>
   <div style="position: relative;text-align:center;" onclick = "window.open('https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs')">
-       <img class = "pro" width = "61%" src="https://gango-studio.github.io/image/video/samuelflag.png"></img>
+       <img class = "pro" width = "61%" onload ="auto()" src="https://gango-studio.github.io/image/video/samuelflag.png"></img>
        <br/><br/><h1>[微型国家]塞缪尔旗帜</h1>
 </div>
  <br/>
@@ -188,16 +188,18 @@
 </footer>
 </body>
     <script>
-            var innerwidth = window.innerWidth; 
-	           var x = 40;
-            if (innerwidth >= 750){
+	    function auto(){
+            	var innerwidth = window.innerWidth; 
+	        var x = 40;
+            	if (innerwidth >= 750){
 	            getElementByTagName("img").style.width = "700px";
 		
-            }
-            if (innerwidth <= 750){
+            	}
+            	if (innerwidth <= 750){
             
 	            getElementByTagName("img").style.width ="80%";
 		    
-      }
+      		}
+	    }
    </script> 
 </html>
