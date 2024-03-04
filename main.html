@@ -22,7 +22,46 @@
                .a1:visited{color:Blue;}
                .a1:hover{color:Purple;}
                .a1:active{color:Red;}
-	
+	       ul {
+    list-style: none;
+    background: black;
+    text-align: end;
+}
+
+ul li {
+    display: inline-block;
+    position: relative;
+}
+
+ul li a {
+    background: black;
+    display: block;
+    padding: 20px 45px;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dropdown {
+    text-align: center;
+    color: white;
+    display: block;
+    width: 230px;
+    padding: 20px;
+    background: black;
+    position: absolute;
+    z-index: 1;
+    border-bottom-left-radius: 10px;
+    top: 74px;
+    right: 0px;
+    display: none;
+}
+
+ul li a:hover {
+    color: lightseagreen;
+}
 		
   </style>
 </head>
@@ -33,9 +72,9 @@
 <br/>
 <nav class="nav nav-pills flex-column flex-sm-row">
   <a class="flex-sm-fill text-sm-center nav-link active dropdown-toggle"  aria-current="page" data-toggle="dropdown">Vlog&Video</a>
-  <datalist class = "dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-	 <option  class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> <a href="#guitar">古典吉他</a></li>
-  </datalist>
+  <ul class = "dropdown">
+	 <li> <a href="#guitar">古典吉他</a></li>
+  </ul>
   <a class="flex-sm-fill text-sm-center nav-link " href="https://gango-studio.github.io/introduce/blog.html">Blog</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
   <!--<a class="flex-sm-fill text-sm-center nav-link" href="#">else</a>-->
