@@ -54,8 +54,8 @@
     <meta charset="UTF-8" />
   </head>
   <body>
-    <h1 align="center" style="color:red;" id = "spc" >🎊Happy Birthday To ME🎂</h1><h2 style = "color:red;" align = "center">🥳17🥳</h2>
-    <!--<h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2025规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>-->
+    <h1 align="center" style="color:red;" id = "spc LongPressElement" >🎊Happy Birthday To ME🎂</h1><h2 style = "color:red;" align = "center">🥳17🥳</h2>
+    <h2 align="center"><a target="_blank" href="https://gango-studio.github.io/activity.html">2025规划</a>&nbsp;&nbsp;<a target="_blank" href="https://gango-studio.github.io/stinger/texts/springfestival.html">春节彩蛋</a></h2>
     <h1>Gango Studios &amp; Sam Mu</h1>
       <h2><a href="https://gango-studio.github.io/main.html">主站</a>
         <br />   
@@ -126,9 +126,33 @@
       if (gd >= "8" && gm == "1"){document.getElementById("spc").innerHTML ="🐲🎆2024甲辰龙年春节快乐🧨🧧";document.getElementById("spc").style ="color:red";}</script>
 -->
       <script>
-        function cl(){
-          document.getElementById("spc").innerHTML =" Also Birthday of Newton";
-          alert(" Ding Dong Ding Dong ~ Marry Christmas!Bring Good Cheer to You!");
+        var pre= true;
+      function onc(){
+        pre = !pre;
+        if (pre == false){document.getElementById("spc").innerHTML ="🎂Happy Birthday To Me🎁";document.getElementById("spc").style ="color:red";}
+        if (pre == true){document.getElementById("spc").innerHTML ="🧨祝大家乙巳蛇年春节快乐🧨";document.getElementById("spc").style ="color:red";}
+    }
+
+const longPressElement = document.getElementById('longPressElement');
+    let timeoutId;
+    const LONG_PRESS_DURATION = 1000;
+
+    longPressElement.addEventListener('mousedown', (e) => {
+      // 当鼠标按下时，设置一个定时器
+      timeoutId = setTimeout(() => {
+        console.log('长按事件触发');
+        // 这里可以添加长按后的具体逻辑
+       alert(“Happy Lunar New Year ”);
+      }, LONG_PRESS_DURATION);
+    });
+
+    longPressElement.addEventListener('mouseup', (e) => {
+      // 当鼠标松开时，如果定时器还存在，则清除定时器
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    });
     }
       </script>
       <!--<script>
