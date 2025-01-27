@@ -133,27 +133,7 @@
         if (pre == true){document.getElementById("spc").innerHTML ="🧨祝大家乙巳蛇年春节快乐🧨";document.getElementById("spc").style ="color:red";}
     }
 
-const longPressElement = document.getElementById('longPressElement');
-    let timeoutId;
-    const LONG_PRESS_DURATION = 1000;
-
-    longPressElement.addEventListener('mousedown', (e) => {
-      // 当鼠标按下时，设置一个定时器
-      timeoutId = setTimeout(() => {
-        console.log('长按事件触发');
-        // 这里可以添加长按后的具体逻辑
-       alert(“Happy Lunar New Year ”);
-      }, LONG_PRESS_DURATION);
-    });
-
-    longPressElement.addEventListener('mouseup', (e) => {
-      // 当鼠标松开时，如果定时器还存在，则清除定时器
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-    });
-    }
+     
       </script>
       <!--<script>
       var pre = false;
