@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节拍器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #metronome {
+            text-align: center;
+        }
+        #bpm {
+            font-size: 2em;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .knob-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .knob {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #e0e0e0;
+            box-shadow: 5px 5px 10px #bebebe,
+                       -5px -5px 10px #ffffff;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .knob::after {
+            content: '';
+            position: absolute;
+            width: 10%;
+            height: 15%;
+            background: #ff4757;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .value-display {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="metronome">
+        <div class="knob-container">
+        <div class="knob"></div>
+        <div class="value-display" id ="bpm
+">50</div>
+    </div>
+        <button id="startStopButton">启动</button>
+    </div>
+
+ <script>
+        const knob = document.querySelector('.knob');
+        const valueDisplay = document.querySelector('.value-display');
+        let isDragging = false;
+        let startAngle = 0;
+        let currentValue = 50;
+        const maxAngle = 270; // 最大旋转角度
+        const minValue = 0;
+        const maxValue = 100;
+
+        function getAngle(event) {
+            const rect = knob.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const x = event.clientX - centerX;
+            const y = event.clientY - centerY;
+            return Math.atan2(y, x) * 180 / Math.PI;
+        }
+
+        function startDrag(event) {
+            isDragging = true;
+            startAngle = getAngle(event) - currentValue * (maxAngle / maxValue);
+            event.preventDefault();
+        }
+
+        function duringDrag(event) {
+            if (!isDragging) return;
+            
+            const newAngle = getAngle(event) - startAngle;
+            currentValue = Math.min(maxValue, Math.max(minValue, 
+                Math.round((newAngle / maxAngle) * maxValue)));
+            
+            knob.style.transform = `rotate(${newAngle}deg)`;
+            valueDisplay.textContent = currentValue;
+        }
+
+        function stopDrag() {
+            isDragging = false;
+        }
+
+        // 鼠标事件
+        knob.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', duringDrag);
+        document.addEventListener('mouseup', stopDrag);
+
+        // 触摸事件
+        knob.addEventListener('touchstart', (e) => {
+            startDrag(e.touches[0]);
+        });
+        document.addEventListener('touchmove', (e) => {
+            duringDrag(e.touches[0]);
+        });
+        document.addEventListener('touchend', stopDrag);
+    </script>
+
+    <script>
+        let bpm = 50; // 节拍速度
+        let interval; // 定时器
+        let isRunning = false; // 节拍器是否在运行
+
+        const bpmDisplay = document.getElementById('bpm');
+        const startStopButton = document.getElementById('startStopButton');
+
+        function playClick() {
+            const audio = new Audio('click.wav'); // 点击声音文件
+            audio.play();
+        }
+
+        function startMetronome() {
+            interval = setInterval(() => {
+                playClick();
+            bpmDisplay.textContent = `${bpm} BPM`;
+            }, (60 / bpm) * 1000);
+        }
+
+        function stopMetronome() {
+            clearInterval(interval);
+        }
+
+        startStopButton.addEventListener('click', () => {
+            if (isRunning) {
+                stopMetronome();
+                startStopButton.textContent = '启动';
+            } else {
+                startMetronome();
+                startStopButton.textContent = '停止';
+            }
+            isRunning = !isRunning;
+        });
+    </script>
+</body>
+</html>
