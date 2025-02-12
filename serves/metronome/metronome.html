@@ -95,7 +95,7 @@
         const valueDisplay = document.querySelector('.value-display');
         let isDragging = false;
         let startAngle = 0;
-        let currentValue = 50;
+        var currentValue = 50;
         const maxAngle = 270; // 最大旋转角度
         const minValue = 0;
         const maxValue = 100;
@@ -147,37 +147,56 @@
 
     <script>
        /* let bpm = 50;*/ // 节拍速度
-        let interval; // 定时器
-        let isRunning = false; // 节拍器是否在运行
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let clickBuffer;
+        let isRunning = false;
+        let interval;
+        let bpm = currentValue;
 
-        const bpmDisplay = document.getElementById('bpm');
-        const startStopButton = document.getElementById('startStopButton');
-
-        function playClick() {
-            const audio = new Audio('metronome.wav'); // 点击声音文件
-            audio.play();
+        // 加载音频文件
+        function loadAudio() {
+            return fetch('click.wav')
+                .then(response => response.arrayBuffer())
+                .then(data => audioContext.decodeAudioData(data))
+                .then(buffer => {
+                    clickBuffer = buffer;
+                });
         }
 
-        function startMetronome() {
+        // 播放点击声音
+        function playClick() {
+            const source = audioContext.createBufferSource();
+            source.buffer = clickBuffer;
+            source.connect(audioContext.destination);
+            source.start();
+        }
+
+        // 启动节拍器
+        function startMetronome(bpm) {
+            const intervalTime = (60 / bpm) * 1000;
             interval = setInterval(() => {
                 playClick();
-            bpmDisplay.textContent = `${currentValue} BPM`;
-            }, (60 / currentValue) * 1000);
+            }, intervalTime);
         }
 
+        // 停止节拍器
         function stopMetronome() {
             clearInterval(interval);
         }
 
-        startStopButton.addEventListener('click', () => {
-            if (isRunning) {
-                stopMetronome();
-                startStopButton.textContent = '启动';
-            } else {
-                startMetronome();
-                startStopButton.textContent = '停止';
-            }
-            isRunning = !isRunning;
+        // 初始化
+        loadAudio().then(() => {
+            const startStopButton = document.getElementById('startStopButton');
+            startStopButton.addEventListener('click', () => {
+                if (isRunning) {
+                    stopMetronome();
+                    startStopButton.textContent = '启动';
+                } else {
+                    startMetronome(60);
+                    startStopButton.textContent = '停止';
+                }
+                isRunning = !isRunning;
+            });
         });
     </script>
 </body>
