@@ -146,13 +146,17 @@
     </script>
 
     <script>
-       /* let bpm = 50;*/ // 节拍速度
+       // 节拍速度
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         let clickBuffer;
         let isRunning = false;
         let interval;
-        let bpm = currentValue;
-
+        // 假设圆形滑块的数值范围是 40-200
+       knob.addEventListener('rotate', (e) => {
+          bpm = e.detail.value;
+          document.getElementById('bpm').textContent = `${bpm} BPM`;
+          if (isRunning) restartMetronome();
+       });
         // 加载音频文件
         function loadAudio() {
             return fetch('click.wav')
