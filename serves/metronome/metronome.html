@@ -3,54 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>节拍器</title>
+    <title>高精度节拍器</title>
     <style>
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+        }
+
+        .container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            overflow:hidden;
+            padding-top: 30px;
         }
-        #metronome {
-            text-align: center;
+
+        #bpm-display {
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #333;
         }
-        #bpm {
-            font-size: 2em;
-            margin: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
+
         .knob-container {
             position: relative;
             width: 150px;
             height: 150px;
+            margin: 20px 0;
         }
-        .container{
-            height:100%;
-            flex-direction:column;
-        }
+
         .knob {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             background: #e0e0e0;
             box-shadow: 5px 5px 10px #bebebe,
-                       -5px -5px 10px #ffffff;
-            position: relative;
+                      -5px -5px 10px #ffffff;
             cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
         }
 
         .knob::after {
@@ -65,142 +58,162 @@
             border-radius: 3px;
         }
 
-        .value-display {
-            position: absolute;
-            top: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: Arial, sans-serif;
-            font-size: 24px;
-            color: #333;
+        button {
+            padding: 12px 30px;
+            font-size: 1.3em;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 3px 3px 6px #bebebe,
+                      -3px -3px 6px #ffffff;
+            transition: all 0.2s;
         }
 
+        button:active {
+            box-shadow: inset 2px 2px 4px #388E3C,
+                      inset -2px -2px 4px #66BB6A;
+        }
     </style>
 </head>
 <body>
-    <a href = "https://gango-studio.github.io" style="text-decoration: none;color:black"><div>
-       <h1 align="center">Gango</h1>
-</div></a>
-    <div id="metronome">
+    <div class="container">
+        <div id="bpm-display">60 BPM</div>
         <div class="knob-container">
-        <div class="knob"></div>
-        <div class="value-display" id ="bpm
-">50</div>
-    </div>
+            <div class="knob"></div>
+        </div>
         <button id="startStopButton">启动</button>
     </div>
 
- <script>
+    <script>
+        // 音频初始化
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let clickBuffer;
+        let isRunning = false;
+        let scheduler;
+        let bpm = 60;
+        const minBPM = 40;
+        const maxBPM = 200;
+
+        // 预加载音频
+        fetch('https://assets.mixkit.co/active_storage/sfx/2317/2317-preview.mp3')
+            .then(response => response.arrayBuffer())
+            .then(data => audioContext.decodeAudioData(data))
+            .then(buffer => clickBuffer = buffer);
+
+        // 精确节拍调度
+        function playClick(time) {
+            const source = audioContext.createBufferSource();
+            source.buffer = clickBuffer;
+            source.connect(audioContext.destination);
+            source.start(time);
+        }
+
+        function scheduleClick() {
+            const interval = 60 / bpm;
+            let nextClick = audioContext.currentTime + interval;
+            
+            function schedulerLoop() {
+                while (nextClick < audioContext.currentTime + 0.1) {
+                    playClick(nextClick);
+                    nextClick += interval;
+                }
+                scheduler = setTimeout(schedulerLoop, 50);
+            }
+            
+            schedulerLoop();
+        }
+
+        // 节拍器控制
+        function startMetronome() {
+            if (!isRunning) {
+                isRunning = true;
+                scheduleClick();
+            }
+        }
+
+        function stopMetronome() {
+            isRunning = false;
+            clearTimeout(scheduler);
+        }
+
+        // 圆形滑块逻辑
         const knob = document.querySelector('.knob');
-        const valueDisplay = document.querySelector('.value-display');
         let isDragging = false;
         let startAngle = 0;
-        var currentValue = 50;
-        const maxAngle = 270; // 最大旋转角度
-        const minValue = 0;
-        const maxValue = 100;
+        const maxAngle = 270;
 
         function getAngle(event) {
             const rect = knob.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            const x = event.clientX - centerX;
-            const y = event.clientY - centerY;
-            return Math.atan2(y, x) * 180 / Math.PI;
+            return Math.atan2(
+                event.clientY - centerY,
+                event.clientX - centerX
+            ) * 180 / Math.PI;
         }
 
-        function startDrag(event) {
-            isDragging = true;
-            startAngle = getAngle(event) - currentValue * (maxAngle / maxValue);
-            event.preventDefault();
-        }
-
-        function duringDrag(event) {
-            if (!isDragging) return;
+        function updateBPM(angle) {
+            const newBPM = Math.min(maxBPM, Math.max(minBPM, 
+                Math.round((angle / maxAngle) * (maxBPM - minBPM) + minBPM)));
             
-            const newAngle = getAngle(event) - startAngle;
-            currentValue = Math.min(maxValue, Math.max(minValue, 
-                Math.round((newAngle / maxAngle) * maxValue)));
-            
-            knob.style.transform = `rotate(${newAngle}deg)`;
-            valueDisplay.textContent = currentValue;
-        }
-
-        function stopDrag() {
-            isDragging = false;
-        }
-
-        // 鼠标事件
-        knob.addEventListener('mousedown', startDrag);
-        document.addEventListener('mousemove', duringDrag);
-        document.addEventListener('mouseup', stopDrag);
-
-        // 触摸事件
-        knob.addEventListener('touchstart', (e) => {
-            startDrag(e.touches[0]);
-        });
-        document.addEventListener('touchmove', (e) => {
-            duringDrag(e.touches[0]);
-        });
-        document.addEventListener('touchend', stopDrag);
-    </script>
-
-    <script>
-       // 节拍速度
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        let clickBuffer;
-        let isRunning = false;
-        let interval;
-        // 假设圆形滑块的数值范围是 40-200
-       knob.addEventListener('rotate', (e) => {
-          bpm = e.detail.value;
-          document.getElementById('bpm').textContent = `${bpm} BPM`;
-          if (isRunning) restartMetronome();
-       });
-        // 加载音频文件
-        function loadAudio() {
-            return fetch('click.wav')
-                .then(response => response.arrayBuffer())
-                .then(data => audioContext.decodeAudioData(data))
-                .then(buffer => {
-                    clickBuffer = buffer;
-                });
-        }
-
-        // 播放点击声音
-        function playClick() {
-            const source = audioContext.createBufferSource();
-            source.buffer = clickBuffer;
-            source.connect(audioContext.destination);
-            source.start();
-        }
-
-        // 启动节拍器
-        function startMetronome(bpm) {
-            const intervalTime = (60 / bpm) * 1000;
-            interval = setInterval(() => {
-                playClick();
-            }, intervalTime);
-        }
-
-        // 停止节拍器
-        function stopMetronome() {
-            clearInterval(interval);
-        }
-
-        // 初始化
-        loadAudio().then(() => {
-            const startStopButton = document.getElementById('startStopButton');
-            startStopButton.addEventListener('click', () => {
+            if (bpm !== newBPM) {
+                bpm = newBPM;
+                document.getElementById('bpm-display').textContent = `${bpm} BPM`;
                 if (isRunning) {
                     stopMetronome();
-                    startStopButton.textContent = '启动';
-                } else {
-                    startMetronome(bpm);
-                    startStopButton.textContent = '停止';
+                    startMetronome();
                 }
-                isRunning = !isRunning;
-            });
+            }
+        }
+
+        // 事件监听
+        knob.addEventListener('mousedown', e => {
+            isDragging = true;
+            startAngle = getAngle(e) - (bpm - minBPM) * (maxAngle / (maxBPM - minBPM));
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            const newAngle = getAngle(e) - startAngle;
+            knob.style.transform = `rotate(${newAngle}deg)`;
+            updateBPM(newAngle);
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // 触摸事件
+        knob.addEventListener('touchstart', e => {
+            isDragging = true;
+            startAngle = getAngle(e.touches[0]) - (bpm - minBPM) * (maxAngle / (maxBPM - minBPM));
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const newAngle = getAngle(e.touches[0]) - startAngle;
+            knob.style.transform = `rotate(${newAngle}deg)`;
+            updateBPM(newAngle);
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // 按钮控制
+        document.getElementById('startStopButton').addEventListener('click', () => {
+            if (isRunning) {
+                stopMetronome();
+                this.textContent = '启动';
+            } else {
+                startMetronome();
+                this.textContent = '停止';
+            }
         });
     </script>
 </body>
