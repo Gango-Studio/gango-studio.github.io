@@ -108,12 +108,12 @@
         const knob = document.querySelector('.knob');
         const bpmDisplay = document.getElementById('bpm-display');
         const startStopButton = document.getElementById('startStopButton');
-        function initAudio() {
+         function initAudio() {
             return new Promise((resolve, reject) => {
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                fetch('metronome.wav')
+                fetch('click.wav') // 确保路径正确
                     .then(response => {
                         if (!response.ok) throw new Error('HTTP error');
                         return response.arrayBuffer();
@@ -130,6 +130,27 @@
                     });
             });
         }
+
+        // 修改后的按钮点击事件
+        document.getElementById('startStopButton').addEventListener('click', async function(e) {
+            try {
+                if (!audioContext) {
+                    await initAudio();
+                }
+                
+                if (isRunning) {
+                    isRunning = false;
+                    clearTimeout(scheduler);
+                    e.target.textContent = '启动';
+                } else {
+                    isRunning = true;
+                    scheduleClick();
+                    e.target.textContent = '停止';
+                }
+            } catch (error) {
+                console.error('初始化失败:', error);
+            }
+        });
 
         // 初始化音频
         initAudio();
@@ -226,7 +247,7 @@
         });
 
         // 按钮控制
-        startStopButton.addEventListener('click', function(e) {
+        /*startStopButton.addEventListener('click', function(e) {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
@@ -240,7 +261,7 @@
                 scheduleClick();
                 e.target.textContent = '停止';
             }
-        });
+        });*/
     </script>
 </body>
 </html>
