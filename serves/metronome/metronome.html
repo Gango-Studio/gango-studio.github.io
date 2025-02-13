@@ -113,7 +113,7 @@
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                fetch('click.wav') // 确保路径正确
+                fetch('metronome.wav') // 确保路径正确
                     .then(response => {
                         if (!response.ok) throw new Error('HTTP error');
                         return response.arrayBuffer();
