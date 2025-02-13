@@ -111,7 +111,7 @@
 
         // 音频初始化
         function initAudio() {
-            fetch('https://assets.mixkit.co/active_storage/sfx/2317/2317-preview.mp3')
+            fetch('metronome.wav')
                 .then(response => {
                     if (!response.ok) throw new Error('音频加载失败');
                     return response.arrayBuffer();
