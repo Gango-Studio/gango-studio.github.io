@@ -33,6 +33,7 @@
             width: 150px;
             height: 150px;
             margin: 20px 0;
+            /* 移除 pointer-events: none */
         }
 
         .knob {
@@ -102,7 +103,7 @@
 
         // 预加载音频
         function initAudio() {
-            fetch('https://assets.mixkit.co/active_storage/sfx/2317/2317-preview.mp3')
+            fetch('metronome.wav')
                 .then(response => {
                     if (!response.ok) throw new Error('音频加载失败');
                     return response.arrayBuffer();
@@ -162,7 +163,34 @@
         }
 
         // 圆形滑块逻辑（保持原有代码不变）
+        function getAngle(event) {
+            const rect = knob.getBoundingClientRect();
+            const scrollX = window.scrollX || window.pageXOffset;
+            const scrollY = window.scrollY || window.pageYOffset;
+            const centerX = rect.left + rect.width / 2 + scrollX;
+            const centerY = rect.top + rect.height / 2 + scrollY;
+            return Math.atan2(
+                event.clientY - centerY,
+                event.clientX - centerX
+            ) * 180 / Math.PI;
+        }
 
+        // 修复后的触摸事件处理
+        knob.addEventListener('touchstart', e => {
+            isDragging = true;
+            const touch = e.touches[0];
+            startAngle = getAngle(touch) - (bpm - minBPM) * (maxAngle / (maxBPM - minBPM));
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            const newAngle = getAngle(touch) - startAngle;
+            knob.style.transform = `rotate(${newAngle}deg)`;
+            updateBPM(newAngle);
+            e.preventDefault(); // 阻止默认滚动行为
+        });
         // 修复按钮事件
         document.getElementById('startStopButton').addEventListener('click', function(e) {
             if (!audioContext) {
