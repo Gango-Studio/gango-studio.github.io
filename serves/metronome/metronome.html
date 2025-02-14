@@ -265,12 +265,9 @@ async function validateAudioFile(url) {
 }
 
 // 使用示例
-validateAudioFile('metronome.wav')
+alert(validateAudioFile('metronome.wav')
     .then(result => console.log('音频验证结果:', result))
-    .catch(error => console.error('验证失败:', error));
-
-// 使用示例
-alert(validateAudioFile('metronome.wav').then(console.log));
+    .catch(error => console.error('验证失败:', error)));
         // 按钮控制
         /*startStopButton.addEventListener('click', function(e) {
             if (!audioContext) {
