@@ -246,6 +246,7 @@
             isDragging = false;
         });
         // 音频验证函数
+// 音频验证函数
 async function validateAudioFile(url) {
     try {
         const response = await fetch(url);
@@ -262,6 +263,11 @@ async function validateAudioFile(url) {
         return { error: error.message };
     }
 }
+
+// 使用示例
+validateAudioFile('click.wav')
+    .then(result => console.log('音频验证结果:', result))
+    .catch(error => console.error('验证失败:', error));
 
 // 使用示例
 alert(validateAudioFile('click.wav').then(console.log));
