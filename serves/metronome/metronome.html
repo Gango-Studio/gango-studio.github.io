@@ -245,7 +245,26 @@
         document.addEventListener('touchend', () => {
             isDragging = false;
         });
+        // 音频验证函数
+async function validateAudioFile(url) {
+    try {
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        
+        return {
+            duration: buffer.duration.toFixed(3) + 's',
+            channels: buffer.numberOfChannels,
+            sampleRate: buffer.sampleRate + 'Hz',
+            isClean: buffer.getChannelData(0).some(v => Math.abs(v) > 0.5)
+        };
+    } catch (error) {
+        return { error: error.message };
+    }
+}
 
+// 使用示例
+validateAudioFile('click.wav').then(console.log);
         // 按钮控制
         /*startStopButton.addEventListener('click', function(e) {
             if (!audioContext) {
