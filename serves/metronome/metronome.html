@@ -91,22 +91,7 @@
 
     <script>
         // Base64 编码的 "滴" 声 WAV 文件（100ms，16-bit PCM）
-        const base64Audio = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
-
-        // 音频上下文和状态变量
-        let audioContext;
-        let clickBuffer;
-        let isRunning = false;
-        let scheduler;
-        let bpm = 60;
-
-        // 初始化音频
-        async function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            try {
+       const base64Audio = 'data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAE/4STgQHg/lA6kEVEREU7AAACQERERCIiIQAAAP//mkBWAAFBT0MuMAAAAP///////////1DAREUyMCMjEQCAgP//AAAEAH//BABF/4WAQAEAAQAZGF0YQAKAAA='; 
                 // 解码 Base64 音频
                 const audioData = base64Audio.split(',')[1];
                 const arrayBuffer = Uint8Array.from(atob(audioData), c => c.charCodeAt(0)).buffer;
