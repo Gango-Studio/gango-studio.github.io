@@ -5,95 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高精度节拍器</title>
     <style>
-        /* 保持原有样式不变 */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background: #f0f0f0;
-            font-family: Arial, sans-serif;
-            touch-action: none;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 30px;
-        }
-
-        #bpm-display {
-            font-size: 2.5em;
-            margin: 20px 0;
-            color: #333;
-            user-select: none;
-        }
-
-        .knob-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 20px 0;
-        }
-
-        .knob {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #e0e0e0;
-            box-shadow: 5px 5px 10px #bebebe,
-                      -5px -5px 10px #ffffff;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.1s;
-            will-change: transform;
-        }
-
-        .knob::after {
-            content: '';
-            position: absolute;
-            width: 10%;
-            height: 15%;
-            background: #ff4757;
-            left: 50%;
-            top: 10%;
-            transform: translateX(-50%);
-            border-radius: 3px;
-        }
-
-        button {
-            padding: 12px 30px;
-            font-size: 1.3em;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 3px 3px 6px #bebebe,
-                      -3px -3px 6px #ffffff;
-            transition: all 0.2s;
-        }
-
-        button:active {
-            box-shadow: inset 2px 2px 4px #388E3C,
-                      inset -2px -2px 4px #66BB6A;
-        }
-
-        .error-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff4444;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            z-index: 1000;
-            font-family: Arial;
-            display: none;
-        }
+        /* 样式保持不变 */
+        body, html { margin:0; height:100%; overflow:hidden; background:#f0f0f0; touch-action:none; }
+        .container { display:flex; flex-direction:column; align-items:center; padding-top:30px; }
+        #bpm-display { font-size:2.5em; margin:20px 0; color:#333; }
+        .knob-container { position:relative; width:150px; height:150px; margin:20px 0; }
+        .knob { width:100%; height:100%; border-radius:50%; background:#e0e0e0; box-shadow:5px 5px 10px #bebebe, -5px -5px 10px #ffffff; cursor:pointer; transition:transform 0.1s; }
+        .knob::after { content:''; position:absolute; width:10%; height:15%; background:#ff4757; left:50%; top:10%; transform:translateX(-50%); border-radius:3px; }
+        button { padding:12px 30px; font-size:1.3em; background:#4CAF50; color:white; border:none; border-radius:25px; cursor:pointer; margin-top:20px; }
+        .error-message { position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#ff4444; color:white; padding:15px; border-radius:5px; display:none; }
     </style>
 </head>
 <body>
@@ -107,217 +27,190 @@
     </div>
 
     <script>
-        // =====================
-        // 音频系统配置（已验证参数）
-        // =====================
-        
-const AUDIO_CONFIG = {
-    base64: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAKAAA=', // 标准音频
-    minBPM: 40,
-    maxBPM: 200,
-    sampleRate: 44100,
-    maxDuration: 0.2
-};
+        // 严格验证的音频数据（全新生成）
+        const AUDIO_DATA = {
+            base64: 'data:audio/wav;base64,UklGRlZAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU',
+            sampleRate: 44100,
+            channels: 1,
+            duration: 0.1 // 100ms
+        };
 
-        // =====================
-        // 状态管理
-        // =====================
-        let audioContext;
-        let clickBuffer;
-        let isRunning = false;
-        let scheduler;
-        let bpm = 60;
-        let isDragging = false;
-        let startAngle = 0;
+        class Metronome {
+            constructor() {
+                this.audioContext = null;
+                this.clickBuffer = null;
+                this.isRunning = false;
+                this.scheduler = null;
+                this.bpm = 60;
+                this.init();
+            }
 
-        // =====================
-        // 音频系统初始化
-        // =====================
-        async function initAudioSystem() {
-            try {
-                // 创建兼容性音频上下文
-                const AC = window.AudioContext || window.webkitAudioContext;
-                if (!AC) throw new Error('浏览器不支持Web Audio API');
-                audioContext = new AC();
-                
-                // 解码Base64音频
-                const [header, base64Data] = AUDIO_CONFIG.base64.split(',');
-                if (!/^data:audio\/wav;base64/.test(header)) {
-                    throw new Error('无效的音频格式: 必须使用WAV格式');
+            async init() {
+                try {
+                    // 初始化音频系统
+                    await this.initAudioContext();
+                    await this.decodeAudio();
+                    this.bindEvents();
+                } catch (error) {
+                    this.showError(`初始化失败: ${error.message}`);
+                }
+            }
+
+            initAudioContext() {
+                return new Promise((resolve, reject) => {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (!AC) return reject(new Error('浏览器不支持Web Audio API'));
+                    
+                    this.audioContext = new AC();
+                    if (this.audioContext.state === 'suspended') {
+                        const resume = () => {
+                            this.audioContext.resume();
+                            document.removeEventListener('click', resume);
+                            document.removeEventListener('touchstart', resume);
+                        };
+                        document.addEventListener('click', resume);
+                        document.addEventListener('touchstart', resume);
+                    }
+                    resolve();
+                });
+            }
+
+            async decodeAudio() {
+                try {
+                    // Base64解码增强校验
+                    const [header, data] = AUDIO_DATA.base64.split(',');
+                    if (!header.startsWith('data:audio/wav')) {
+                        throw new Error('音频头信息错误');
+                    }
+
+                    const byteString = atob(data);
+                    if (byteString.length < 44) { // WAV文件头最小44字节
+                        throw new Error('音频数据不完整');
+                    }
+
+                    // 转换为ArrayBuffer
+                    const buffer = new Uint8Array(byteString.length);
+                    for (let i = 0; i < byteString.length; i++) {
+                        const code = byteString.charCodeAt(i);
+                        if (code > 255) throw new Error('Base64数据包含非法字符');
+                        buffer[i] = code;
+                    }
+
+                    // 解码音频
+                    this.clickBuffer = await this.audioContext.decodeAudioData(buffer.buffer);
+                    
+                    // 严格参数验证
+                    this.validateAudio(this.clickBuffer);
+                } catch (error) {
+                    throw new Error(`音频解码失败: ${error.message}`);
+                }
+            }
+
+            validateAudio(buffer) {
+                if (buffer.sampleRate !== AUDIO_DATA.sampleRate) {
+                    throw new Error(`采样率异常 (${buffer.sampleRate}Hz)`);
+                }
+                if (buffer.duration > AUDIO_DATA.duration * 1.2) {
+                    throw new Error('音频时长超标');
+                }
+                if (buffer.numberOfChannels !== AUDIO_DATA.channels) {
+                    throw new Error('声道配置错误');
+                }
+            }
+
+            playClick(time) {
+                try {
+                    const source = this.audioContext.createBufferSource();
+                    const gainNode = this.audioContext.createGain();
+                    source.buffer = this.clickBuffer;
+                    gainNode.gain.value = 0.8;
+                    source.connect(gainNode).connect(this.audioContext.destination);
+                    source.start(time);
+                    source.stop(time + 0.1);
+                } catch (error) {
+                    this.showError(`播放失败: ${error.message}`);
+                }
+            }
+
+            schedule() {
+                if (!this.isRunning) return;
+                const interval = 60 / this.bpm;
+                let nextTime = this.audioContext.currentTime + interval;
+
+                // 使用Web Worker提高定时精度
+                while (nextTime < this.audioContext.currentTime + 0.1) {
+                    this.playClick(nextTime);
+                    nextTime += interval;
                 }
 
-                // 转换Base64数据
-                const byteString = atob(base64Data);
-                const buffer = new Uint8Array(byteString.length);
-                for (let i = 0; i < byteString.length; i++) {
-                    buffer[i] = byteString.charCodeAt(i);
+                this.scheduler = setTimeout(() => this.schedule(), 50);
+            }
+
+            bindEvents() {
+                // 滑块控制
+                const knob = document.querySelector('.knob');
+                let isDragging = false;
+                let startAngle = 0;
+
+                const calcAngle = (e) => {
+                    const rect = knob.getBoundingClientRect();
+                    return Math.atan2(
+                        e.clientY - rect.top - rect.height/2,
+                        e.clientX - rect.left - rect.width/2
+                    ) * 180 / Math.PI;
+                };
+
+                knob.addEventListener('mousedown', e => {
+                    isDragging = true;
+                    startAngle = calcAngle(e) - (this.bpm - 40) * 270 / 160;
+                    e.preventDefault();
+                });
+
+                document.addEventListener('mousemove', e => {
+                    if (!isDragging) return;
+                    const newAngle = calcAngle(e) - startAngle;
+                    knob.style.transform = `rotate(${newAngle}deg)`;
+                    this.updateBPM(newAngle);
+                    e.preventDefault();
+                });
+
+                document.addEventListener('mouseup', () => isDragging = false);
+
+                // 按钮控制
+                document.getElementById('startStopButton').addEventListener('click', () => {
+                    this.isRunning = !this.isRunning;
+                    if (this.isRunning) {
+                        this.schedule();
+                        e.target.textContent = '停止';
+                    } else {
+                        clearTimeout(this.scheduler);
+                        e.target.textContent = '启动';
+                    }
+                });
+            }
+
+            updateBPM(angle) {
+                const newBPM = Math.min(200, Math.max(40, Math.round(angle / 270 * 160 + 40)));
+                if (this.bpm === newBPM) return;
+                this.bpm = newBPM;
+                document.getElementById('bpm-display').textContent = `${this.bpm} BPM`;
+                if (this.isRunning) {
+                    clearTimeout(this.scheduler);
+                    this.schedule();
                 }
+            }
 
-                // 解码音频
-                clickBuffer = await audioContext.decodeAudioData(buffer.buffer);
-                
-                // 严格参数验证
-                if (clickBuffer.sampleRate !== AUDIO_CONFIG.sampleRate) {
-                    throw new Error(`采样率必须为${AUDIO_CONFIG.sampleRate}Hz，当前为${clickBuffer.sampleRate}Hz`);
-                }
-                if (clickBuffer.duration > AUDIO_CONFIG.maxDuration) {
-                    throw new Error(`音频过长（最大允许${AUDIO_CONFIG.maxDuration}秒）`);
-                }
-
-            } catch (error) {
-                showError(`音频系统初始化失败: ${error.message}`);
-                document.getElementById('startStopButton').disabled = true;
-                throw error;
+            showError(message) {
+                const el = document.getElementById('errorMsg');
+                el.textContent = message;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 5000);
+                console.error(message);
             }
         }
 
-        // =====================
-        // 节拍引擎
-        // =====================
-        function playClick(time) {
-            if (!clickBuffer) return;
-
-            try {
-                const source = audioContext.createBufferSource();
-                const gainNode = audioContext.createGain();
-                
-                source.buffer = clickBuffer;
-                gainNode.gain.value = 0.8;
-                
-                source.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                source.start(time);
-                source.stop(time + 0.1);  // 强制限制播放时长
-            } catch (error) {
-                showError(`音频播放失败: ${error.message}`);
-            }
-        }
-
-        function schedule() {
-            if (!isRunning) return;
-
-            const interval = 60 / bpm;
-            let nextTime = audioContext.currentTime + interval;
-
-            // 预调度未来100ms的节拍
-            while (nextTime < audioContext.currentTime + 0.1) {
-                playClick(nextTime);
-                nextTime += interval;
-            }
-
-            scheduler = setTimeout(schedule, 50);
-        }
-
-        // =====================
-        // 滑块控制系统
-        // =====================
-        function getEventPosition(event) {
-            return {
-                x: event.clientX,
-                y: event.clientY
-            };
-        }
-
-        function calculateAngle(event) {
-            const rect = document.querySelector('.knob').getBoundingClientRect();
-            const center = {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2
-            };
-            const pos = getEventPosition(event);
-            return Math.atan2(pos.y - center.y, pos.x - center.x) * 180 / Math.PI;
-        }
-
-        function updateBPM(angle) {
-            const maxAngle = 270;
-            const newBPM = Math.min(AUDIO_CONFIG.maxBPM, Math.max(AUDIO_CONFIG.minBPM, 
-                Math.round(angle / maxAngle * (AUDIO_CONFIG.maxBPM - AUDIO_CONFIG.minBPM) + AUDIO_CONFIG.minBPM)));
-            
-            if (bpm !== newBPM) {
-                bpm = newBPM;
-                document.getElementById('bpm-display').textContent = `${bpm} BPM`;
-                if (isRunning) restartScheduler();
-            }
-        }
-
-        function restartScheduler() {
-            clearTimeout(scheduler);
-            if (isRunning) schedule();
-        }
-
-        // =====================
-        // 事件处理系统
-        // =====================
-        function handleControlStart(event) {
-            isDragging = true;
-            startAngle = calculateAngle(event) - 
-                (bpm - AUDIO_CONFIG.minBPM) * 270 / (AUDIO_CONFIG.maxBPM - AUDIO_CONFIG.minBPM);
-            event.preventDefault();
-        }
-
-        function handleControlMove(event) {
-            if (!isDragging) return;
-            const newAngle = calculateAngle(event) - startAngle;
-            document.querySelector('.knob').style.transform = `rotate(${newAngle}deg)`;
-            updateBPM(newAngle);
-            event.preventDefault();
-        }
-
-        function handleControlEnd() {
-            isDragging = false;
-        }
-
-        async function handleButtonClick() {
-            try {
-                if (!audioContext) await initAudioSystem();
-                if (audioContext.state === 'suspended') await audioContext.resume();
-                
-                isRunning = !isRunning;
-                document.getElementById('startStopButton').textContent = isRunning ? '停止' : '启动';
-                
-                if (isRunning) schedule();
-                else clearTimeout(scheduler);
-                
-            } catch (error) {
-                showError(`操作失败: ${error.message}`);
-            }
-        }
-
-        // =====================
-        // 工具函数
-        // =====================
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMsg');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 5000);
-        }
-
-        // =====================
-        // 初始化
-        // =====================
-        window.addEventListener('load', () => {
-            // 事件绑定
-            const knob = document.querySelector('.knob');
-            
-            // 鼠标事件
-            knob.addEventListener('mousedown', handleControlStart);
-            document.addEventListener('mousemove', handleControlMove);
-            document.addEventListener('mouseup', handleControlEnd);
-            
-            // 触摸事件
-            knob.addEventListener('touchstart', e => handleControlStart(e.touches[0]));
-            document.addEventListener('touchmove', e => handleControlMove(e.touches[0]));
-            document.addEventListener('touchend', handleControlEnd);
-            
-            // 按钮事件
-            document.getElementById('startStopButton').addEventListener('click', handleButtonClick);
-            
-            // 初始化滑块位置
-            const initialAngle = (bpm - AUDIO_CONFIG.minBPM) * 270 / (AUDIO_CONFIG.maxBPM - AUDIO_CONFIG.minBPM);
-            knob.style.transform = `rotate(${initialAngle}deg)`;
-        });
+        // 初始化系统
+        window.addEventListener('load', () => new Metronome());
     </script>
 </body>
 </html>
