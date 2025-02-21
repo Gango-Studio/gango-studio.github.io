@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>圆形节拍器</title>
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #f0f0f0;
+            background: #f5f5f5;
             font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .wheel-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 50px;
+            width: 260px;
+            height: 260px;
+            margin: 30px;
         }
 
         .control-wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: linear-gradient(45deg, #333, #000);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            box-shadow: 8px 8px 16px #d9d9d9,
+                       -8px -8px 16px #ffffff;
             cursor: pointer;
             touch-action: none;
+            transition: transform 0.1s ease-out;
         }
 
         .center-display {
@@ -33,26 +41,41 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            background: #fff;
+            width: 90px;
+            height: 90px;
+            background: #f8f8f8;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-shadow: inset 3px 3px 6px #d9d9d9,
+                       inset -3px -3px 6px #ffffff;
         }
 
         #bpm {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
+            color: #444;
         }
 
         button {
             margin: 20px;
-            padding: 10px 20px;
-            font-size: 1.2em;
+            padding: 12px 30px;
+            font-size: 1.1em;
             cursor: pointer;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 4px 4px 8px #d9d9d9,
+                       -4px -4px 8px #ffffff;
+            color: #444;
+            transition: all 0.2s ease;
+        }
+
+        button:active {
+            box-shadow: inset 2px 2px 4px #d9d9d9,
+                       inset -2px -2px 4px #ffffff;
         }
     </style>
 </head>
@@ -67,52 +90,70 @@
     <button id="toggle">Start</button>
 
     <script>
-        // Base64编码的节拍器音频（短促的滴答声）
-        const audioData = "data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU";
-        
-        // 初始化音频
-        const audio = new Audio(audioData);
+        // 音频文件路径（确保metronome.wav文件存在）
+        const audio = new Audio('metronome.wav');
         let isPlaying = false;
         let intervalId = null;
         let rotation = 0;
         let currentBpm = 120;
 
-        // 控制滚轮元素
+        // 元素引用
         const wheel = document.querySelector('.control-wheel');
         const bpmDisplay = document.getElementById('bpm');
         const toggleBtn = document.getElementById('toggle');
 
-        // 鼠标事件处理
+        // 通用坐标获取函数
+        function getClientPos(e) {
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+            }
+            return {
+                x: e.clientX,
+                y: e.clientY
+            };
+        }
+
+        // 事件监听（同时支持鼠标和触摸）
+        wheel.addEventListener('mousedown', startDrag);
+        wheel.addEventListener('touchstart', startDrag);
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('touchmove', handleDrag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
         let isDragging = false;
         let lastAngle = 0;
 
-        wheel.addEventListener('mousedown', startDrag);
-        document.addEventListener('mousemove', handleDrag);
-        document.addEventListener('mouseup', stopDrag);
-
         function startDrag(e) {
+            e.preventDefault();
             isDragging = true;
             const rect = wheel.getBoundingClientRect();
             const centerX = rect.left + rect.width/2;
             const centerY = rect.top + rect.height/2;
-            lastAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+            const pos = getClientPos(e);
+            lastAngle = Math.atan2(pos.y - centerY, pos.x - centerX);
         }
 
         function handleDrag(e) {
             if (!isDragging) return;
-            
+            e.preventDefault();
+
             const rect = wheel.getBoundingClientRect();
             const centerX = rect.left + rect.width/2;
             const centerY = rect.top + rect.height/2;
-            const currentAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+            const pos = getClientPos(e);
+            const currentAngle = Math.atan2(pos.y - centerY, pos.x - centerX);
             
             const angleDiff = currentAngle - lastAngle;
-            rotation += angleDiff * (180 / Math.PI); // 转换为角度
+            rotation += angleDiff * (180 / Math.PI);
             rotation = rotation % 360;
             
-            // 更新BPM（每度对应1 BPM变化）
-            currentBpm = Math.round(120 + rotation);
-            currentBpm = Math.max(30, Math.min(240, currentBpm)); // 限制30-240 BPM
+            // 更新BPM（调整灵敏度）
+            currentBpm = Math.round(120 + rotation * 0.8);
+            currentBpm = Math.max(30, Math.min(240, currentBpm));
             
             bpmDisplay.textContent = currentBpm;
             wheel.style.transform = `rotate(${rotation}deg)`;
@@ -130,15 +171,22 @@
             toggleBtn.textContent = isPlaying ? 'Stop' : 'Start';
             
             if (isPlaying) {
-                const interval = 60000 / currentBpm; // BPM转换为毫秒
+                const interval = 60000 / currentBpm;
+                audio.play().catch(() => {});
                 intervalId = setInterval(() => {
                     audio.currentTime = 0;
                     audio.play().catch(() => {});
                 }, interval);
             } else {
                 clearInterval(intervalId);
+                audio.pause();
             }
         });
+
+        // 防止页面滚动
+        document.body.addEventListener('touchmove', (e) => {
+            if(isDragging) e.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
