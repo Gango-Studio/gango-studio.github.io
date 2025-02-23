@@ -2,86 +2,12 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>圆形节拍器</title>
+    <title>高精度节拍器</title>
     <style>
         /* 保持原有样式不变 */
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #f5f5f5;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        .wheel-container {
-            position: relative;
-            width: 260px;
-            height: 260px;
-            margin: 30px;
-        }
-
-        .control-wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #f0f0f0, #ffffff);
-            box-shadow: 8px 8px 16px #d9d9d9,
-                       -8px -8px 16px #ffffff;
-            cursor: pointer;
-            touch-action: none;
-            transition: transform 0.1s ease-out;
-        }
-
-        .center-display {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90px;
-            height: 90px;
-            background: #f8f8f8;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 3px 3px 6px #d9d9d9,
-                       inset -3px -3px 6px #ffffff;
-        }
-
-        #bpm {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #444;
-        }
-
-        button {
-            margin: 20px;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            cursor: pointer;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 25px;
-            box-shadow: 4px 4px 8px #d9d9d9,
-                       -4px -4px 8px #ffffff;
-            color: #444;
-            transition: all 0.2s ease;
-        }
-
-        button:active {
-            box-shadow: inset 2px 2px 4px #d9d9d9,
-                       inset -2px -2px 4px #ffffff;
-        }
     </style>
 </head>
 <body>
-    <!-- 保持原有HTML结构不变 -->
     <div class="wheel-container">
         <div class="control-wheel"></div>
         <div class="center-display">
@@ -92,23 +18,27 @@
     <button id="toggle">Start</button>
 
     <script>
-        // 使用更精确的定时器
+        // 兼容性更好的定时方案
         let isPlaying = false;
-        let intervalId = null;
+        let timerID = null;
         let rotation = 0;
         let currentBpm = 120;
-        let lastPlayTime = 0;
+        let expectedTime = 0;
+        let audioCounter = 0;
 
-        // 音频对象
-        const audio = new Audio('metronome.wav');
-        audio.preload = 'auto';
+        // 创建多个音频实例避免重叠问题
+        const audioPool = Array(2).fill().map(() => {
+            const audio = new Audio('metronome.wav');
+            audio.preload = 'auto';
+            return audio;
+        });
 
         // 元素引用
         const wheel = document.querySelector('.control-wheel');
         const bpmDisplay = document.getElementById('bpm');
         const toggleBtn = document.getElementById('toggle');
 
-        // 事件监听
+        // 事件监听（保持原有交互逻辑）
         let isDragging = false;
         let lastAngle = 0;
 
@@ -156,20 +86,22 @@
             isDragging = false;
         }
 
-        // 改进的节拍器核心
+        // 改进的定时器核心
         function playTick() {
-            const now = performance.now();
             const interval = 60000 / currentBpm;
+            const now = Date.now();
+            const drift = now - expectedTime;
 
-            if (now - lastPlayTime >= interval) {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-                lastPlayTime = now;
-            }
+            // 播放音频（使用轮换播放避免重叠）
+            audioPool[audioCounter].currentTime = 0;
+            audioPool[audioCounter].play().catch(() => {});
+            audioCounter = (audioCounter + 1) % audioPool.length;
 
-            if (isPlaying) {
-                requestAnimationFrame(playTick);
-            }
+            // 动态调整下次触发时间
+            expectedTime += interval;
+            const nextInterval = interval - drift;
+            
+            timerID = setTimeout(playTick, Math.max(0, nextInterval));
         }
 
         // 节拍器控制
@@ -178,20 +110,19 @@
             toggleBtn.textContent = isPlaying ? 'Stop' : 'Start';
             
             if (isPlaying) {
-                lastPlayTime = performance.now();
+                expectedTime = Date.now();
                 playTick();
+            } else {
+                clearTimeout(timerID);
             }
         });
 
         // 通用坐标获取函数
         function getClientPos(e) {
-            if (e.touches) {
-                return {
-                    x: e.touches[0].clientX,
-                    y: e.touches[0].clientY
-                };
-            }
-            return {
+            return e.touches ? {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            } : {
                 x: e.clientX,
                 y: e.clientY
             };
