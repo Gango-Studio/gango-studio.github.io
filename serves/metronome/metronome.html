@@ -2,26 +2,24 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>高精度兼容节拍器</title>
+    <title>终极节拍器</title>
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #f5f5f5;
-            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
+            touch-action: manipulation;
         }
 
         .wheel-container {
             position: relative;
-            width: 260px;
-            height: 260px;
-            margin: 30px;
+            width: min(80vw, 300px);
+            height: min(80vw, 300px);
+            margin: 2rem;
         }
 
         .control-wheel {
@@ -31,9 +29,13 @@
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             box-shadow: 8px 8px 16px #d9d9d9,
                       -8px -8px 16px #ffffff;
-            cursor: pointer;
+            cursor: grab;
             touch-action: none;
             transition: transform 0.1s ease-out;
+        }
+
+        .control-wheel:active {
+            cursor: grabbing;
         }
 
         .center-display {
@@ -41,8 +43,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90px;
-            height: 90px;
+            width: 35%;
+            height: 35%;
             background: #f8f8f8;
             border-radius: 50%;
             display: flex;
@@ -54,22 +56,21 @@
         }
 
         #bpm {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #444;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 600;
+            color: #2d3436;
         }
 
         button {
-            margin: 20px;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            cursor: pointer;
-            background: #f0f0f0;
+            margin: 1rem;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            background: #f8f9fa;
             border: none;
-            border-radius: 25px;
+            border-radius: 2rem;
             box-shadow: 4px 4px 8px #d9d9d9,
                       -4px -4px 8px #ffffff;
-            color: #444;
+            color: #2d3436;
             transition: all 0.2s ease;
         }
 
@@ -80,8 +81,6 @@
     </style>
 </head>
 <body>
-    <br/>
-    <br/>
     <div class="wheel-container">
         <div class="control-wheel"></div>
         <div class="center-display">
@@ -90,112 +89,204 @@
         </div>
     </div>
     <button id="toggle">Start</button>
-        <br/>
-        <script>
-        // 配置项
-        const CONFIG = {
-            minBpm: 30,
-            maxBpm: 300,
-            baseBpm: 120,
-            lookAhead: 0.1,    // 预排时间（秒）
-            scheduleAhead: 0.2 // 调度提前量
-        };
 
-        // 状态管理
-        let state = {
-            isPlaying: false,
-            rotation: 0,
-            bpm: CONFIG.baseBpm,
-            nextTickTime: 0,
-            audioContext: null,
-            audioBuffer: null,
-            timerID: 0,
-            lastTick: 0,
-            useWebAudio: false
-        };
+    <script>
+        (() => {
+            // 配置常量
+            const CONFIG = {
+                MIN_BPM: 30,
+                MAX_BPM: 240,
+                BASE_BPM: 120,
+                AUDIO_POOL_SIZE: 4,
+                SENSITIVITY: 0.7,
+                DRIFT_CORRECTION: 0.3
+            };
 
-        // 初始化音频
-        async function initAudio() {
-            try {
-                state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const response = await fetch('metronome.wav');
-                const arrayBuffer = await response.arrayBuffer();
-                state.audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
-                state.useWebAudio = true;
-            } catch (e) {
-                console.log('使用兼容音频模式');
-                state.useWebAudio = false;
-            }
-        }
+            // 状态管理
+            let state = {
+                isPlaying: false,
+                rotation: 0,
+                bpm: CONFIG.BASE_BPM,
+                nextTickTime: 0,
+                audioContext: null,
+                audioNodes: [],
+                audioElements: [],
+                currentAudioIndex: 0,
+                schedulerId: 0,
+                lastTickTime: 0
+            };
 
-        // 音频播放
-        function playTick() {
-            if (state.useWebAudio) {
-                const source = state.audioContext.createBufferSource();
-                source.buffer = state.audioBuffer;
-                source.connect(state.audioContext.destination);
-                source.start(state.audioContext.currentTime);
-            } else {
-                const audio = new Audio('metronome.wav');
-                audio.play().catch(() => {});
-            }
-        }
-
-        // 核心调度器
-        function scheduler() {
-            if (!state.isPlaying) return;
-
-            const now = performance.now();
-            const interval = 60000 / state.bpm;
-            const drift = now - state.nextTickTime;
-
-            // 误差补偿算法
-            if (drift > interval * 1.5) {
-                state.nextTickTime = now;
-            } else {
-                state.nextTickTime += interval - Math.min(drift, interval/2);
+            // 初始化音频系统
+            async function initAudioSystem() {
+                try {
+                    // 尝试初始化Web Audio API
+                    state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const response = await fetch('metronome.wav');
+                    const arrayBuffer = await response.arrayBuffer();
+                    const audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
+                    
+                    // 创建音频节点池
+                    state.audioNodes = Array(CONFIG.AUDIO_POOL_SIZE).fill().map(() => {
+                        const source = state.audioContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(state.audioContext.destination);
+                        return source;
+                    });
+                } catch (error) {
+                    // 降级到普通音频元素
+                    state.audioElements = Array(CONFIG.AUDIO_POOL_SIZE).fill().map(() => {
+                        const audio = new Audio('metronome.wav');
+                        audio.preload = 'auto';
+                        return audio;
+                    });
+                }
             }
 
-            // 节拍触发
-            if (now >= state.nextTickTime - CONFIG.scheduleAhead) {
-                playTick();
-                state.lastTick = now;
+            // 播放节拍音效
+            function playTick() {
+                const now = performance.now();
+                
+                // 防止连续触发
+                if (now - state.lastTickTime < 10) return;
+                state.lastTickTime = now;
+
+                if (state.audioNodes.length > 0) {
+                    // 使用Web Audio API
+                    const source = state.audioNodes[state.currentAudioIndex];
+                    source.start(0);
+                    state.currentAudioIndex = (state.currentAudioIndex + 1) % CONFIG.AUDIO_POOL_SIZE;
+                } else if (state.audioElements.length > 0) {
+                    // 降级使用普通音频
+                    const audio = state.audioElements[state.currentAudioIndex];
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                    state.currentAudioIndex = (state.currentAudioIndex + 1) % CONFIG.AUDIO_POOL_SIZE;
+                }
             }
 
-            // 动态调整请求周期
-            const nextInterval = Math.max(1, interval/2 - (now - state.lastTick));
-            state.timerID = setTimeout(scheduler, nextInterval);
-        }
+            // 核心调度器
+            function schedule() {
+                if (!state.isPlaying) return;
 
-        // BPM控制（保持原有旋转逻辑）
-        function updateBpm(newBpm) {
-            state.bpm = Math.max(CONFIG.minBpm, Math.min(CONFIG.maxBpm, newBpm));
-            document.getElementById('bpm').textContent = state.bpm;
-        }
+                const now = performance.now();
+                const interval = 60000 / state.bpm;
+                let scheduledTime = state.nextTickTime;
 
-        // 控制切换
-        function toggleMetronome() {
-            state.isPlaying = !state.isPlaying;
-            document.getElementById('toggle').textContent = state.isPlaying ? 'Stop' : 'Start';
-            
-            if (state.isPlaying) {
-                state.nextTickTime = performance.now();
-                state.lastTick = state.nextTickTime;
-                scheduler();
-            } else {
-                clearTimeout(state.timerID);
+                // 前瞻调度
+                while (scheduledTime < now + 100) {
+                    const targetTime = scheduledTime;
+                    const delay = Math.max(0, targetTime - now);
+                    
+                    setTimeout(() => {
+                        playTick();
+                    }, delay);
+
+                    scheduledTime += interval;
+                }
+
+                // 动态调整下次调度时间
+                state.nextTickTime = scheduledTime;
+                
+                // 误差补偿
+                const drift = now - scheduledTime;
+                state.nextTickTime -= drift * CONFIG.DRIFT_CORRECTION;
+
+                // 递归调度
+                state.schedulerId = requestAnimationFrame(schedule);
             }
-        }
 
-        // 初始化
-        initAudio().then(() => {
-            // 事件绑定（保持原有旋转事件处理）
-            document.getElementById('toggle').addEventListener('click', toggleMetronome);
-        });
+            // BPM控制
+            function updateBpm(newBpm) {
+                state.bpm = Math.max(CONFIG.MIN_BPM, 
+                                  Math.min(CONFIG.MAX_BPM, Math.round(newBpm)));
+                document.getElementById('bpm').textContent = state.bpm;
+            }
 
-        // 移动端适配（保持原有触摸事件处理）
+            // 旋转控制逻辑
+            function setupWheelControl() {
+                const wheel = document.querySelector('.control-wheel');
+                let isDragging = false;
+                let lastAngle = 0;
+
+                function getCenter(element) {
+                    const rect = element.getBoundingClientRect();
+                    return {
+                        x: rect.left + rect.width / 2,
+                        y: rect.top + rect.height / 2
+                    };
+                }
+
+                function handleStart(event) {
+                    event.preventDefault();
+                    isDragging = true;
+                    const center = getCenter(wheel);
+                    const pos = getEventPosition(event);
+                    lastAngle = Math.atan2(pos.y - center.y, pos.x - center.x);
+                }
+
+                function handleMove(event) {
+                    if (!isDragging) return;
+                    event.preventDefault();
+
+                    const center = getCenter(wheel);
+                    const pos = getEventPosition(event);
+                    const currentAngle = Math.atan2(pos.y - center.y, pos.x - center.x);
+                    
+                    const angleDiff = currentAngle - lastAngle;
+                    state.rotation += angleDiff * (180 / Math.PI);
+                    state.rotation %= 360;
+                    
+                    updateBpm(CONFIG.BASE_BPM + state.rotation * CONFIG.SENSITIVITY);
+                    wheel.style.transform = `rotate(${state.rotation}deg)`;
+                    
+                    lastAngle = currentAngle;
+                }
+
+                function handleEnd() {
+                    isDragging = false;
+                }
+
+                function getEventPosition(event) {
+                    return event.touches ? {
+                        x: event.touches[0].clientX,
+                        y: event.touches[0].clientY
+                    } : {
+                        x: event.clientX,
+                        y: event.clientY
+                    };
+                }
+
+                // 事件绑定
+                wheel.addEventListener('mousedown', handleStart);
+                wheel.addEventListener('touchstart', handleStart);
+                document.addEventListener('mousemove', handleMove);
+                document.addEventListener('touchmove', handleMove);
+                document.addEventListener('mouseup', handleEnd);
+                document.addEventListener('touchend', handleEnd);
+            }
+
+            // 控制切换
+            function toggleMetronome() {
+                state.isPlaying = !state.isPlaying;
+                document.getElementById('toggle').textContent = state.isPlaying ? 'Stop' : 'Start';
+                
+                if (state.isPlaying) {
+                    state.nextTickTime = performance.now();
+                    schedule();
+                } else {
+                    cancelAnimationFrame(state.schedulerId);
+                }
+            }
+
+            // 初始化
+            async function init() {
+                await initAudioSystem();
+                setupWheelControl();
+                document.getElementById('toggle').addEventListener('click', toggleMetronome);
+            }
+
+            init();
+        })();
     </script>
-
-       
 </body>
 </html>
