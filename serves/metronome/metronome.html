@@ -1,55 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Daiana - 高精度节拍器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经典风格节拍器</title>
     <style>
-        /* 全局样式 */
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            touch-action: none;
-            background: #f5f5f5;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 加载指示器 */
-        .loader {
-            position: fixed;
-            top: 20px;
-            padding: 12px 24px;
-            background: #3498db;
-            color: white;
-            border-radius: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            z-index: 100;
-            transition: opacity 0.3s ease;
-        }
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* 控制面板 */
         .wheel-container {
             position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 20px;
+            width: 300px;
+            height: 300px;
+            margin: 50px;
         }
 
         .control-wheel {
-            position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: linear-gradient(145deg, #ffffff, #e6e6e6);
-            box-shadow: 9px 9px 18px #d1d1d1,
-                       -9px -9px 18px #ffffff;
+            background: linear-gradient(45deg, #333, #000);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
             touch-action: none;
             transition: transform 0.1s ease-out;
         }
@@ -59,56 +38,42 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
-            transition: transform 0.1s ease-out;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         #bpm {
-            font-size: 3.5em;
-            font-weight: 300;
-            color: #2c3e50;
-            display: block;
-            line-height: 1;
+            font-size: 2em;
+            font-weight: bold;
         }
 
-        /* 控制按钮 */
         button {
-            padding: 12px 36px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 28px;
-            background: #3498db;
-            color: white;
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
             cursor: pointer;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 4px 4px 8px #d9d9d9,
+                      -4px -4px 8px #ffffff;
+            color: #444;
             transition: all 0.2s ease;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
-        }
-        button:active {
-            transform: scale(0.96);
-        }
-        button:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            opacity: 0.7;
         }
 
-        /* 移动端适配 */
-        @media (max-width: 480px) {
-            .wheel-container {
-                width: 220px;
-                height: 220px;
-            }
-            #bpm {
-                font-size: 2.8em;
-            }
+        button:active {
+            box-shadow: inset 2px 2px 4px #d9d9d9,
+                      inset -2px -2px 4px #ffffff;
         }
     </style>
 </head>
 <body>
-    <!-- 加载指示器 -->
-    <div class="loader">正在加载音频...</div>
-
-    <!-- 控制面板 -->
     <div class="wheel-container">
         <div class="control-wheel"></div>
         <div class="center-display">
@@ -116,23 +81,23 @@
             <span>BPM</span>
         </div>
     </div>
-    <button id="toggle" disabled>Start</button>
+    <button id="toggle">Start</button>
 
     <script>
         (function() {
+            // 配置参数
             const CONFIG = {
                 MIN_BPM: 30,
                 MAX_BPM: 240,
                 BASE_BPM: 120,
-                ROTATION_RANGE: 270,
-                SCHEDULE_AHEAD: 0.15,
-                VISUAL_FEEDBACK_DURATION: 50,
-                AUDIO_URL: 'metronome.wav',
-                RETRY_DELAY: 2000,
-                MAX_RETRIES: 3
+                ROTATION_RANGE: 270,   // 有效旋转角度
+                SENSITIVITY: 2.2,       // 灵敏度系数
+                SCHEDULE_AHEAD: 0.1,    // 预排时间（秒）
+                TICK_DURATION: 0.05     // 节拍音持续时间（秒）
             };
 
-            const state = {
+            // 状态管理
+            let state = {
                 isPlaying: false,
                 rotation: 0,
                 currentBpm: CONFIG.BASE_BPM,
@@ -140,62 +105,34 @@
                 audioBuffer: null,
                 nextTickTime: 0,
                 scheduleId: null,
-                lastTickTime: 0,
-                isAudioReady: false,
-                retryCount: 0
+                isDragging: false,
+                startRotation: 0,
+                lastAngle: 0
             };
 
-            // DOM元素
-            const loader = document.querySelector('.loader');
-            const toggleBtn = document.getElementById('toggle');
-            const bpmDisplay = document.getElementById('bpm');
-            const controlWheel = document.querySelector('.control-wheel');
-
             // 初始化音频
-            async function initAudio() {
+            function initAudio() {
                 try {
-                    // 创建音频上下文
                     state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     
-                    // 显示加载状态
-                    showLoader('正在加载音频...');
-
-                    // 尝试加载音频
-                    const response = await fetch(CONFIG.AUDIO_URL);
-                    if (!response.ok) throw new Error(`HTTP错误: ${response.status}`);
+                    // 生成短促的节拍音
+                    const sampleRate = state.audioContext.sampleRate;
+                    const frameCount = Math.round(CONFIG.TICK_DURATION * sampleRate);
+                    const buffer = state.audioContext.createBuffer(1, frameCount, sampleRate);
+                    const channelData = buffer.getChannelData(0);
                     
-                    const arrayBuffer = await response.arrayBuffer();
-                    state.audioBuffer = await state.audioContext.decodeAudioData(arrayBuffer);
+                    const frequency = 880; // 880Hz
+                    const decay = 0.1;    // 衰减速度
                     
-                    // 音频加载成功
-                    state.isAudioReady = true;
-                    toggleBtn.disabled = false;
-                    showLoader('音频加载成功！', 1000);
+                    for (let i = 0; i < frameCount; i++) {
+                        const t = i / sampleRate;
+                        channelData[i] = Math.sin(2 * Math.PI * frequency * t) * 
+                                         Math.exp(-t / decay);
+                    }
+                    state.audioBuffer = buffer;
                 } catch(e) {
-                    handleAudioError(e);
-                }
-            }
-
-            // 显示加载状态
-            function showLoader(message, hideDelay = 0) {
-                loader.textContent = message;
-                loader.classList.remove('hidden');
-                if (hideDelay > 0) {
-                    setTimeout(() => loader.classList.add('hidden'), hideDelay);
-                }
-            }
-
-            // 错误处理
-            function handleAudioError(error) {
-                console.error('音频加载失败:', error);
-                state.retryCount++;
-                
-                if (state.retryCount <= CONFIG.MAX_RETRIES) {
-                    showLoader(`音频加载失败，${CONFIG.RETRY_DELAY/1000}秒后重试... (${state.retryCount}/${CONFIG.MAX_RETRIES})`);
-                    setTimeout(initAudio, CONFIG.RETRY_DELAY);
-                } else {
-                    showLoader('音频加载失败，请检查网络连接', 3000);
-                    toggleBtn.disabled = true;
+                    console.error('音频初始化失败:', e);
+                    alert('音频系统初始化失败，请刷新页面重试');
                 }
             }
 
@@ -203,123 +140,108 @@
             function scheduler() {
                 if (!state.isPlaying) return;
 
-                const now = state.audioContext.currentTime;
-                const interval = 60 / state.currentBpm;
+                const interval = 60 / state.currentBpm; // 转换为秒
+                const currentTime = state.audioContext.currentTime;
                 
-                while (state.nextTickTime < now + CONFIG.SCHEDULE_AHEAD) {
-                    const scheduleTime = state.nextTickTime;
-                    if (scheduleTime >= state.lastTickTime) {
-                        scheduleTick(scheduleTime);
-                        state.lastTickTime = scheduleTime;
-                    }
+                // 预排未来0.1秒内的节拍
+                while (state.nextTickTime < currentTime + CONFIG.SCHEDULE_AHEAD) {
+                    scheduleTick(state.nextTickTime);
                     state.nextTickTime += interval;
                 }
 
-                state.scheduleId = requestAnimationFrame(scheduler);
+                state.scheduleId = setTimeout(scheduler, 50); // 低频率检查
             }
 
-            // 播放节拍
+            // 安排节拍
             function scheduleTick(time) {
-                try {
-                    const source = state.audioContext.createBufferSource();
-                    source.buffer = state.audioBuffer;
-                    source.connect(state.audioContext.destination);
-                    source.start(time);
-                    source.stop(time + 0.1);
-                } catch(e) {
-                    console.error('音频播放错误:', e);
-                }
+                if (!state.audioBuffer) return;
+
+                const source = state.audioContext.createBufferSource();
+                source.buffer = state.audioBuffer;
+                source.connect(state.audioContext.destination);
+                source.start(time);
+                source.stop(time + CONFIG.TICK_DURATION * 1.5); // 确保及时释放资源
 
                 // 视觉反馈
                 const display = document.querySelector('.center-display');
-                display.classList.add('active');
-                setTimeout(() => {
-                    display.classList.remove('active');
-                }, CONFIG.VISUAL_FEEDBACK_DURATION);
+                display.style.transform = 'scale(1.1)';
+                setTimeout(() => display.style.transform = 'scale(1)', 50);
             }
 
-            // 旋转控制
+            // 旋转控制逻辑
             function setupWheelControl() {
-                let startAngle = 0;
-                let initialRotation = 0;
+                const wheel = document.querySelector('.control-wheel');
 
-                function getAngle(event) {
-                    const rect = controlWheel.getBoundingClientRect();
-                    const centerX = rect.left + rect.width/2;
-                    const centerY = rect.top + rect.height/2;
-                    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-                    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-                    return Math.atan2(clientY - centerY, clientX - centerX);
+                function getCenter() {
+                    const rect = wheel.getBoundingClientRect();
+                    return {
+                        x: rect.left + rect.width/2,
+                        y: rect.top + rect.height/2
+                    };
                 }
 
-                function startDrag(event) {
-                    event.preventDefault();
-                    startAngle = getAngle(event) - initialRotation;
-                    addDragListeners();
-                }
-
-                function updateDrag(event) {
-                    const newAngle = getAngle(event);
-                    let rotation = newAngle - startAngle;
-                    rotation = Math.max(-Math.PI*(CONFIG.ROTATION_RANGE/360), 
-                             Math.min(Math.PI*(CONFIG.ROTATION_RANGE/360), rotation));
-                    
-                    initialRotation = rotation;
-                    updateRotation(rotation);
-                }
-
-                function updateRotation(radians) {
-                    const normalized = (radians + Math.PI*(CONFIG.ROTATION_RANGE/360)) / 
-                                    (Math.PI*(CONFIG.ROTATION_RANGE/180));
-                    const newBpm = Math.round(
-                        CONFIG.MIN_BPM + 
-                        normalized * (CONFIG.MAX_BPM - CONFIG.MIN_BPM)
+                function handleStart(e) {
+                    e.preventDefault();
+                    state.isDragging = true;
+                    state.startRotation = state.rotation;
+                    const center = getCenter();
+                    const pos = e.touches ? e.touches[0] : e;
+                    state.lastAngle = Math.atan2(
+                        pos.clientY - center.y,
+                        pos.clientX - center.x
                     );
+                }
+
+                function handleMove(e) {
+                    if (!state.isDragging) return;
+                    e.preventDefault();
+
+                    const center = getCenter();
+                    const pos = e.touches ? e.touches[0] : e;
+                    const currentAngle = Math.atan2(
+                        pos.clientY - center.y,
+                        pos.clientX - center.x
+                    );
+
+                    let angleDiff = currentAngle - state.lastAngle;
+                    angleDiff = ((angleDiff + Math.PI) % (Math.PI * 2)) - Math.PI;
+
+                    const rotationDelta = angleDiff * (180 / Math.PI) * CONFIG.SENSITIVITY;
+                    state.rotation = Math.max(-CONFIG.ROTATION_RANGE/2, 
+                        Math.min(CONFIG.ROTATION_RANGE/2, 
+                        state.startRotation + rotationDelta));
+
+                    updateBpm(CONFIG.BASE_BPM + 
+                        (state.rotation / (CONFIG.ROTATION_RANGE/2)) * 
+                        (CONFIG.MAX_BPM - CONFIG.MIN_BPM)/2);
                     
-                    if (newBpm !== state.currentBpm) {
-                        state.currentBpm = newBpm;
-                        bpmDisplay.textContent = newBpm;
-                        controlWheel.style.transform = `rotate(${radians}rad)`;
-                    }
+                    wheel.style.transform = `rotate(${state.rotation}deg)`;
                 }
 
-                function addDragListeners() {
-                    document.addEventListener('mousemove', moveHandler);
-                    document.addEventListener('mouseup', endHandler);
-                    document.addEventListener('touchmove', moveHandler);
-                    document.addEventListener('touchend', endHandler);
+                function handleEnd() {
+                    state.isDragging = false;
                 }
 
-                function removeDragListeners() {
-                    document.removeEventListener('mousemove', moveHandler);
-                    document.removeEventListener('mouseup', endHandler);
-                    document.removeEventListener('touchmove', moveHandler);
-                    document.removeEventListener('touchend', endHandler);
-                }
-
-                const moveHandler = throttle(updateDrag, 16);
-                const endHandler = () => removeDragListeners();
-
-                controlWheel.addEventListener('mousedown', startDrag);
-                controlWheel.addEventListener('touchstart', startDrag);
+                // 事件绑定
+                wheel.addEventListener('mousedown', handleStart);
+                wheel.addEventListener('touchstart', handleStart);
+                document.addEventListener('mousemove', handleMove);
+                document.addEventListener('touchmove', handleMove);
+                document.addEventListener('mouseup', handleEnd);
+                document.addEventListener('touchend', handleEnd);
             }
 
-            // 节流函数
-            function throttle(fn, delay) {
-                let lastCall = 0;
-                return function(...args) {
-                    const now = Date.now();
-                    if (now - lastCall >= delay) {
-                        fn.apply(this, args);
-                        lastCall = now;
-                    }
-                }
+            // 更新BPM显示
+            function updateBpm(targetBpm) {
+                state.currentBpm = Math.max(CONFIG.MIN_BPM, 
+                    Math.min(CONFIG.MAX_BPM, Math.round(targetBpm)));
+                document.getElementById('bpm').textContent = state.currentBpm;
             }
 
             // 控制切换
-            toggleBtn.addEventListener('click', function() {
-                if (!state.isAudioReady) {
-                    showLoader('音频尚未加载完成');
+            document.getElementById('toggle').addEventListener('click', function() {
+                if (!state.audioContext) {
+                    alert('音频系统未就绪');
                     return;
                 }
 
@@ -327,27 +249,22 @@
                 this.textContent = state.isPlaying ? 'Stop' : 'Start';
                 
                 if (state.isPlaying) {
-                    if (state.audioContext.state === 'suspended') {
-                        state.audioContext.resume();
-                    }
                     state.nextTickTime = state.audioContext.currentTime;
                     scheduler();
                 } else {
-                    cancelAnimationFrame(state.scheduleId);
+                    clearTimeout(state.scheduleId);
                 }
             });
 
             // 初始化
-            async function initialize() {
-                await initAudio();
+            function initialize() {
+                initAudio();
                 setupWheelControl();
                 
-                // 移动端兼容处理
+                // iOS兼容性处理
                 document.addEventListener('touchstart', () => {
                     if (state.audioContext) {
-                        state.audioContext.resume().then(() => {
-                            console.log('Audio context resumed');
-                        });
+                        state.audioContext.resume();
                     }
                 }, { once: true });
             }
