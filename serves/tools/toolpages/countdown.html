@@ -61,6 +61,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e0e0;
+            touch-action: none; /* 禁用默认触摸行为 */
         }
 
         .knob {
@@ -113,7 +114,7 @@
         }
 
         footer h3 {
-            font-size: 1.5em;
+            font-size: 1.8em; /* 增大字体 */
             margin: 0;
             padding-left: 10%;
             color: #1d1d1f; /* 深色文字 */
@@ -152,8 +153,8 @@
     </header>
 
     <div class="container">
-        <div class="wheel">
-            <div class="knob"></div>
+        <div class="wheel" id="wheel">
+            <div class="knob" id="knob"></div>
         </div>
         <div class="display">
             <span id="time">00:00</span>
@@ -162,8 +163,6 @@
     </div>
 
     <footer>
-        <div style="background:#ffffff;height:100%;width:100%;"><br/></div>
-        <br/>
         <h3>Gango Studio</h3>
         <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
         <div>
@@ -185,8 +184,8 @@
 
         const timeDisplay = document.getElementById('time');
         const startButton = document.getElementById('start');
-        const wheel = document.querySelector('.wheel');
-        const knob = document.querySelector('.knob');
+        const wheel = document.getElementById('wheel');
+        const knob = document.getElementById('knob');
 
         function updateTime() {
             const minutes = Math.floor(time / 60);
@@ -228,35 +227,52 @@
         let startAngle = 0;
         let currentAngle = 0;
 
-        wheel.addEventListener('mousedown', (e) => {
-            isDragging = true;
+        function getAngle(event) {
             const rect = wheel.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+            const deltaX = clientX - centerX;
+            const deltaY = clientY - centerY;
+            return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+        }
+
+        wheel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startAngle = getAngle(e) - currentAngle;
+        });
+
+        wheel.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startAngle = getAngle(e) - currentAngle;
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            const rect = wheel.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-            const deltaAngle = angle - startAngle;
-
-            // Update knob rotation
-            currentAngle += deltaAngle * (180 / Math.PI);
+            const newAngle = getAngle(e) - startAngle;
+            currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-
-            // Update time based on angle
             time = Math.round((currentAngle + 180) / 360 * 600); // 600 seconds max
             if (time < 0) time = 0;
             updateTime();
+        });
 
-            startAngle = angle;
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const newAngle = getAngle(e) - startAngle;
+            currentAngle = newAngle;
+            knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+            time = Math.round((currentAngle + 180) / 360 * 600); // 600 seconds max
+            if (time < 0) time = 0;
+            updateTime();
         });
 
         document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        document.addEventListener('touchend', () => {
             isDragging = false;
         });
     </script>
