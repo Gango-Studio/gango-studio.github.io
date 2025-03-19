@@ -187,6 +187,9 @@
         const wheel = document.getElementById('wheel');
         const knob = document.getElementById('knob');
 
+        // 音频提示
+        const audio = new Audio('https://www.soundjay.com/button/beep-07.mp3'); // 替换为你的音频文件URL
+
         function updateTime() {
             const minutes = Math.floor(time / 60);
             const seconds = time % 60;
@@ -204,6 +207,7 @@
                     clearInterval(timer);
                     isRunning = false;
                     startButton.textContent = 'Start';
+                    audio.play(); // 播放提示音
                 }
             }, 1000);
         }
