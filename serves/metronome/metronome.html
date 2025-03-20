@@ -56,56 +56,31 @@
         let bpm = 60;
         let angle = 0;
         let isDragging = false;
-        let audioContext;
-        let audioBuffer;
-        let startTime;
-        let nextBeatTime;
+        const audio = new Audio('metronome.wav');
 
-        // 加载音频文件
-        function loadAudio() {
-            return fetch('metronome.wav')
-                .then(response => response.arrayBuffer())
-                .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                .then(buffer => {
-                    audioBuffer = buffer;
-                });
-        }
-
-        // 初始化音频上下文
-        function initAudioContext() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        // 播放节拍
-        function playMetronome() {
-            const source = audioContext.createBufferSource();
-            source.buffer = audioBuffer;
-            source.connect(audioContext.destination);
-            source.start();
-        }
-
-        // 启动节拍器
-        function startMetronome() {
-            startTime = audioContext.currentTime;
-            nextBeatTime = startTime;
-            scheduleBeats();
-        }
-
-        // 安排节拍
-        function scheduleBeats() {
-            const interval = 60 / bpm;
-            while (nextBeatTime < audioContext.currentTime + 0.1) {
-                playMetronome();
-                nextBeatTime += interval;
-            }
-            requestAnimationFrame(scheduleBeats);
-        }
+        // 预加载音频
+        audio.load();
 
         // 更新BPM
         function updateBPM(newAngle) {
             angle = newAngle;
             bpm = Math.round((angle + 180) / 3.6); // 将角度映射到60-180 BPM
             bpmDisplay.textContent = bpm;
+        }
+
+        // 播放节拍
+        function playMetronome() {
+            audio.currentTime = 0; // 重置音频
+            audio.play();
+        }
+
+        // 启动节拍器
+        function startMetronome() {
+            const interval = (60 / bpm) * 1000; // 计算间隔时间（毫秒）
+            setTimeout(() => {
+                playMetronome();
+                startMetronome(); // 递归调用
+            }, interval);
         }
 
         // 拖动事件
@@ -152,11 +127,8 @@
             isDragging = false;
         });
 
-        // 初始化
-        initAudioContext();
-        loadAudio().then(() => {
-            startMetronome();
-        });
+        // 启动节拍器
+        startMetronome();
     </script>
 </body>
 </html>
