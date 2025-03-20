@@ -72,7 +72,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) rotate(-90deg); /* 初始位置为正上方 */
             pointer-events: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -188,7 +188,7 @@
         const knob = document.getElementById('knob');
 
         // 音频提示
-        const audio = new Audio('https://www.soundjay.com/button/beep-07.mp3'); // 替换为你的音频文件URL
+        const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
 
         function updateTime() {
             const minutes = Math.floor(time / 60);
@@ -228,8 +228,7 @@
         });
 
         let isDragging = false;
-        let startAngle = 0;
-        let currentAngle = 0;
+        let startAngle = -90; // 初始角度为正上方
 
         function getAngle(event) {
             const rect = wheel.getBoundingClientRect();
@@ -257,7 +256,7 @@
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 180) / 360 * 600); // 600 seconds max
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
@@ -267,7 +266,7 @@
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 180) / 360 * 600); // 600 seconds max
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
