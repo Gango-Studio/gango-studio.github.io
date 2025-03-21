@@ -160,6 +160,7 @@
             <span id="time">00:00</span>
         </div>
         <button id="start">Start</button>
+        <button id="test-audio">测试音频</button> <!-- 新增测试音频按钮 -->
     </div>
 
     <footer>
@@ -184,6 +185,7 @@
 
         const timeDisplay = document.getElementById('time');
         const startButton = document.getElementById('start');
+        const testAudioButton = document.getElementById('test-audio'); // 测试音频按钮
         const wheel = document.getElementById('wheel');
         const knob = document.getElementById('knob');
 
@@ -225,6 +227,11 @@
                 startTimer();
                 startButton.textContent = 'Stop';
             }
+        });
+
+        // 测试音频按钮
+        testAudioButton.addEventListener('click', () => {
+            audio.play(); // 手动播放提示音
         });
 
         let isDragging = false;
