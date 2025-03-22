@@ -160,7 +160,6 @@
             <span id="time">00:00</span>
         </div>
         <button id="start">Start</button>
-        <button id="test-audio">测试音频</button> <!-- 测试音频按钮 -->
     </div>
 
     <footer>
@@ -185,11 +184,10 @@
 
         const timeDisplay = document.getElementById('time');
         const startButton = document.getElementById('start');
-        const testAudioButton = document.getElementById('test-audio'); // 测试音频按钮
         const wheel = document.getElementById('wheel');
         const knob = document.getElementById('knob');
 
-        // 音频提示（使用上一级目录中的 bell.mp3 文件）
+        // 音频提示（使用在线音频文件）
         const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
 
         function updateTime() {
@@ -228,11 +226,6 @@
                 startTimer();
                 startButton.textContent = 'Stop';
             }
-        });
-
-        // 测试音频按钮
-        testAudioButton.addEventListener('click', () => {
-            audio.play(); // 手动播放提示音
         });
 
         let isDragging = false;
