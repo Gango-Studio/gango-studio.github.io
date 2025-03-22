@@ -1,19 +1,23 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html style="filter: grayscale(0%);">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<title>Gango Tools</title>
-	<style>
-		<!--
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gango Tools</title>
+    <style>
+     <!--
 		.STYLE1 {font-size: xx-large}
 		.STYLE2 {font-size: x-large}
 		.STYLE3 {font-size: large}
 		-->
-  		a:link{color:Blue;}
+  		/*a:link{color:Blue;}
   		a:visited{color:Blue;}
  		a:hover{color:Purple;}
-  		a:active{color:Red;}
+  		a:active{color:Red;}*/
 		.nav {
             
                    background: #fffff5;
@@ -24,38 +28,157 @@
 			box-shadow:  20px 20px 60px #a8b7d1,
              			     -20px -20px 60px #daedff;
 		}
-		
-	</style>
-</head>
-<body class = "nav" style = "text-align:center">
-      <div style = "text-align:center">
-           <h1 class = "STYLE1">Gango Tools</h1>
-	   <br/>
-	   <br/>
-	   
-	   <h4 style = "text-align:center" class = "STYLE2"><a style="text-decoration: none;" href="https://gango-studio.github.io/">   ◀️返回主页   </a></h4>
-           <br/>
-	   <div style="width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" class = "STYLE2 navpro">
-	      <h4 class = "STYLE2"><strong><a style="text-decoration: none;" href = "./toolpages/note.html" target="_blank">1.临时笔记本▶️</a></h4></strong>
-	      <h4 class = "STYLE3">（测试版，刷新不保存数据，如要保存数据，请不要关闭页面）</h4>
-	      <br/>
-	      <h4 class = "STYLE2"><strong><a style="text-decoration: none;" href = "./toolpages/cal.html"  target="_blank">2.极简计算器▶️</a></h4></strong>
-	      	<br/>
-		  <h4 class = "STYLE2"><strong><a style="text-decoration: none;" href = "./toolpages/countdown.html"  target="_blank">3.极简倒计时▶️</a></h4></strong> 
-		<br/>
-		   
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-	   </div>
-      </div>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	
+        /* 全局样式 */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif; /* Android 默认字体 */
+            background-color: #f5f5f7; /* 浅色背景 */
+            color: #1d1d1f; /* 深色文字 */
+            text-align: center;
+        }
 
+        a {
+            text-decoration: none;
+            color: #007aff; /* 链接颜色 */
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #005bb5; /* 悬停颜色 */
+        }
+
+        /* 页首样式 */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 0;
+            background-color: #ffffff; /* 白色背景 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #1d1d1f; /* 深色文字 */
+            font-weight: 500;
+        }
+
+        /* 工具容器样式 */
+        .tools-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* 白色背景 */
+            border-radius: 16px; /* 圆角 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
+        }
+
+        .tool-item {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #d3e2ef; /* 浅蓝色背景 */
+            border-radius: 12px; /* 圆角 */
+            box-shadow: 8px 8px 16px #a8b7d1, -8px -8px 16px #daedff; /* 内阴影 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-5px); /* 悬停效果 */
+            box-shadow: 12px 12px 24px #a8b7d1, -12px -12px 24px #daedff;
+        }
+
+        .tool-item h2 {
+            font-size: 1.5em;
+            margin: 0;
+            color: #1d1d1f; /* 深色文字 */
+        }
+
+        .tool-item p {
+            font-size: 1em;
+            color: #666; /* 灰色文字 */
+            margin: 10px 0 0;
+        }
+
+        /* 页脚样式 */
+        footer {
+            width: 100%;
+            background-color: #ffffff; /* 白色背景 */
+            padding: 20px 0;
+            text-align: left;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer h3 {
+            font-size: 1.8em; /* 增大字体 */
+            margin: 0;
+            padding-left: 10%;
+            color: #1d1d1f; /* 深色文字 */
+            font-weight: 500;
+        }
+
+        footer h4, footer h5 {
+            margin: 0;
+            padding: 5px 0;
+            padding-left: 10%;
+            color: #1d1d1f; /* 深色文字 */
+        }
+
+        footer a {
+            color: #1d1d1f; /* 深色文字 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007aff; /* 苹果蓝 */
+        }
+
+        footer div {
+            float: left;
+            width: 50%;
+            box-sizing: border-box;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
+</head>
+<body>
+    <header>
+        <a href="https://gango-studio.github.io">
+            <h1>Gango Tools</h1>
+        </a>
+    </header>
+
+    <div class="tools-container">
+        <div class="tool-item">
+            <h2><a href="./toolpages/note.html" target="_blank">临时笔记本</a></h2>
+            <p>（测试版，刷新不保存数据，如要保存数据，请不要关闭页面）</p>
+        </div>
+        <div class="tool-item">
+            <h2><a href="./toolpages/cal.html" target="_blank">极简计算器</a></h2>
+        </div>
+        <div class="tool-item">
+            <h2><a href="./toolpages/countdown.html" target="_blank">极简倒计时</a></h2>
+        </div>
+    </div>
+
+    <footer>
+        <h3>Gango Studio</h3>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <div>
+            <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+            <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+        </div>
+        <div>
+            <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        </div>
+    </footer>
 </body>
 </html>
-<!--Gango Severs VERSION V22.6.12-->
+
+<!-- First established VERSION V22.6.12-->
+<!-- Reconstructed Version v
+25.3.22--> 
