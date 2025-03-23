@@ -18,7 +18,7 @@
   		a:visited{color:Blue;}
  		a:hover{color:Purple;}
   		a:active{color:Red;}*/
-		.nav {
+		/*.nav {
             
                    background: #fffff5;
                }
@@ -27,7 +27,7 @@
 			background: #d3e2ef;
 			box-shadow:  20px 20px 60px #a8b7d1,
              			     -20px -20px 60px #daedff;
-		}
+		}*/
         /* 全局样式 */
         body {
             margin: 0;
@@ -68,35 +68,35 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #ffffff; /* 白色背景 */
-            border-radius: 16px; /* 圆角 */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
+            background-color: transparent; /* 去掉白框 */
         }
 
+        /* 工具项样式（基于 Material Design 3） */
         .tool-item {
             margin: 20px 0;
-            padding: 15px;
-            background-color: #d3e2ef; /* 浅蓝色背景 */
+            padding: 16px;
+            background-color: #ffffff; /* 白色背景 */
             border-radius: 12px; /* 圆角 */
-            box-shadow: 8px 8px 16px #a8b7d1, -8px -8px 16px #daedff; /* 内阴影 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
         }
 
         .tool-item:hover {
             transform: translateY(-5px); /* 悬停效果 */
-            box-shadow: 12px 12px 24px #a8b7d1, -12px -12px 24px #daedff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .tool-item h2 {
             font-size: 1.5em;
-            margin: 0;
+            margin: 0 0 8px;
             color: #1d1d1f; /* 深色文字 */
         }
 
         .tool-item p {
             font-size: 1em;
             color: #666; /* 灰色文字 */
-            margin: 10px 0 0;
+            margin: 0;
         }
 
         /* 页脚样式 */
