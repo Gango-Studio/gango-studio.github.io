@@ -99,28 +99,36 @@
             margin: 0;
         }
 
-      	    /* 页脚样式 */
+      	    
+       /* 页脚样式 */
 footer {
     width: 100%;
     background-color: #ffffff; /* 白色背景 */
-    padding: 20px 0;
+    padding: 20px 10%; /* 左右内边距 */
     text-align: left;
     margin-top: 40px;
     border-top: 1px solid #e0e0e0; /* 顶部边框 */
+    display: flex;
+    flex-wrap: wrap; /* 允许换行 */
+    gap: 20px; /* 列之间的间距 */
 }
 
 footer h3 {
     font-size: 1.8em; /* 增大字体 */
-    margin: 0;
-    padding-left: 10%;
+    margin: 0 0 20px; /* 下边距 */
     color: #1d1d1f; /* 深色文字 */
     font-weight: 500;
+    width: 100%; /* 标题占满一行 */
+}
+
+footer .footer-column {
+    flex: 1; /* 两列平分宽度 */
+    min-width: 200px; /* 最小宽度，防止内容挤压 */
 }
 
 footer h4, footer h5 {
     margin: 0;
     padding: 5px 0;
-    padding-left: 10%;
     color: #1d1d1f; /* 深色文字 */
 }
 
@@ -158,13 +166,17 @@ footer a:hover {
 
     <footer>
     <h3>Gango Studio</h3>
-    <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
-    <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
-    <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
-    <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
-    <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-    <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-    <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+    <div class="footer-column">
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+    <div class="footer-column">
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+    </div>
 </footer>
 </body>
 </html>
