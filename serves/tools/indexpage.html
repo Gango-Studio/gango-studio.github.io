@@ -99,11 +99,11 @@
             margin: 0;
         }
 
-        /* 页脚样式 */
+      	    /* 页脚样式 */
 footer {
     width: 100%;
     background-color: #ffffff; /* 白色背景 */
-    padding: 20px 10%; /* 左右内边距 */
+    padding: 20px 0;
     text-align: left;
     margin-top: 40px;
     border-top: 1px solid #e0e0e0; /* 顶部边框 */
@@ -111,28 +111,28 @@ footer {
 
 footer h3 {
     font-size: 1.8em; /* 增大字体 */
-    margin: 0 0 20px; /* 下边距 */
+    margin: 0;
+    padding-left: 10%;
     color: #1d1d1f; /* 深色文字 */
     font-weight: 500;
 }
 
-footer .footer-links {
-    display: flex;
-    flex-wrap: wrap; /* 允许换行 */
-    gap: 20px; /* 链接之间的间距 */
+footer h4, footer h5 {
+    margin: 0;
+    padding: 5px 0;
+    padding-left: 10%;
+    color: #1d1d1f; /* 深色文字 */
 }
 
-footer .footer-links a {
+footer a {
     color: #1d1d1f; /* 深色文字 */
     text-decoration: none;
     transition: color 0.3s ease;
-    font-size: 1em;
 }
 
-footer .footer-links a:hover {
-    color: #007aff; /* 悬停颜色 */
+footer a:hover {
+    color: #007aff; /* 苹果蓝 */
 }
-	    
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
 </head>
@@ -158,15 +158,13 @@ footer .footer-links a:hover {
 
     <footer>
     <h3>Gango Studio</h3>
-    <div class="footer-links">
-        <a href="https://gango-studio.github.io">🏠主页</a>
-        <a href="https://gango-studio.github.io/main.html">🔗Vlog</a>
-        <a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a>
-        <a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a>
-        <a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a>
-        <a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a>
-        <a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a>
-    </div>
+    <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+    <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+    <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+    <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+    <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+    <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
 </footer>
 </body>
 </html>
