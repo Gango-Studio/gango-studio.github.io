@@ -31,7 +31,7 @@
         /* 全局样式 */
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    /*font-family: 'Roboto', sans-serif;*/
     background-color: #f5f5f7; /* 主体灰色背景 */
     color: #1d1d1f;
     text-align: center;
@@ -99,58 +99,73 @@ body {
         }
 
       	    
-       /* 页脚样式 */
+       /* ==================== */
+/* FOOTER 完整样式 */
+/* ==================== */
 footer {
     width: 100%;
-    background-color: #ffffff; /* 强制白色背景 */
-    padding: 20px 0;
+    background-color: #ffffff; /* 纯白背景 */
+    padding: 20px 0 0; /* 顶部内边距 */
     text-align: left;
-    margin-top: 0; /* 移除顶部margin */
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0; /* 分割线 */
+    overflow: hidden; /* 清除浮动 */
+    
+    /* 等高解决方案 */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch; /* 强制子项等高 */
 }
 
-/* 主体内容容器 */
-.main-content {
-    background-color: #f5f5f7; /* 灰色背景 */
-    padding: 20px 0;
-    margin-bottom: -1px; /* 消除与footer的间隙 */
-}
-
-/* 其他原有footer样式保持不变 */
+/* 标题样式 */
 footer h3 {
     font-size: 1.8em;
-    margin: 0;
-    padding-left: 10%;
+    margin: 0 0 15px;
+    padding: 0 10%;
     color: #1d1d1f;
     font-weight: 500;
+    width: 100%; /* 独占一行 */
 }
 
+/* 列容器 */
 footer div {
-    float: left;
     width: 50%;
+    float: left; /* 兼容旧浏览器 */
     box-sizing: border-box;
-    background-color: #ffffff; /* 确保div也是白色 */
+    padding: 0 10% 20px 10%; /* 与标题对齐 */
+    background-color: #ffffff;
+    
+    /* Flexbox 等高方案 */
+    flex: 1;
+    min-width: 50%;
+    align-self: stretch;
 }
 
-
+/* 链接基础样式 */
 footer h4, footer h5 {
     margin: 0;
     padding: 5px 0;
-    padding-left: 10%;
-    color: #1d1d1f; /* 深色文字 */
+    color: #1d1d1f;
+    font-weight: normal;
 }
 
+/* 链接交互 */
 footer a {
-    color: #1d1d1f; /* 深色文字 */
+    color: #1d1d1f;
     text-decoration: none;
     transition: color 0.3s ease;
 }
-
 footer a:hover {
-    color: #007aff; /* 苹果蓝 */
+    color: #007aff;
 }
 
-
+/* 移动端适配 */
+@media (max-width: 600px) {
+    footer div {
+        width: 100%; /* 单列布局 */
+        min-width: 100%;
+        padding-bottom: 15px;
+    }
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
 </head>
