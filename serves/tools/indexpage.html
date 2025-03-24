@@ -29,14 +29,13 @@
              			     -20px -20px 60px #daedff;
 		}*/
         /* 全局样式 */
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif; /* Android 默认字体 */
-            background-color: #f5f5f7; /* 浅色背景 */
-            color: #1d1d1f; /* 深色文字 */
-            text-align: center;
-        }
-
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f7; /* 主体灰色背景 */
+    color: #1d1d1f;
+    text-align: center;
+}
         a {
             text-decoration: none;
             color: #007aff; /* 链接颜色 */
@@ -103,20 +102,36 @@
        /* 页脚样式 */
 footer {
     width: 100%;
-    background-color: #ffffff; /* 白色背景 */
+    background-color: #ffffff; /* 强制白色背景 */
     padding: 20px 0;
     text-align: left;
-    margin-top: 40px;
-    border-top: 1px solid #e0e0e0; /* 顶部边框 */
+    margin-top: 0; /* 移除顶部margin */
+    border-top: 1px solid #e0e0e0;
 }
 
+/* 主体内容容器 */
+.main-content {
+    background-color: #f5f5f7; /* 灰色背景 */
+    padding: 20px 0;
+    margin-bottom: -1px; /* 消除与footer的间隙 */
+}
+
+/* 其他原有footer样式保持不变 */
 footer h3 {
-    font-size: 1.8em; /* 增大字体 */
+    font-size: 1.8em;
     margin: 0;
     padding-left: 10%;
-    color: #1d1d1f; /* 深色文字 */
+    color: #1d1d1f;
     font-weight: 500;
 }
+
+footer div {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    background-color: #ffffff; /* 确保div也是白色 */
+}
+
 
 footer h4, footer h5 {
     margin: 0;
@@ -135,12 +150,7 @@ footer a:hover {
     color: #007aff; /* 苹果蓝 */
 }
 
-footer div {
-    float: left;
-    width: 50%;
-   /* box-sizing: border-box;*/
-    background-color: #ffffff; /* 强制改为白色背景 */
-}
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
 </head>
