@@ -28,24 +28,59 @@
 			box-shadow:  20px 20px 60px #a8b7d1,
              			     -20px -20px 60px #daedff;
 		}*/
-       /* =============== 全局样式 =============== */
+       
+/* =============== 全局样式 =============== */
 body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
     color: #1d1d1f;
     text-align: center;
-    background-color: #ffffff; /* 默认白色背景 */
+    background-color: #ffffff;
 }
 
 /* =============== 主体内容容器 =============== */
 .main-content {
-    background-color: #f5f5f7; /* 灰色背景仅在此容器内 */
-    min-height: calc(100vh - 180px); /* 预留footer空间 */
-    padding: 20px 0 40px; /* 下内边距加大 */
+    background-color: #f5f5f7;
+    min-height: calc(100vh - 180px);
+    padding: 20px 0 40px;
 }
 
-/* =============== 页脚样式（原始版本） =============== */
+/* =============== 工具项样式 =============== */
+.tools-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tool-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.tool-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.tool-item h2 {
+    margin: 0 0 10px;
+    color: #1d1d1f;
+    font-size: 1.4em;
+}
+
+.tool-item p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* =============== 页脚样式 =============== */
 footer {
     width: 100%;
     background-color: #ffffff;
@@ -53,7 +88,8 @@ footer {
     text-align: left;
     border-top: 1px solid #e0e0e0;
     position: relative;
-    z-index: 2; /* 确保在最上层 */
+    z-index: 2;
+    overflow: hidden; /* 清除浮动 */
 }
 
 footer h3 {
@@ -62,7 +98,6 @@ footer h3 {
     padding-left: 10%;
     color: #1d1d1f;
     font-weight: 500;
-    clear: both;
 }
 
 footer div {
@@ -70,23 +105,15 @@ footer div {
     width: 50%;
     box-sizing: border-box;
     background-color: #ffffff;
-    margin-bottom: -9999px; /* 等高hack */
+    padding: 0 10%;
+    margin-bottom: -9999px;
     padding-bottom: 9999px;
 }
 
-footer h4 {
+footer h4, footer h5 {
     margin: 0;
-    padding: 8px 0 8px 10%;
+    padding: 8px 0;
     color: #1d1d1f;
-    font-size: 1.1em;
-}
-
-footer h5 {
-    margin: 0;
-    padding: 6px 0 6px 10%;
-    color: #1d1d1f;
-    font-size: 1em;
-    font-weight: normal;
 }
 
 footer a {
@@ -99,24 +126,21 @@ footer a:hover {
     color: #007aff;
 }
 
-/* =============== 清除浮动 =============== */
-footer:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
 /* =============== 响应式设计 =============== */
 @media (max-width: 768px) {
     footer div {
         width: 100%;
         float: none;
-        padding-bottom: 20px;
+        padding: 0 10% 20px;
         margin-bottom: 0;
     }
     
     .main-content {
         min-height: calc(100vh - 220px);
+    }
+    
+    .tool-item {
+        padding: 15px;
     }
 }
     </style>
@@ -129,7 +153,120 @@ footer:after {
         </a>
     </header>
 
-    <div class="tools-container main-container">
+    <div class = "/* =============== 全局样式 =============== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #1d1d1f;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+/* =============== 主体内容容器 =============== */
+.main-content {
+    background-color: #f5f5f7;
+    min-height: calc(100vh - 180px);
+    padding: 20px 0 40px;
+}
+
+/* =============== 工具项样式 =============== */
+.tools-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tool-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.tool-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.tool-item h2 {
+    margin: 0 0 10px;
+    color: #1d1d1f;
+    font-size: 1.4em;
+}
+
+.tool-item p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* =============== 页脚样式 =============== */
+footer {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px 0 30px;
+    text-align: left;
+    border-top: 1px solid #e0e0e0;
+    position: relative;
+    z-index: 2;
+    overflow: hidden; /* 清除浮动 */
+}
+
+footer h3 {
+    font-size: 1.8em;
+    margin: 0;
+    padding-left: 10%;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+footer div {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 0 10%;
+    margin-bottom: -9999px;
+    padding-bottom: 9999px;
+}
+
+footer h4, footer h5 {
+    margin: 0;
+    padding: 8px 0;
+    color: #1d1d1f;
+}
+
+footer a {
+    color: #1d1d1f;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: #007aff;
+}
+
+/* =============== 响应式设计 =============== */
+@media (max-width: 768px) {
+    footer div {
+        width: 100%;
+        float: none;
+        padding: 0 10% 20px;
+        margin-bottom: 0;
+    }
+    
+    .main-content {
+        min-height: calc(100vh - 220px);
+    }
+    
+    .tool-item {
+        padding: 15px;
+    }
+}"><div class="tools-container">
         <div class="tool-item">
             <h2><a href="./toolpages/note.html" target="_blank">临时笔记本</a></h2>
             <p>（测试版，刷新不保存数据，如要保存数据，请不要关闭页面）</p>
@@ -141,7 +278,7 @@ footer:after {
             <h2><a href="./toolpages/countdown.html" target="_blank">极简倒计时</a></h2>
         </div>
     </div>
-
+</div>
    <footer>
     <h3>Gango Studio</h3>
     <div>
