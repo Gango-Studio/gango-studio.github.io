@@ -36,10 +36,11 @@
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif; /* Android 默认字体 */
-            background-color: #f5f5f7; /* 浅色背景 */
+            
             color: #1d1d1f; /* 深色文字 */
             text-align: center;
         }
+	
 
         a {
             text-decoration: none;
@@ -68,6 +69,9 @@
         }
 
         /* 工具容器样式 */
+	.nodiv{
+		background-color: #f5f5f7; /* 浅色背景 */
+	}
         .tools-container {
             max-width: 600px;
             margin: 0 auto;
@@ -147,6 +151,7 @@ footer div {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
 </head>
 <body>
+	<div>
     <header>
         <a href="https://gango-studio.github.io">
             <h1>Gango Tools</h1>
@@ -165,6 +170,8 @@ footer div {
             <h2><a href="./toolpages/countdown.html" target="_blank">极简倒计时</a></h2>
         </div>
     </div>
+</div>
+	
 </div>
    <footer>
     <h3>Gango Studio</h3>
