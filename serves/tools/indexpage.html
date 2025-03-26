@@ -39,6 +39,9 @@
             background-color: #f5f5f7;
             color: #1d1d1f; /* 深色文字 */
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 	
 
@@ -106,15 +109,17 @@
             color: #666; /* 灰色文字 */
             margin: 0;
         }
+       
        /* 页脚样式 */
 footer {
-    background-color:initial;
     width: 100%;
     background-color: #ffffff; /* 白色背景 */
     padding: 20px 0;
     text-align: left;
-    margin-top: 40px;
+    margin-top: auto; /* 使footer保持在底部 */
     border-top: 1px solid #e0e0e0; /* 顶部边框 */
+    display: flex;
+    flex-wrap: wrap;
 }
 
 footer h3 {
@@ -123,6 +128,7 @@ footer h3 {
     padding-left: 10%;
     color: #1d1d1f; /* 深色文字 */
     font-weight: 500;
+    width: 100%;
 }
 
 footer h4, footer h5 {
@@ -143,23 +149,30 @@ footer a:hover {
 }
 
 footer div {
-    float: left;
     width: 50%;
     box-sizing: border-box;
     background-color: #ffffff; /* 强制改为白色背景 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.main-content {
+    flex: 1; /* 使主要内容占据剩余空间 */
 }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> <!-- 引入 Roboto 字体 -->
 </head>
 <body>
-	<div class = "nodiv">
+	<div class="nodiv">
     <header>
         <a href="https://gango-studio.github.io">
             <h1>Gango Tools</h1>
         </a>
     </header>
 
-    <div class = "main-content"><div class="tools-container">
+    <div class="main-content"><div class="tools-container">
         <div class="tool-item">
             <h2><a href="./toolpages/note.html" target="_blank">临时笔记本</a></h2>
             <p>（测试版，刷新不保存数据，如要保存数据，请不要关闭页面）</p>
@@ -182,13 +195,13 @@ footer div {
         <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
     </div>
-    <div style = "height:100%;">
+    <div>
         <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-	<h5>&nbsp;<a></a></h5>
+        <h5>&nbsp;<a></a></h5>
     </div>
-</footer>
+   </footer>
 </body>
 </html>
 
