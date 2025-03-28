@@ -1,97 +1,156 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Gango Games</title>
- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>  
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
- <style>
-  <!--
-.STYLE1 {font-size: xx-large}
-.STYLE2 {font-size: x-large}
-.STYLE3 {font-size: large}
--->
-               a{
-                   text-decoration: none;
-                   color:blue;
-               }
-               .a1:visited{color:Blue;}
-               .a1:hover{color:Purple;}
-               .a1:active{color:Red;}
-          .nav1 {
-            display:block;
-            padding:20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gango Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-      .navs {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
+
+        a {
+            text-decoration: none;
+            color: #007aff;
+            transition: color 0.3s ease;
         }
-      .mainpara{
-           padding-left : 10%;
-       }
-	      .nav {
-            
-                   background: #fffff5;
-               }
-		.navpro{
-			border-radius: 35px;
-			background: #d3e2ef;
-			box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-		}
-       html, body { margin:0; height:100%; }
-  </style>
+
+        a:hover {
+            color: #005bb5;
+        }
+
+        /* 页首样式 */
+        header {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+        /* 游戏容器样式 */
+        .games-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: transparent;
+        }
+
+        /* 游戏项样式 */
+        .game-item {
+            margin: 20px 0;
+            padding: 24px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-item h2 {
+            font-size: 1.5em;
+            margin: 0;
+            color: #1d1d1f;
+        }
+
+        /* 页脚样式 */
+        footer {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px 0;
+            text-align: left;
+            margin-top: auto;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        footer h3 {
+            font-size: 1.8em;
+            margin: 0;
+            padding-left: 10%;
+            color: #1d1d1f;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        footer h4, footer h5 {
+            margin: 0;
+            padding: 5px 0;
+            padding-left: 10%;
+            color: #1d1d1f;
+        }
+
+        footer a {
+            color: #1d1d1f;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007aff;
+        }
+
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
-<a href = "https://gango-studio.github.io/" style="text-decoration: none;color:black"><div>
-       <h1 align="center">Gango</h1>
-</div></a>
-	<br/>
-		<br/>
-		<br/>
-		<br/>
-    <div style="width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" class = "STYLE2 navpro">
-	      <h4 class = "STYLE2"><strong><a style="text-decoration: none;" href = "https://gango-studio.github.io/games/tmhc/tmhc.html" target="_blank">1.高堡棋人▶️</a></h4></strong>
-	      	<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-   </div>
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<footer><div  style="background:#DCDCDC;height：100%;width:100%;"><br/></div><br/>
-    <h3  style ="padding-left : 6%;width：100% ;height:100%">Gango Studio</h3>
-    <h4 style = "width：100% ;height:100%"><a style ="color:black;text-decoration: none;padding-left : 10%;" href = "https://gango-studio.github.io">🏠主页</a></h4>
-    <div  style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/main.html">🔗Vlog</h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    <header>
+        <a href="https://gango-studio.github.io/">
+            <h1>Gango Games</h1>
+        </a>
+    </header>
+
+    <div class="main-content">
+        <div class="games-container">
+            <div class="game-item">
+                <h2><a href="https://gango-studio.github.io/games/tmhc/tmhc.html" target="_blank">高堡棋人 ▶️</a></h2>
+            </div>
+        </div>
     </div>
-   <div style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;"  href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-   </div>
-</footer>
+
+    <footer>
+        <h3>Gango Studio</h3>
+        <div>
+            <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+            <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+            <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+        </div>
+        <div>
+            <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        </div>
+    </footer>
 </body>
-   <script>
-            var innerwidth = window.innerWidth; 
-	   var x = 40;
-            if (innerwidth >= 750){
-	            document.getElementById("pro").style.width = "75%";
-            }
-            if (innerwidth <= 750){
-            
-	            document.getElementById("pro").style.width ="90%";
-      }
-   </script>                    
 </html>
