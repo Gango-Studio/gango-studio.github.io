@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gango Search</title>
+    <title>Gango Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1a73e8; /* Android 蓝色 */
-            --secondary-color: #34a853; /* 绿色 */
-            --error-color: #d93025; /* 红色 */
-            --text-primary: #202124; /* 主要文字 */
-            --text-secondary: #5f6368; /* 次要文字 */
-            --background: #ffffff; /* 背景色 */
-            --surface: #f8f9fa; /* 表面色 */
-            --border-radius: 12px; /* 圆角 */
-            --shadow: 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1); /* 阴影 */
-            --transition: all 0.2s ease; /* 过渡效果 */
+            --primary-color: #1a73e8;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --background: #ffffff;
+            --surface: #f8f9fa;
+            --border-radius: 12px;
+            --shadow: 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1);
+            --transition: all 0.2s ease;
         }
 
         body {
@@ -31,21 +29,23 @@
             text-align: center;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 24px;
-            flex: 1;
+        .main-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .center-content {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .logo {
             margin-bottom: 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .logo-text {
@@ -59,22 +59,23 @@
         }
 
         .logo-secondary {
-            color: var(--error-color);
+            color: #d93025;
         }
 
         .search-container {
             width: 100%;
-            margin-bottom: 24px;
+            margin-bottom: 40px;
         }
 
         .search-form {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            align-items: center;
         }
 
         .search-input {
             width: 100%;
+            max-width: 600px;
             padding: 16px 24px;
             border: 1px solid #dfe1e5;
             border-radius: var(--border-radius);
@@ -82,17 +83,12 @@
             outline: none;
             transition: var(--transition);
             box-shadow: var(--shadow);
+            margin-bottom: 16px;
         }
 
         .search-input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 1px 6px rgba(32, 33, 36, 0.1);
-        }
-
-        .search-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
         }
 
         .search-button {
@@ -138,35 +134,62 @@
             border-color: #d2e3fc;
         }
 
-        .home-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 14px;
-            margin-top: 24px;
-            display: inline-block;
-            transition: var(--transition);
+        .bookmarks-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            padding: 20px 0;
         }
 
-        .home-link:hover {
+        .bookmark-category {
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .bookmark-category h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        .bookmark-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bookmark-list li {
+            margin: 8px 0;
+        }
+
+        .bookmark-list a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+            display: block;
+            padding: 4px 0;
+        }
+
+        .bookmark-list a:hover {
+            color: var(--primary-color);
             text-decoration: underline;
         }
 
         .footer {
-            margin-top: auto;
             padding: 16px;
             color: var(--text-secondary);
             font-size: 12px;
         }
 
-        .footer p {
-            margin: 4px 0;
-        }
-
         @media (max-width: 600px) {
-            .container {
-                padding: 16px;
-            }
-            
             .logo-text {
                 font-size: 36px;
             }
@@ -174,40 +197,72 @@
             .search-input {
                 padding: 12px 20px;
             }
+            
+            .bookmarks-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <h1 class="logo-text">
-                <span class="logo-primary">Gango</span>
-                <span class="logo-secondary">Search</span>
-            </h1>
-        </div>
+    <div class="main-container">
+        <div class="center-content">
+            <div class="logo">
+                <h1 class="logo-text">
+                    <span class="logo-primary">Gango</span>
+                    <span class="logo-secondary">Home</span>
+                </h1>
+            </div>
 
-        <div class="engine-selector">
-            <div class="engine-option active" data-engine="bing">Bing</div>
-            <div class="engine-option" data-engine="google">Google</div>
-            <div class="engine-option" data-engine="baidu">百度</div>
-        </div>
+            <div class="engine-selector">
+                <div class="engine-option active" data-engine="bing">Bing</div>
+                <div class="engine-option" data-engine="google">Google</div>
+                <div class="engine-option" data-engine="baidu">百度</div>
+            </div>
 
-        <div class="search-container">
-            <form class="search-form" id="searchForm" method="get">
-                <input type="text" name="q" class="search-input" placeholder="搜索网络..." autocomplete="off" autofocus>
-                <div class="search-buttons">
+            <div class="search-container">
+                <form class="search-form" id="searchForm" method="get">
+                    <input type="text" name="q" class="search-input" placeholder="搜索网络..." autocomplete="off" autofocus>
                     <button type="submit" class="search-button">搜索</button>
-                    <button type="button" class="search-button" style="background-color: var(--secondary-color);">手气不错</button>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <a href="https://gango-studio.github.io/" class="home-link">返回Gango主页 ▶️</a>
+            <div class="bookmarks-container">
+                <div class="bookmark-category">
+                    <h3>常用网站</h3>
+                    <ul class="bookmark-list">
+                        <li><a href="https://gango-studio.github.io/">Gango 主页</a></li>
+                        <li><a href="https://mail.google.com/">Gmail</a></li>
+                        <li><a href="https://github.com/">GitHub</a></li>
+                        <li><a href="https://www.youtube.com/">YouTube</a></li>
+                    </ul>
+                </div>
+
+                <div class="bookmark-category">
+                    <h3>开发工具</h3>
+                    <ul class="bookmark-list">
+                        <li><a href="https://developer.mozilla.org/">MDN</a></li>
+                        <li><a href="https://stackoverflow.com/">Stack Overflow</a></li>
+                        <li><a href="https://www.w3schools.com/">W3Schools</a></li>
+                        <li><a href="https://codepen.io/">CodePen</a></li>
+                    </ul>
+                </div>
+
+                <div class="bookmark-category">
+                    <h3>社交媒体</h3>
+                    <ul class="bookmark-list">
+                        <li><a href="https://twitter.com/">Twitter</a></li>
+                        <li><a href="https://www.facebook.com/">Facebook</a></li>
+                        <li><a href="https://www.instagram.com/">Instagram</a></li>
+                        <li><a href="https://www.reddit.com/">Reddit</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="footer">
-        <p>ver 2.0</p>
-        <p id="engineCredit">powered by Microsoft Bing</p>
+        <p>ver 3.0 | powered by <span id="engineCredit">Microsoft Bing</span></p>
     </div>
 
     <script>
@@ -216,17 +271,17 @@
             bing: {
                 name: "Microsoft Bing",
                 url: "https://www.bing.com/search?q=",
-                credit: "powered by Microsoft Bing"
+                credit: "Microsoft Bing"
             },
             google: {
                 name: "Google",
                 url: "https://www.google.com/search?q=",
-                credit: "powered by Google"
+                credit: "Google"
             },
             baidu: {
                 name: "百度",
                 url: "https://www.baidu.com/s?wd=",
-                credit: "powered by 百度"
+                credit: "百度"
             }
         };
 
@@ -238,11 +293,8 @@
         // 切换搜索引擎
         engineOptions.forEach(option => {
             option.addEventListener("click", function() {
-                // 更新UI
                 engineOptions.forEach(opt => opt.classList.remove("active"));
                 this.classList.add("active");
-                
-                // 更新当前引擎
                 currentEngine = this.dataset.engine;
                 engineCredit.textContent = engines[currentEngine].credit;
             });
@@ -254,15 +306,6 @@
             const query = this.q.value.trim();
             if (query) {
                 window.location.href = engines[currentEngine].url + encodeURIComponent(query);
-            }
-        });
-
-        // 手气不错按钮
-        document.querySelector(".search-buttons button:last-child").addEventListener("click", function() {
-            const query = searchForm.q.value.trim();
-            if (query) {
-                // 这里可以改为随机跳转或其他有趣的功能
-                window.location.href = "https://www.bing.com/search?q=" + encodeURIComponent(query) + "&qs=n&form=QBRE";
             }
         });
     </script>
