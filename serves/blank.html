@@ -1,49 +1,271 @@
 <!DOCTYPE html>
-<html style="filter: grayscale(0%);">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1.0">
-<title>Gango Search</title>
-<style>
-	<!--
-		.STYLE1 {font-size: xx-large}
-		.STYLE2 {font-size: x-large}
-		.STYLE3 {font-size: large}
-		-->
-  a:link{color:Blue;}
-  a:visited{color:Blue;}
-  a:hover{color:Purple;}
-  a:active{color:Red;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gango Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a73e8; /* Android 蓝色 */
+            --secondary-color: #34a853; /* 绿色 */
+            --error-color: #d93025; /* 红色 */
+            --text-primary: #202124; /* 主要文字 */
+            --text-secondary: #5f6368; /* 次要文字 */
+            --background: #ffffff; /* 背景色 */
+            --surface: #f8f9fa; /* 表面色 */
+            --border-radius: 12px; /* 圆角 */
+            --shadow: 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.1); /* 阴影 */
+            --transition: all 0.2s ease; /* 过渡效果 */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 42px;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-primary {
+            color: var(--primary-color);
+        }
+
+        .logo-secondary {
+            color: var(--error-color);
+        }
+
+        .search-container {
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            border: 1px solid #dfe1e5;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.1);
+        }
+
+        .search-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .search-button {
+            padding: 10px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-button:hover {
+            background-color: #1765cc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .engine-selector {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .engine-option {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .engine-option:hover {
+            background-color: #f1f3f4;
+        }
+
+        .engine-option.active {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            border-color: #d2e3fc;
+        }
+
+        .home-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 24px;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 16px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .logo-text {
+                font-size: 36px;
+            }
+            
+            .search-input {
+                padding: 12px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-	<div style = "width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" >
-		<h1 class = "STYLE1">
-			<strong style = "color:blue">Gango </strong>&nbsp;&nbsp;&nbsp;&nbsp;
-			<strong style = "color:red">Search</strong>
-		</h1>
-		<form method = "get" action ="https://www.cn.bing.com/search?" style ="display:inline" class ="STYLE3">
-			<nobr>
-			<input name ="q" class ="STYLE3" style ="display:inline"/>
-			<button type = "submit" class ="STYLE3" style ="display:inline">search</button>
-			</nobr>
-		</form>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-	  	<p class = "STYLE3"><a style="text-decoration: none;" href="https://gango-studio.github.io/">返回Gango主页▶️</a></p>
-	</div>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<h5 style = "color:#999999">              ver1.0 </h5>
-	<h5 style = "color:#999999">powered by Microsoft Bing</h5>
+    <div class="container">
+        <div class="logo">
+            <h1 class="logo-text">
+                <span class="logo-primary">Gango</span>
+                <span class="logo-secondary">Search</span>
+            </h1>
+        </div>
+
+        <div class="engine-selector">
+            <div class="engine-option active" data-engine="bing">Bing</div>
+            <div class="engine-option" data-engine="google">Google</div>
+            <div class="engine-option" data-engine="baidu">百度</div>
+        </div>
+
+        <div class="search-container">
+            <form class="search-form" id="searchForm" method="get">
+                <input type="text" name="q" class="search-input" placeholder="搜索网络..." autocomplete="off" autofocus>
+                <div class="search-buttons">
+                    <button type="submit" class="search-button">搜索</button>
+                    <button type="button" class="search-button" style="background-color: var(--secondary-color);">手气不错</button>
+                </div>
+            </form>
+        </div>
+
+        <a href="https://gango-studio.github.io/" class="home-link">返回Gango主页 ▶️</a>
+    </div>
+
+    <div class="footer">
+        <p>ver 2.0</p>
+        <p id="engineCredit">powered by Microsoft Bing</p>
+    </div>
+
+    <script>
+        // 搜索引擎配置
+        const engines = {
+            bing: {
+                name: "Microsoft Bing",
+                url: "https://www.bing.com/search?q=",
+                credit: "powered by Microsoft Bing"
+            },
+            google: {
+                name: "Google",
+                url: "https://www.google.com/search?q=",
+                credit: "powered by Google"
+            },
+            baidu: {
+                name: "百度",
+                url: "https://www.baidu.com/s?wd=",
+                credit: "powered by 百度"
+            }
+        };
+
+        let currentEngine = "bing";
+        const searchForm = document.getElementById("searchForm");
+        const engineOptions = document.querySelectorAll(".engine-option");
+        const engineCredit = document.getElementById("engineCredit");
+
+        // 切换搜索引擎
+        engineOptions.forEach(option => {
+            option.addEventListener("click", function() {
+                // 更新UI
+                engineOptions.forEach(opt => opt.classList.remove("active"));
+                this.classList.add("active");
+                
+                // 更新当前引擎
+                currentEngine = this.dataset.engine;
+                engineCredit.textContent = engines[currentEngine].credit;
+            });
+        });
+
+        // 处理搜索提交
+        searchForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const query = this.q.value.trim();
+            if (query) {
+                window.location.href = engines[currentEngine].url + encodeURIComponent(query);
+            }
+        });
+
+        // 手气不错按钮
+        document.querySelector(".search-buttons button:last-child").addEventListener("click", function() {
+            const query = searchForm.q.value.trim();
+            if (query) {
+                // 这里可以改为随机跳转或其他有趣的功能
+                window.location.href = "https://www.bing.com/search?q=" + encodeURIComponent(query) + "&qs=n&form=QBRE";
+            }
+        });
+    </script>
 </body>
 </html>
 <!--Gango Severs VERSION V22.6.12-->
