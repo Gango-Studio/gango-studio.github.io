@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html style="filter: grayscale(0%);">
 <head>
     <title>Gango 计算器</title>
     <meta charset="UTF-8">
@@ -27,6 +27,20 @@
             color: #005bb5;
         }
 
+        /* 保留原有样式 */
+        .STYLE1 { font-size: xx-large; }
+        .STYLE2 { font-size: x-large; }
+        .STYLE3 { font-size: large; }
+        
+        .nav {
+            border-radius: 25px;
+            background: #ffffff;
+            box-shadow: 20px 20px 60px #a8b7d1, -20px -20px 60px #daedff;
+            max-width: 320px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
         /* 页眉样式 */
         header {
             text-align: center;
@@ -35,98 +49,67 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        header h1 {
-            font-size: 2em;
-            margin: 0;
-            color: #1d1d1f;
-            font-weight: 500;
-        }
-
         /* 主要内容区域 */
         .main-content {
             flex: 1;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
         }
 
-        /* 计算器容器 - 使用Gango卡片风格 */
-        .calculator-container {
-            max-width: 300px;
-            width: 100%;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 显示屏样式 */
-        .calculator-display {
-            width: calc(100% - 30px);
-            padding: 15px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            text-align: right;
-            border: none;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* 按钮样式 */
-        .calculator-buttons {
+        /* 优化后的按钮布局 */
+        .calculator-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
+            margin-top: 15px;
         }
 
-        .calculator-button {
-            padding: 15px;
-            font-size: 1.2em;
+        /* 按钮样式调整 */
+        input[type="button"].STYLE2 {
+            padding: 15px 0;
             border: none;
             border-radius: 8px;
             background-color: #f8f9fa;
             color: #1d1d1f;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-size: 1.2em;
         }
 
-        .calculator-button:hover {
+        input[type="button"].STYLE2:hover {
             background-color: #e9ecef;
             transform: translateY(-2px);
         }
 
-        .calculator-button:active {
+        input[type="button"].STYLE2:active {
             transform: translateY(0);
         }
 
-        /* 操作符按钮特殊样式 */
-        .operator {
+        /* 特殊按钮样式 */
+        #eql {
+            background-color: #007aff !important;
+            color: white !important;
+            grid-column: span 2;
+        }
+
+        #plus, #sub, #tim, #mul {
             background-color: #e9ecef;
             color: #007aff;
         }
 
-        /* 等号按钮特殊样式 */
-        .equals {
-            background-color: #007aff;
-            color: white;
-        }
-
-        /* 清除按钮 */
-        .clear {
-            grid-column: span 2;
-            background-color: #ff3b30;
-            color: white;
-        }
-
-        /* 提示文本 */
-        .hint {
-            margin-top: 20px;
-            color: #666;
-            font-size: 0.9em;
-            text-align: center;
+        /* 显示屏样式 */
+        #out {
+            width: calc(100% - 30px);
+            padding: 15px;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            text-align: right;
+            border: none;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
         /* 页脚样式 - 与Gango Tools一致 */
@@ -173,55 +156,44 @@
             display: flex;
             flex-direction: column;
         }
-
-        @media (max-width: 600px) {
-            .calculator-container {
-                max-width: 280px;
-                padding: 15px;
-            }
-            
-            .calculator-button {
-                padding: 12px;
-                font-size: 1.1em;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰</a> / 计算器</h1>
+        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 计算器</h1>
     </header>
 
     <div class="main-content">
-        <div class="calculator-container">
-            <input type="text" id="out" class="calculator-display" readonly>
+        <div class="STYLE3 nav">
+            <input type="text" id="out" class="STYLE2 nav" readonly>
             
-            <div class="calculator-buttons">
-                <button class="calculator-button clear" onclick="clearDisplay()">C</button>
-                <button class="calculator-button operator" onclick="appendToDisplay('/')">/</button>
+            <div class="calculator-grid">
+                <!-- 第一行 -->
+                <input type="button" id="7" value="7" onClick="onclicknum(7)" class="STYLE2">
+                <input type="button" id="8" value="8" onClick="onclicknum(8)" class="STYLE2">
+                <input type="button" id="9" value="9" onClick="onclicknum(9)" class="STYLE2">
+                <input type="button" id="mul" value="÷" onClick="onclicknum('/')" class="STYLE2">
                 
-                <button class="calculator-button" onclick="appendToDisplay('7')">7</button>
-                <button class="calculator-button" onclick="appendToDisplay('8')">8</button>
-                <button class="calculator-button" onclick="appendToDisplay('9')">9</button>
-                <button class="calculator-button operator" onclick="appendToDisplay('*')">×</button>
+                <!-- 第二行 -->
+                <input type="button" id="4" value="4" onClick="onclicknum(4)" class="STYLE2">
+                <input type="button" id="5" value="5" onClick="onclicknum(5)" class="STYLE2">
+                <input type="button" id="6" value="6" onClick="onclicknum(6)" class="STYLE2">
+                <input type="button" id="tim" value="×" onClick="onclicknum('*')" class="STYLE2">
                 
-                <button class="calculator-button" onclick="appendToDisplay('4')">4</button>
-                <button class="calculator-button" onclick="appendToDisplay('5')">5</button>
-                <button class="calculator-button" onclick="appendToDisplay('6')">6</button>
-                <button class="calculator-button operator" onclick="appendToDisplay('-')">-</button>
+                <!-- 第三行 -->
+                <input type="button" id="1" value="1" onClick="onclicknum(1)" class="STYLE2">
+                <input type="button" id="2" value="2" onClick="onclicknum(2)" class="STYLE2">
+                <input type="button" id="3" value="3" onClick="onclicknum(3)" class="STYLE2">
+                <input type="button" id="sub" value="-" onClick="onclicknum('-')" class="STYLE2">
                 
-                <button class="calculator-button" onclick="appendToDisplay('1')">1</button>
-                <button class="calculator-button" onclick="appendToDisplay('2')">2</button>
-                <button class="calculator-button" onclick="appendToDisplay('3')">3</button>
-                <button class="calculator-button operator" onclick="appendToDisplay('+')">+</button>
-                
-                <button class="calculator-button" onclick="appendToDisplay('0')">0</button>
-                <button class="calculator-button" onclick="appendToDisplay('.')">.</button>
-                <button class="calculator-button equals" onclick="calculate()">=</button>
+                <!-- 第四行 -->
+                <input type="button" id="0" value="0" onClick="onclicknum(0)" class="STYLE2">
+                <input type="button" id="point" value="." onClick="onclicknum('.')" class="STYLE2">
+                <input type="button" id="plus" value="+" onClick="onclicknum('+')" class="STYLE2">
+                <input type="button" id="eql" value="=" onClick="onclickresult()" class="STYLE2">
             </div>
         </div>
-        
-        <p class="hint">点击"C"按钮清空计算器 | 支持键盘输入</p>
+        <p class="STYLE2">按C键清空 | 支持键盘输入</p>
     </div>
 
     <footer>
@@ -240,41 +212,45 @@
     </footer>
 
     <script>
-        // 获取显示屏元素
-        const display = document.getElementById('out');
+        var numresult;
+        var str;
         
-        // 追加到显示屏
-        function appendToDisplay(value) {
-            display.value += value;
+        function onclicknum(nums) {
+            str = document.getElementById("out");
+            str.value += nums;
         }
         
-        // 清空显示屏
-        function clearDisplay() {
-            display.value = '';
-        }
-        
-        // 计算结果
-        function calculate() {
+        function onclickresult() {
+            str = document.getElementById("out");
             try {
-                const result = eval(display.value);
-                display.value = Number.isInteger(result) ? result : parseFloat(result.toFixed(6));
+                numresult = eval(str.value);
+                // 如果是整数则不显示小数部分
+                str.value = Number.isInteger(numresult) ? numresult : parseFloat(numresult.toFixed(6));
             } catch (error) {
-                display.value = '错误';
-                setTimeout(() => clearDisplay(), 1000);
+                str.value = "错误";
+                setTimeout(function() { str.value = ""; }, 1000);
             }
         }
         
-        // 键盘支持
+        // 添加键盘支持
         document.addEventListener('keydown', function(event) {
-            const key = event.key;
+            var key = event.key;
+            var display = document.getElementById("out");
             
-            if (/[0-9+\-*/.]/.test(key)) {
-                appendToDisplay(key);
-            } else if (key === 'Enter' || key === '=') {
-                calculate();
-            } else if (key === 'Escape' || key === 'c') {
-                clearDisplay();
-            } else if (key === 'Backspace') {
+            // 数字和运算符
+            if (/[0-9+\-*/.=]/.test(key)) {
+                if (key === '=' || key === 'Enter') {
+                    onclickresult();
+                } else {
+                    onclicknum(key);
+                }
+            } 
+            // 清除键
+            else if (key === 'Escape' || key === 'c' || key === 'C') {
+                display.value = "";
+            }
+            // 退格键
+            else if (key === 'Backspace') {
                 display.value = display.value.slice(0, -1);
             }
         });
