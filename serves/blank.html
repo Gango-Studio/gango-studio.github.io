@@ -11,6 +11,44 @@ html, body {
     overflow-x: hidden;
     max-width: 100%;
 }
+        /* 标签页容器居中 */
+.bookmarks-container {
+    max-width: 800px;
+    margin: 0 auto; /* 水平居中 */
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center; /* 内容居中 */
+}
+
+/* 每个标签页分类卡片 */
+.bookmark-category {
+    background-color: var(--surface);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    max-width: 220px; /* 限制最大宽度 */
+    margin: 0 auto; /* 水平居中 */
+}
+
+/* 响应式调整 */
+@media (max-width: 900px) {
+    .bookmarks-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        padding: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .bookmarks-container {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+    }
+    .bookmark-category {
+        max-width: 100%;
+    }
+}
         :root {
             --primary-color: #1a73e8;
             --text-primary: #202124;
