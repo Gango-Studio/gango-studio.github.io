@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* 禁止水平滚动条 */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
         /* 全局样式 - 与Gango Tools一致 */
         body {
             margin: 0;
@@ -58,17 +64,12 @@
             justify-content: center;
         }
 
-        /* 优化后的按钮布局 */
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        /* 按钮样式调整 */
+        /* 恢复原始按钮样式 */
         input[type="button"].STYLE2 {
-            padding: 15px 0;
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
             border: none;
             border-radius: 8px;
             background-color: #f8f9fa;
@@ -80,23 +81,23 @@
 
         input[type="button"].STYLE2:hover {
             background-color: #e9ecef;
-            transform: translateY(-2px);
-        }
-
-        input[type="button"].STYLE2:active {
-            transform: translateY(0);
         }
 
         /* 特殊按钮样式 */
         #eql {
             background-color: #007aff !important;
             color: white !important;
-            grid-column: span 2;
         }
 
         #plus, #sub, #tim, #mul {
             background-color: #e9ecef;
             color: #007aff;
+        }
+
+        /* 新增C键样式 */
+        #clear {
+            background-color: #ff3b30;
+            color: white;
         }
 
         /* 显示屏样式 */
@@ -112,7 +113,7 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* 页脚样式 - 与Gango Tools一致 */
+        /* 页脚样式 */
         footer {
             width: 100%;
             background-color: #ffffff;
@@ -167,30 +168,37 @@
         <div class="STYLE3 nav">
             <input type="text" id="out" class="STYLE2 nav" readonly>
             
-            <div class="calculator-grid">
+            <div style="text-align: center;">
                 <!-- 第一行 -->
+                <input type="button" id="clear" value="C" onClick="clearDisplay()" class="STYLE2">
+                <input type="button" id="mul" value="/" onClick="onclicknum('/')" class="STYLE2">
+                <input type="button" id="tim" value="*" onClick="onclicknum('*')" class="STYLE2">
+                <input type="button" id="sub" value="-" onClick="onclicknum('-')" class="STYLE2">
+                <br/><br/>
+                
+                <!-- 第二行 -->
                 <input type="button" id="7" value="7" onClick="onclicknum(7)" class="STYLE2">
                 <input type="button" id="8" value="8" onClick="onclicknum(8)" class="STYLE2">
                 <input type="button" id="9" value="9" onClick="onclicknum(9)" class="STYLE2">
-                <input type="button" id="mul" value="÷" onClick="onclicknum('/')" class="STYLE2">
+                <input type="button" id="plus" value="+" onClick="onclicknum('+')" class="STYLE2">
+                <br/><br/>
                 
-                <!-- 第二行 -->
+                <!-- 第三行 -->
                 <input type="button" id="4" value="4" onClick="onclicknum(4)" class="STYLE2">
                 <input type="button" id="5" value="5" onClick="onclicknum(5)" class="STYLE2">
                 <input type="button" id="6" value="6" onClick="onclicknum(6)" class="STYLE2">
-                <input type="button" id="tim" value="×" onClick="onclicknum('*')" class="STYLE2">
+                <input type="button" id="eql" value="=" onClick="onclickresult()" class="STYLE2">
+                <br/><br/>
                 
-                <!-- 第三行 -->
+                <!-- 第四行 -->
                 <input type="button" id="1" value="1" onClick="onclicknum(1)" class="STYLE2">
                 <input type="button" id="2" value="2" onClick="onclicknum(2)" class="STYLE2">
                 <input type="button" id="3" value="3" onClick="onclicknum(3)" class="STYLE2">
-                <input type="button" id="sub" value="-" onClick="onclicknum('-')" class="STYLE2">
-                
-                <!-- 第四行 -->
-                <input type="button" id="0" value="0" onClick="onclicknum(0)" class="STYLE2">
                 <input type="button" id="point" value="." onClick="onclicknum('.')" class="STYLE2">
-                <input type="button" id="plus" value="+" onClick="onclicknum('+')" class="STYLE2">
-                <input type="button" id="eql" value="=" onClick="onclickresult()" class="STYLE2">
+                <br/><br/>
+                
+                <!-- 第五行 -->
+                <input type="button" id="0" value="0" onClick="onclicknum(0)" class="STYLE2" style="width: 120px;">
             </div>
         </div>
         <p class="STYLE2">按C键清空 | 支持键盘输入</p>
@@ -220,6 +228,10 @@
             str.value += nums;
         }
         
+        function clearDisplay() {
+            document.getElementById("out").value = "";
+        }
+        
         function onclickresult() {
             str = document.getElementById("out");
             try {
@@ -228,7 +240,7 @@
                 str.value = Number.isInteger(numresult) ? numresult : parseFloat(numresult.toFixed(6));
             } catch (error) {
                 str.value = "错误";
-                setTimeout(function() { str.value = ""; }, 1000);
+                setTimeout(function() { clearDisplay(); }, 1000);
             }
         }
         
@@ -247,7 +259,7 @@
             } 
             // 清除键
             else if (key === 'Escape' || key === 'c' || key === 'C') {
-                display.value = "";
+                clearDisplay();
             }
             // 退格键
             else if (key === 'Backspace') {
