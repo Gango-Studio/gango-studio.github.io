@@ -1,39 +1,264 @@
 <!DOCTYPE html>
-<html style="filter: grayscale(0%);">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,user-scalable=no">
-	  <title>Gango Notes</title>
-	  <style>
-                 <!--
-		 .STYLE1 {font-size: xx-large}
-		 .STYLE2 {font-size: x-large}
-		 .STYLE3 {font-size: large}
-		 -->
-  		  a:link{color:Blue;}
-  		  a:visited{color:Blue;}
- 		  a:hover{color:Blue;}
-  		  a:active{color:Blue;}
-		  .nav{			
-			/*background: #d3e2ef;*/
-		}
-                .navpro{
-			border-radius: 17px;
-			background: #F7EED6;
-			box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-		}
-	  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gango Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 - 与Gango Tools一致 */
+        :root {
+            --primary-color: #1a73e8;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --background: #f5f5f7;
+            --surface: #ffffff;
+            --note-bg: #F7EED6;
+            --border-radius: 12px;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #005bb5;
+        }
+
+        /* 页眉样式 */
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: var(--surface);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 笔记容器 */
+        .notes-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 文本区域样式 */
+        .note-title, .note-content {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--note-bg);
+            box-shadow: var(--shadow);
+            font-family: inherit;
+            font-size: 1.1em;
+            resize: none;
+        }
+
+        .note-title {
+            height: 60px;
+            font-size: 1.5em;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .note-content {
+            min-height: 400px;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        /* 按钮样式 */
+        .save-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .save-btn:hover {
+            background-color: #1765cc;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* 页脚样式 - 与Gango Tools一致 */
+        footer {
+            width: 100%;
+            background-color: var(--surface);
+            padding: 20px 0;
+            text-align: left;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        footer h3 {
+            font-size: 1.8em;
+            margin: 0;
+            padding-left: 10%;
+            color: var(--text-primary);
+            font-weight: 500;
+            width: 100%;
+        }
+
+        footer h4, footer h5 {
+            margin: 0;
+            padding: 5px 0;
+            padding-left: 10%;
+            color: var(--text-primary);
+        }
+
+        footer a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary-color);
+        }
+
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            background-color: var(--surface);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .note-title, .note-content {
+                width: 90%;
+            }
+            
+            .note-content {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .note-title {
+                font-size: 1.2em;
+                height: 50px;
+            }
+            
+            footer div {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<body class = "nav">
-  	<br/>
-	<h1><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a>Gango Notes📒</h1> 
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-  <div   style="text-align:center;"><textarea style="resize:none;width:60%;height:6%;text-align:center;" class = "STYLE2 navpro" >标题</textarea><br/></div>
-  <div   style="text-align:center;"><textarea style="resize:none;height:100vh;width:80%;height:1080px;text-align:center" class = "STYLE2 navpro" >正文</textarea></div>
+<body>
+    <header>
+        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰</a> / Gango Notes📒</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="notes-container">
+            <textarea id="noteTitle" class="note-title" placeholder="标题">标题</textarea>
+            <textarea id="noteContent" class="note-content" placeholder="开始记录...">正文</textarea>
+            <button id="saveBtn" class="save-btn">保存笔记</button>
+        </div>
+    </div>
+
+    <footer>
+        <h3>Gango Studio</h3>
+        <div>
+            <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+            <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+            <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+        </div>
+        <div>
+            <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        </div>
+    </footer>
+
+    <script>
+        // 获取DOM元素
+        const noteTitle = document.getElementById('noteTitle');
+        const noteContent = document.getElementById('noteContent');
+        const saveBtn = document.getElementById('saveBtn');
+
+        // 加载保存的笔记
+        function loadNote() {
+            const savedTitle = localStorage.getItem('gangoNoteTitle');
+            const savedContent = localStorage.getItem('gangoNoteContent');
+            
+            if (savedTitle) noteTitle.value = savedTitle;
+            if (savedContent) noteContent.value = savedContent;
+        }
+
+        // 保存笔记到本地存储
+        function saveNote() {
+            localStorage.setItem('gangoNoteTitle', noteTitle.value);
+            localStorage.setItem('gangoNoteContent', noteContent.value);
+            
+            // 显示保存反馈
+            saveBtn.textContent = '已保存!';
+            setTimeout(() => {
+                saveBtn.textContent = '保存笔记';
+            }, 2000);
+        }
+
+        // 自动保存功能
+        let saveTimeout;
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveNote, 1000);
+        }
+
+        // 事件监听
+        saveBtn.addEventListener('click', saveNote);
+        noteTitle.addEventListener('input', autoSave);
+        noteContent.addEventListener('input', autoSave);
+
+        // 页面加载时读取保存的笔记
+        window.addEventListener('load', loadNote);
+    </script>
 </body>
 </html>
