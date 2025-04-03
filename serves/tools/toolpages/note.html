@@ -6,11 +6,9 @@
     <title>Gango Notes</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* 全局样式 - 与Gango Tools一致 */
         :root {
             --primary-color: #1a73e8;
             --text-primary: #202124;
-            --text-secondary: #5f6368;
             --background: #f5f5f7;
             --surface: #ffffff;
             --note-bg: #F7EED6;
@@ -20,7 +18,7 @@
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--background);
             color: var(--text-primary);
             display: flex;
@@ -28,17 +26,7 @@
             min-height: 100vh;
         }
 
-        a {
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #005bb5;
-        }
-
-        /* 页眉样式 */
+        /* 统一黑色页眉 */
         header {
             text-align: center;
             padding: 20px 0;
@@ -49,11 +37,10 @@
         header h1 {
             font-size: 2em;
             margin: 0;
-            color: var(--text-primary);
+            color: black; /* 统一黑色 */
             font-weight: 500;
         }
 
-        /* 主要内容区域 */
         .main-content {
             flex: 1;
             padding: 20px;
@@ -62,63 +49,85 @@
             align-items: center;
         }
 
-        /* 笔记容器 */
-        .notes-container {
-            max-width: 800px;
+        /* 备忘录列表容器 */
+        .notes-list {
             width: 100%;
-            margin: 0 auto;
+            max-width: 800px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 20px;
         }
 
-        /* 文本区域样式 */
-        .note-title, .note-content {
-            width: 100%;
-            max-width: 600px;
-            padding: 15px;
-            border: none;
-            border-radius: var(--border-radius);
+        /* 单个备忘录样式 */
+        .note-item {
             background-color: var(--note-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
             box-shadow: var(--shadow);
-            font-family: inherit;
-            font-size: 1.1em;
-            resize: none;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .note-title {
-            height: 60px;
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: 500;
-            text-align: center;
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 5px;
         }
 
         .note-content {
-            min-height: 400px;
-            text-align: left;
+            width: 100%;
+            min-height: 100px;
+            border: none;
+            background: transparent;
+            resize: none;
+            font-family: inherit;
             line-height: 1.6;
+            padding: 5px;
         }
 
-        /* 按钮样式 */
+        .note-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .note-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
         .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #ff3b30;
+            color: white;
+        }
+
+        .add-note-btn {
+            margin-top: 20px;
             padding: 10px 20px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: var(--border-radius);
-            font-size: 1em;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 10px;
+            font-size: 1em;
         }
 
-        .save-btn:hover {
-            background-color: #1765cc;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-
-        /* 页脚样式 - 与Gango Tools一致 */
+        /* 统一页脚样式 */
         footer {
             width: 100%;
             background-color: var(--surface);
@@ -138,6 +147,13 @@
             width: 100%;
         }
 
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
         footer h4, footer h5 {
             margin: 0;
             padding: 5px 0;
@@ -155,35 +171,7 @@
             color: var(--primary-color);
         }
 
-        footer div {
-            width: 50%;
-            box-sizing: border-box;
-            background-color: var(--surface);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .note-title, .note-content {
-                width: 90%;
-            }
-            
-            .note-content {
-                min-height: 300px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 10px;
-            }
-            
-            .note-title {
-                font-size: 1.2em;
-                height: 50px;
-            }
-            
+        @media (max-width: 600px) {
             footer div {
                 width: 100%;
             }
@@ -192,15 +180,14 @@
 </head>
 <body>
     <header>
-        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰</a> / Gango Notes📒</h1>
+        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html" style="color: black; text-decoration: none;">Gango工具箱🧰</a> / <span style="color: var(--primary-color)">备忘录</span></h1>
     </header>
 
     <div class="main-content">
-        <div class="notes-container">
-            <textarea id="noteTitle" class="note-title" placeholder="标题">标题</textarea>
-            <textarea id="noteContent" class="note-content" placeholder="开始记录...">正文</textarea>
-            <button id="saveBtn" class="save-btn">保存笔记</button>
+        <div class="notes-list" id="notesList">
+            <!-- 备忘录将通过JS动态添加 -->
         </div>
+        <button class="add-note-btn" id="addNoteBtn">+ 添加新备忘录</button>
     </div>
 
     <footer>
@@ -219,46 +206,82 @@
     </footer>
 
     <script>
-        // 获取DOM元素
-        const noteTitle = document.getElementById('noteTitle');
-        const noteContent = document.getElementById('noteContent');
-        const saveBtn = document.getElementById('saveBtn');
-
-        // 加载保存的笔记
-        function loadNote() {
-            const savedTitle = localStorage.getItem('gangoNoteTitle');
-            const savedContent = localStorage.getItem('gangoNoteContent');
+        // 备忘录功能
+        const notesList = document.getElementById('notesList');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        
+        // 加载保存的备忘录
+        function loadNotes() {
+            const savedNotes = JSON.parse(localStorage.getItem('gangoNotes')) || [];
+            savedNotes.forEach(note => {
+                addNoteToDOM(note.id, note.title, note.content);
+            });
             
-            if (savedTitle) noteTitle.value = savedTitle;
-            if (savedContent) noteContent.value = savedContent;
+            // 如果没有备忘录，添加一个默认的
+            if (savedNotes.length === 0) {
+                addNewNote();
+            }
         }
-
-        // 保存笔记到本地存储
-        function saveNote() {
-            localStorage.setItem('gangoNoteTitle', noteTitle.value);
-            localStorage.setItem('gangoNoteContent', noteContent.value);
+        
+        // 添加新备忘录
+        function addNewNote() {
+            const noteId = Date.now().toString();
+            addNoteToDOM(noteId, '新备忘录', '');
+            saveNotes();
+        }
+        
+        // 添加到DOM
+        function addNoteToDOM(id, title, content) {
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note-item';
+            noteElement.dataset.id = id;
             
-            // 显示保存反馈
-            saveBtn.textContent = '已保存!';
-            setTimeout(() => {
-                saveBtn.textContent = '保存笔记';
-            }, 2000);
+            noteElement.innerHTML = `
+                <div class="note-header">
+                    <input type="text" class="note-title" value="${title}" placeholder="标题">
+                    <div class="note-actions">
+                        <button class="note-btn save-btn">保存</button>
+                        <button class="note-btn delete-btn">删除</button>
+                    </div>
+                </div>
+                <textarea class="note-content" placeholder="记录内容...">${content}</textarea>
+            `;
+            
+            notesList.prepend(noteElement);
+            
+            // 添加事件监听
+            const saveBtn = noteElement.querySelector('.save-btn');
+            const deleteBtn = noteElement.querySelector('.delete-btn');
+            const titleInput = noteElement.querySelector('.note-title');
+            const contentInput = noteElement.querySelector('.note-content');
+            
+            saveBtn.addEventListener('click', () => saveNotes());
+            deleteBtn.addEventListener('click', () => {
+                noteElement.remove();
+                saveNotes();
+            });
+            
+            // 自动保存
+            titleInput.addEventListener('input', () => saveNotes());
+            contentInput.addEventListener('input', () => saveNotes());
         }
-
-        // 自动保存功能
-        let saveTimeout;
-        function autoSave() {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(saveNote, 1000);
+        
+        // 保存所有备忘录
+        function saveNotes() {
+            const notes = [];
+            document.querySelectorAll('.note-item').forEach(noteElement => {
+                notes.push({
+                    id: noteElement.dataset.id,
+                    title: noteElement.querySelector('.note-title').value,
+                    content: noteElement.querySelector('.note-content').value
+                });
+            });
+            localStorage.setItem('gangoNotes', JSON.stringify(notes));
         }
-
-        // 事件监听
-        saveBtn.addEventListener('click', saveNote);
-        noteTitle.addEventListener('input', autoSave);
-        noteContent.addEventListener('input', autoSave);
-
-        // 页面加载时读取保存的笔记
-        window.addEventListener('load', loadNote);
+        
+        // 初始化
+        addNoteBtn.addEventListener('click', addNewNote);
+        window.addEventListener('load', loadNotes);
     </script>
 </body>
 </html>
