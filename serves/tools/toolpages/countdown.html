@@ -1,51 +1,49 @@
 <!--Ver 1.0 Developed on 22,Mar 2025-->
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
+    <title>Gango Countdown Timer</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gango Countdown Timer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #1a73e8;
-            --text-primary: #1d1d1f;
-            --background: #f5f5f7;
-            --surface: #ffffff;
-            --border-radius: 12px;
-            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
+        /* 全局样式 - 与计算器一致 */
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
+            background-color: #f5f5f7;
+            color: #1d1d1f;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* 严格遵循的黑色页眉 */
+        a {
+            text-decoration: none;
+            color: #007aff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #005bb5;
+        }
+
+        /* 页眉样式 - 与计算器一致 */
         header {
             text-align: center;
             padding: 20px 0;
-            background-color: var(--surface);
+            background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
             font-size: 2em;
             margin: 0;
-            color: black;
+            color: #1d1d1f;
             font-weight: 500;
         }
 
-        header a {
-            color: black !important;
-            text-decoration: none;
-        }
-
+        /* 主要内容区域 */
         .container {
             text-align: center;
             flex: 1;
@@ -56,15 +54,16 @@
             align-items: center;
         }
 
+        /* 圆形滚动条 */
         .wheel {
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background-color: var(--surface);
+            background-color: #ffffff;
             position: relative;
             margin: 0 auto;
             cursor: pointer;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e0e0;
             touch-action: none;
         }
@@ -73,47 +72,47 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background-color: #007aff;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-90deg);
             pointer-events: none;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
+        /* 时间显示 */
         .display {
             margin: 20px 0;
             font-size: 2em;
-            color: var(--text-primary);
+            color: #1d1d1f;
             font-weight: 500;
         }
 
+        /* 按钮样式 */
         button {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 1em;
             cursor: pointer;
-            background-color: var(--primary-color);
+            background-color: #007aff;
             color: white;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             transition: all 0.2s ease;
             font-weight: 500;
         }
 
         button:hover {
-            background-color: #1765cc;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            background-color: #005bb5;
         }
 
-        /* 严格遵循的Gango Tools页脚样式 */
+        /* 页脚样式 - 与计算器完全一致 */
         footer {
             width: 100%;
-            background-color: var(--surface);
+            background-color: #ffffff;
             padding: 20px 0;
             text-align: left;
-            margin-top: auto;
             border-top: 1px solid #e0e0e0;
             display: flex;
             flex-wrap: wrap;
@@ -123,7 +122,7 @@
             font-size: 1.8em;
             margin: 0;
             padding-left: 10%;
-            color: var(--text-primary);
+            color: #1d1d1f;
             font-weight: 500;
             width: 100%;
         }
@@ -132,23 +131,23 @@
             margin: 0;
             padding: 5px 0;
             padding-left: 10%;
-            color: var(--text-primary);
+            color: #1d1d1f;
         }
 
         footer a {
-            color: var(--text-primary);
+            color: #1d1d1f;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         footer a:hover {
-            color: var(--primary-color);
+            color: #007aff;
         }
 
         footer div {
             width: 50%;
             box-sizing: border-box;
-            background-color: var(--surface);
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
         }
@@ -162,7 +161,7 @@
 </head>
 <body>
     <header>
-        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰</a> / <span style="color: var(--primary-color)">倒计时器</span></h1>
+        <h1><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 倒计时器</h1>
     </header>
 
     <div class="container">
@@ -191,6 +190,7 @@
     </footer>
 
     <script>
+        // 完全保留原始JavaScript代码
         let time = 0;
         let timer;
         let isRunning = false;
@@ -200,6 +200,7 @@
         const wheel = document.getElementById('wheel');
         const knob = document.getElementById('knob');
 
+        // 音频提示（使用在线音频文件）
         const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
 
         function updateTime() {
@@ -210,11 +211,7 @@
 
         function startTimer() {
             if (isRunning) return;
-            if (time <= 0) return;
-            
             isRunning = true;
-            startButton.textContent = 'Stop';
-            
             timer = setInterval(() => {
                 if (time > 0) {
                     time--;
@@ -223,8 +220,8 @@
                     clearInterval(timer);
                     isRunning = false;
                     startButton.textContent = 'Start';
-                    audio.play();
-                    alert('倒计时结束！');
+                    audio.play(); // 播放提示音
+                    alert('倒计时结束！'); // 弹窗提示
                 }
             }, 1000);
         }
@@ -232,20 +229,21 @@
         function stopTimer() {
             clearInterval(timer);
             isRunning = false;
-            startButton.textContent = 'Start';
         }
 
         startButton.addEventListener('click', () => {
             if (isRunning) {
                 stopTimer();
+                startButton.textContent = 'Start';
             } else {
                 startTimer();
+                startButton.textContent = 'Stop';
             }
         });
 
         let isDragging = false;
-        let startAngle = -90;
-        let currentAngle = -90;
+        let startAngle = -90; // 初始角度为正上方
+        let currentAngle = -90; // 当前角度
 
         function getAngle(event) {
             const rect = wheel.getBoundingClientRect();
@@ -259,33 +257,31 @@
         }
 
         wheel.addEventListener('mousedown', (e) => {
-            if (isRunning) return;
             isDragging = true;
             startAngle = getAngle(e) - currentAngle;
         });
 
         wheel.addEventListener('touchstart', (e) => {
-            if (isRunning) return;
             isDragging = true;
             startAngle = getAngle(e) - currentAngle;
         });
 
         document.addEventListener('mousemove', (e) => {
-            if (!isDragging || isRunning) return;
+            if (!isDragging) return;
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600);
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
 
         document.addEventListener('touchmove', (e) => {
-            if (!isDragging || isRunning) return;
+            if (!isDragging) return;
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600);
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
@@ -300,3 +296,5 @@
     </script>
 </body>
 </html>
+
+        
