@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gango Countdown Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #1a73e8;
@@ -16,16 +17,16 @@
         }
 
         body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            margin: 0;
-            background-color: var(--background);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* 统一黑色页眉 */
+        /* 严格遵循的黑色页眉 */
         header {
             text-align: center;
             padding: 20px 0;
@@ -36,18 +37,23 @@
         header h1 {
             font-size: 2em;
             margin: 0;
-            color: black; /* 统一黑色 */
+            color: black;
             font-weight: 500;
+        }
+
+        header a {
+            color: black !important;
+            text-decoration: none;
         }
 
         .container {
             text-align: center;
             flex: 1;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
         }
 
         .wheel {
@@ -101,12 +107,13 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
-        /* 修正页脚布局 */
+        /* 严格遵循的Gango Tools页脚样式 */
         footer {
             width: 100%;
             background-color: var(--surface);
             padding: 20px 0;
             text-align: left;
+            margin-top: auto;
             border-top: 1px solid #e0e0e0;
             display: flex;
             flex-wrap: wrap;
@@ -119,14 +126,6 @@
             color: var(--text-primary);
             font-weight: 500;
             width: 100%;
-        }
-
-        footer div {
-            width: 50%;
-            float: left; /* 确保水平排列 */
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
         }
 
         footer h4, footer h5 {
@@ -146,17 +145,24 @@
             color: var(--primary-color);
         }
 
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            background-color: var(--surface);
+            display: flex;
+            flex-direction: column;
+        }
+
         @media (max-width: 600px) {
             footer div {
                 width: 100%;
-                float: none;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html" style="color: black; text-decoration: none;">Gango工具箱🧰</a> / <span style="color: var(--primary-color)">倒计时器</span></h1>
+        <h1><a href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰</a> / <span style="color: var(--primary-color)">倒计时器</span></h1>
     </header>
 
     <div class="container">
@@ -185,7 +191,6 @@
     </footer>
 
     <script>
-        // 保持原有的JavaScript代码
         let time = 0;
         let timer;
         let isRunning = false;
