@@ -9,7 +9,9 @@
         /* 全局样式 - 与计算器一致 */
         body {
             margin: 0;
-            font-family: 'Roboto', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             background-color: #f5f5f7;
             color: #1d1d1f;
             display: flex;
@@ -27,16 +29,17 @@
             color: #005bb5;
         }
 
-        /* 页眉样式 - 与计算器一致 */
+        /* 页眉样式 - 与主站一致 */
         header {
             text-align: center;
+            margin-bottom: 20px;
             padding: 20px 0;
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            font-size: 2em;
+            font-size: 2.5em;
             margin: 0;
             color: #1d1d1f;
             font-weight: 500;
@@ -56,9 +59,10 @@
             width: 100%;
             max-width: 800px;
             background: #ffffff;
-            border-radius: 25px;
-            box-shadow: 20px 20px 60px #a8b7d1, -20px -20px 60px #daedff;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            margin-bottom: 20px;
         }
 
         /* 单个备忘录样式 */
@@ -131,12 +135,18 @@
             transition: all 0.2s ease;
         }
 
-        /* 页脚样式 - 与计算器完全一致 */
+        .add-note-btn:hover, .save-btn:hover, .delete-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* 页脚样式 - 与主站完全一致 */
         footer {
             width: 100%;
             background-color: #ffffff;
             padding: 20px 0;
             text-align: left;
+            margin-top: auto;
             border-top: 1px solid #e0e0e0;
             display: flex;
             flex-wrap: wrap;
@@ -174,6 +184,8 @@
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 
         @media (max-width: 600px) {
@@ -184,12 +196,18 @@
             .notes-container {
                 width: 90%;
             }
+            
+            header h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 备忘录</h1>
+        <a href="https://gango-studio.github.io/serves/tools/indexpage.html">
+            <h1>Gango Notes</h1>
+        </a>
     </header>
 
     <div class="main-content">
@@ -211,6 +229,7 @@
             <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+            <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
 
