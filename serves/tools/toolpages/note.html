@@ -140,13 +140,12 @@
             transform: translateY(-1px);
         }
 
-        /* 页脚样式 - 与主站完全一致 */
+       /* 页脚样式 */
         footer {
             width: 100%;
             background-color: #ffffff;
             padding: 20px 0;
             text-align: left;
-            margin-top: auto;
             border-top: 1px solid #e0e0e0;
             display: flex;
             flex-wrap: wrap;
@@ -184,31 +183,14 @@
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        @media (max-width: 600px) {
-            footer div {
-                width: 100%;
-            }
-            
-            .notes-container {
-                width: 90%;
-            }
-            
-            header h1 {
-                font-size: 2em;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <a href="https://gango-studio.github.io/serves/tools/indexpage.html">
-            <h1>Gango Notes</h1>
-        </a>
+       <header>
+        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 备忘录</h1>
     </header>
+
 
     <div class="main-content">
         <div class="notes-container" id="notesContainer">
@@ -229,7 +211,6 @@
             <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-            <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
 
