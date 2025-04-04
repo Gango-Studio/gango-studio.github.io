@@ -1,43 +1,44 @@
 <!--Ver 1.0 Developed on 22,Mar 2025-->
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gango 倒计时</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <title>Gango Countdown Timer</title>
     <style>
         /* 全局样式 */
         body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f7; /* 浅色背景 */
+            color: #1d1d1f; /* 深色文字 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* 页眉样式 - 修改为 Gango工具箱>页面名称 格式 */
+        a {
+            color: #1d1d1f; /* 链接颜色 */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 页首样式 */
         header {
             text-align: center;
-            padding: 20px 0;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         header h1 {
-            font-size: 2em;
+            font-size: 2.5em;
             margin: 0;
-            color: #1d1d1f;
+            color: #1d1d1f; /* 深色文字 */
             font-weight: 500;
-        }
-
-        .header-link {
-            color: #007aff;
-            text-decoration: none;
         }
 
         /* 倒计时器容器 */
@@ -48,7 +49,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
         }
 
         /* 圆形滚动条 */
@@ -62,18 +62,18 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e0e0;
-            touch-action: none;
+            touch-action: none; /* 禁用默认触摸行为 */
         }
 
         .knob {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: #007aff;
+            background-color: #007aff; /* 苹果蓝 */
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(-90deg);
+            transform: translate(-50%, -50%) rotate(-90deg); /* 初始位置为正上方 */
             pointer-events: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -82,7 +82,7 @@
         .display {
             margin-top: 20px;
             font-size: 2em;
-            color: #1d1d1f;
+            color: #1d1d1f; /* 深色文字 */
             font-weight: 500;
         }
 
@@ -92,20 +92,19 @@
             padding: 10px 20px;
             font-size: 1em;
             cursor: pointer;
-            background-color: #007aff;
+            background-color: #007aff; /* 苹果蓝 */
             color: #ffffff;
             border: none;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
             font-weight: 500;
         }
 
         button:hover {
-            background-color: #005bb5;
-            transform: translateY(-1px);
+            background-color: #005bb5; /* 深蓝色 */
         }
 
-        /* 页脚样式 - 修改为两个div水平并排 */
+       /* 页脚样式 - 统一设计 */
         footer {
             width: 100%;
             background-color: #ffffff;
@@ -119,22 +118,17 @@
 
         footer h3 {
             font-size: 1.8em;
-            margin: 0 0 15px 0;
+            margin: 0;
             padding-left: 10%;
             color: #1d1d1f;
             font-weight: 500;
             width: 100%;
         }
 
-        .footer-column {
-            width: 50%;
-            box-sizing: border-box;
-            padding-left: 10%;
-        }
-
         footer h4, footer h5 {
             margin: 0;
             padding: 5px 0;
+            padding-left: 10%;
             color: #1d1d1f;
         }
 
@@ -148,25 +142,18 @@
             color: #007aff;
         }
 
-        /* 响应式设计 */
-        @media (max-width: 600px) {
-            .footer-column {
-                width: 100%;
-                padding-left: 10%;
-            }
-            
-            .wheel {
-                width: 180px;
-                height: 180px;
-            }
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
+
     </style>
 </head>
 <body>
     <header>
-        <h1>
-            <a href="https://gango-studio.github.io/serves/tools/indexpage.html" class="header-link">Gango工具箱></a> 倒计时
-        </h1>
+        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 倒计时</h1>
     </header>
 
     <div class="container">
@@ -181,22 +168,20 @@
 
     <footer>
         <h3>Gango Studio</h3>
-        <div class="footer-column">
+        <div>
             <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
             <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
             <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
         </div>
-        <div class="footer-column">
+        <div>
             <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-            <h5>&nbsp;</h5>
         </div>
     </footer>
 
     <script>
-        // 倒计时功能逻辑保持不变
         let time = 0;
         let timer;
         let isRunning = false;
@@ -206,6 +191,7 @@
         const wheel = document.getElementById('wheel');
         const knob = document.getElementById('knob');
 
+        // 音频提示（使用在线音频文件）
         const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
 
         function updateTime() {
@@ -225,8 +211,8 @@
                     clearInterval(timer);
                     isRunning = false;
                     startButton.textContent = 'Start';
-                    audio.play();
-                    alert('倒计时结束！');
+                    audio.play(); // 播放提示音
+                    alert('倒计时结束！'); // 弹窗提示
                 }
             }, 1000);
         }
@@ -247,8 +233,8 @@
         });
 
         let isDragging = false;
-        let startAngle = -90;
-        let currentAngle = -90;
+        let startAngle = -90; // 初始角度为正上方
+        let currentAngle = -90; // 当前角度
 
         function getAngle(event) {
             const rect = wheel.getBoundingClientRect();
@@ -276,7 +262,7 @@
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600);
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
@@ -286,7 +272,7 @@
             const newAngle = getAngle(e) - startAngle;
             currentAngle = newAngle;
             knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600);
+            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
             if (time < 0) time = 0;
             updateTime();
         });
