@@ -207,29 +207,53 @@
         // 音频提示（使用在线音频文件）
         
 
-        function updateTime() {
-            const minutes = Math.floor(time / 60);
-            const seconds = time % 60;
-            timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }
+        // 提前创建并预加载音频对象
+    const audio = new Audio();
+    audio.src = 'https://gango-studio.github.io/serves/tools/toolres/bell.mp3';
+    audio.preload = 'auto'; // 预加载音频
+    
+    // 确保音频在用户交互后可以播放
+    let audioEnabled = false;
+    document.addEventListener('click', () => {
+        audioEnabled = true;
+    }, { once: true });
 
-        function startTimer() {
-            if (isRunning) return;
-            isRunning = true;
-            timer = setInterval(() => {
-                if (time > 0) {
-                    time--;
-                    updateTime();
-                } else {
-                    clearInterval(timer);
-                    isRunning = false;
-                    startButton.textContent = 'Start';
-                    const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
-                    audio.play(); // 播放提示音
-                    alert('倒计时结束！'); // 弹窗提示
+    const timeDisplay = document.getElementById('time');
+    const startButton = document.getElementById('start');
+    const wheel = document.getElementById('wheel');
+    const knob = document.getElementById('knob');
+
+    function updateTime() {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        timer = setInterval(() => {
+            if (time > 0) {
+                time--;
+                updateTime();
+            } else {
+                clearInterval(timer);
+                isRunning = false;
+                startButton.textContent = 'Start';
+                
+                // 检查音频是否可用
+                if (audioEnabled) {
+                    audio.currentTime = 0; // 重置播放位置
+                    audio.play().catch(e => {
+                        console.error('音频播放失败:', e);
+                        // 备用提示方式
+                        navigator.vibrate?.(200); // 振动提示（如果支持）
+                    });
                 }
-            }, 1000);
-        }
+                alert('倒计时结束！');
+            }
+        }, 1000);
+    }
 
         function stopTimer() {
             clearInterval(timer);
