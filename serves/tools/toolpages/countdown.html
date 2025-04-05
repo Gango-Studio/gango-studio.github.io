@@ -8,6 +8,16 @@
     <style>
         /* 全局样式 */
         body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+           
+
+            min-height: 100vh;
+
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -195,7 +205,7 @@
         const knob = document.getElementById('knob');
 
         // 音频提示（使用在线音频文件）
-        const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
+        
 
         function updateTime() {
             const minutes = Math.floor(time / 60);
@@ -214,6 +224,7 @@
                     clearInterval(timer);
                     isRunning = false;
                     startButton.textContent = 'Start';
+                    const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
                     audio.play(); // 播放提示音
                     alert('倒计时结束！'); // 弹窗提示
                 }
