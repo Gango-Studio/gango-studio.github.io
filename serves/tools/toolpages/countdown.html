@@ -146,6 +146,7 @@
         }
     </style>
 </head>
+    <audio id="timerAudio" preload="auto" src="https://gango-studio.github.io/serves/tools/toolres/bell.mp3" hidden></audio>
 <body>
     <header>
         <a href="https://gango-studio.github.io">
@@ -179,108 +180,187 @@
     </footer>
 
     <script>
-        let time = 0;
-        let timer;
-        let isRunning = false;
+        // 音频处理部分
+const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
+audio.preload = 'auto'; // 预加载音频
 
-        const timeDisplay = document.getElementById('time');
-        const startButton = document.getElementById('start');
-        const wheel = document.getElementById('wheel');
-        const knob = document.getElementById('knob');
+// 音频解锁标志
+let audioEnabled = false;
 
-        // 音频提示（使用在线音频文件）
-        const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
+// 在用户第一次交互时解锁音频
+function unlockAudio() {
+    if (audioEnabled) return;
+    
+    // 静音播放以解锁音频限制
+    audio.volume = 0;
+    audio.play()
+        .then(() => {
+            // 立即暂停并重置
+            audio.pause();
+            audio.currentTime = 0;
+            audio.volume = 1;
+            audioEnabled = true;
+            console.log('音频已解锁');
+        })
+        .catch(e => {
+            console.log('音频解锁失败:', e);
+        });
+}
 
-        function updateTime() {
-            const minutes = Math.floor(time / 60);
-            const seconds = time % 60;
-            timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }
+// 全局事件监听器 - 用户第一次交互时解锁音频
+document.addEventListener('click', unlockAudio, { once: true });
 
-        function startTimer() {
-            if (isRunning) return;
-            isRunning = true;
-            timer = setInterval(() => {
-                if (time > 0) {
-                    time--;
-                    updateTime();
-                } else {
-                    clearInterval(timer);
-                    isRunning = false;
-                    startButton.textContent = 'Start';
-                    audio.play(); // 播放提示音
-                    alert('倒计时结束！'); // 弹窗提示
-                }
-            }, 1000);
-        }
+// 播放提示音
+async function playAlertSound() {
+    if (!audioEnabled) {
+        console.log('音频尚未解锁');
+        return false;
+    }
+    
+    try {
+        audio.currentTime = 0; // 重置播放位置
+        await audio.play();
+        return true;
+    } catch (e) {
+        console.error('音频播放失败:', e);
+        return false;
+    }
+}
 
-        function stopTimer() {
+// 备用提示方式
+function fallbackAlert() {
+    // 振动提示（如果支持）
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+    }
+    
+    // 控制台提示
+    console.log('哔！倒计时结束！');
+    
+    // 如果Notification API可用
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('倒计时结束');
+    }
+}
+
+// 倒计时逻辑
+let time = 0;
+let timer;
+let isRunning = false;
+
+const timeDisplay = document.getElementById('time');
+const startButton = document.getElementById('start');
+const wheel = document.getElementById('wheel');
+const knob = document.getElementById('knob');
+
+function updateTime() {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+async function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+    
+    timer = setInterval(() => {
+        if (time > 0) {
+            time--;
+            updateTime();
+        } else {
             clearInterval(timer);
             isRunning = false;
-        }
-
-        startButton.addEventListener('click', () => {
-            if (isRunning) {
-                stopTimer();
-                startButton.textContent = 'Start';
-            } else {
-                startTimer();
-                startButton.textContent = 'Stop';
+            startButton.textContent = 'Start';
+            
+            // 尝试播放提示音
+            const played = await playAlertSound();
+            if (!played) {
+                fallbackAlert();
             }
-        });
-
-        let isDragging = false;
-        let startAngle = -90; // 初始角度为正上方
-        let currentAngle = -90; // 当前角度
-
-        function getAngle(event) {
-            const rect = wheel.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-            const deltaX = clientX - centerX;
-            const deltaY = clientY - centerY;
-            return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+            
+            alert('倒计时结束！');
         }
+    }, 1000);
+}
 
-        wheel.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startAngle = getAngle(e) - currentAngle;
-        });
+function stopTimer() {
+    clearInterval(timer);
+    isRunning = false;
+}
 
-        wheel.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startAngle = getAngle(e) - currentAngle;
-        });
+// 按钮事件监听
+startButton.addEventListener('click', () => {
+    // 确保音频已解锁
+    unlockAudio();
+    
+    if (isRunning) {
+        stopTimer();
+        startButton.textContent = 'Start';
+    } else {
+        startTimer();
+        startButton.textContent = 'Stop';
+    }
+});
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const newAngle = getAngle(e) - startAngle;
-            currentAngle = newAngle;
-            knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
-            if (time < 0) time = 0;
-            updateTime();
-        });
+// 圆形控制逻辑
+let isDragging = false;
+let startAngle = -90; // 初始角度为正上方
+let currentAngle = -90; // 当前角度
 
-        document.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const newAngle = getAngle(e) - startAngle;
-            currentAngle = newAngle;
-            knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-            time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
-            if (time < 0) time = 0;
-            updateTime();
-        });
+function getAngle(event) {
+    const rect = wheel.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+    const deltaX = clientX - centerX;
+    const deltaY = clientY - centerY;
+    return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+}
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+// 触摸/鼠标事件处理
+wheel.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startAngle = getAngle(e) - currentAngle;
+});
 
-        document.addEventListener('touchend', () => {
-            isDragging = false;
-        });
+wheel.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startAngle = getAngle(e) - currentAngle;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const newAngle = getAngle(e) - startAngle;
+    currentAngle = newAngle;
+    knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+    time = Math.round((currentAngle + 90) / 360 * 600); // 从0分钟开始，最大600秒
+    if (time < 0) time = 0;
+    updateTime();
+});
+
+document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const newAngle = getAngle(e) - startAngle;
+    currentAngle = newAngle;
+    knob.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
+    time = Math.round((currentAngle + 90) / 360 * 600);
+    if (time < 0) time = 0;
+    updateTime();
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+document.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
+// 初始化音频权限请求
+if ('Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission();
+}
     </script>
 </body>
 </html>
