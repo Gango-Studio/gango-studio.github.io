@@ -8,6 +8,15 @@
     <style>
         /* 全局样式 */
         body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -28,18 +37,21 @@
             text-decoration: underline;
         }
 
-        /* 页首样式 */
+         /* 页眉样式 - 统一设计 */
         header {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             margin: 0;
-            color: #1d1d1f; /* 深色文字 */
+            color: #1d1d1f;
             font-weight: 500;
         }
+
 
         /* 倒计时器容器 */
         .container {
@@ -104,56 +116,59 @@
             background-color: #005bb5; /* 深蓝色 */
         }
 
+        
+        
         /* 页脚样式 */
         footer {
             width: 100%;
-            background-color: #ffffff; /* 白色背景 */
+            background-color: #ffffff;
             padding: 20px 0;
             text-align: left;
-            margin-top: auto;
             border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
         }
 
         footer h3 {
-            font-size: 1.8em; /* 增大字体 */
+            font-size: 1.8em;
             margin: 0;
             padding-left: 10%;
-            color: #1d1d1f; /* 深色文字 */
+            color: #1d1d1f;
             font-weight: 500;
+            width: 100%;
         }
 
         footer h4, footer h5 {
             margin: 0;
             padding: 5px 0;
             padding-left: 10%;
-            color: #1d1d1f; /* 深色文字 */
+            color: #1d1d1f;
         }
 
         footer a {
-            color: #1d1d1f; /* 深色文字 */
+            color: #1d1d1f;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         footer a:hover {
-            color: #007aff; /* 苹果蓝 */
+            color: #007aff;
         }
 
         footer div {
-            float: left;
             width: 50%;
             box-sizing: border-box;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
     <audio id="timerAudio" preload="auto" src="https://gango-studio.github.io/serves/tools/toolres/bell.mp3" hidden></audio>
 <body>
     <header>
-        <a href="https://gango-studio.github.io">
-            <h1>Gango</h1>
-        </a>
+        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango工具箱🧰></a> 倒计时</h1>
     </header>
-
     <div class="container">
         <div class="wheel" id="wheel">
             <div class="knob" id="knob"></div>
@@ -164,10 +179,10 @@
         <button id="start">Start</button>
     </div>
 
-    <footer>
+     <footer>
         <h3>Gango Studio</h3>
-        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
         <div>
+            <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
             <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
             <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
             <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
@@ -180,19 +195,16 @@
     </footer>
 
     <script>
-        // 音频处理部分
-// 音频处理部分
+       // 音频处理部分
 const audio = new Audio('https://gango-studio.github.io/serves/tools/toolres/bell.mp3');
 audio.preload = 'auto'; // 预加载音频
 
 // 音频解锁标志
 let audioEnabled = false;
-let audioUnlockAttempted = false;
 
-// 解锁音频功能
+// 解锁音频功能（只在用户首次与页面交互时调用）
 function unlockAudio() {
-    if (audioUnlockAttempted) return;
-    audioUnlockAttempted = true;
+    if (audioEnabled) return;
     
     // 静音播放以解锁音频限制
     audio.volume = 0;
@@ -209,7 +221,7 @@ function unlockAudio() {
         });
 }
 
-// 播放提示音
+// 播放提示音（只在倒计时结束时调用）
 async function playAlertSound() {
     if (!audioEnabled) {
         console.log('音频尚未解锁');
@@ -224,14 +236,6 @@ async function playAlertSound() {
         console.error('音频播放失败:', e);
         return false;
     }
-}
-
-// 备用提示方式
-function fallbackAlert() {
-    if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
-    }
-    console.log('哔！倒计时结束！');
 }
 
 // 倒计时逻辑
@@ -263,8 +267,14 @@ async function startTimer() {
             isRunning = false;
             startButton.textContent = 'Start';
             
-            playAlertSound().catch(() => fallbackAlert());
-            alert('倒计时结束！');
+            // 只在倒计时结束时播放音频
+            playAlertSound().then(success => {
+                if (!success) {
+                    // 备用提示方式
+                    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                }
+                alert('倒计时结束！');
+            });
         }
     }, 1000);
 }
@@ -274,11 +284,8 @@ function stopTimer() {
     isRunning = false;
 }
 
-// 修复1: 修改按钮事件监听器
+// 开始按钮事件监听
 startButton.addEventListener('click', function(e) {
-    e.stopPropagation(); // 阻止事件冒泡
-    unlockAudio();
-    
     if (isRunning) {
         stopTimer();
         this.textContent = 'Start';
@@ -304,12 +311,13 @@ function getAngle(event) {
     return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 }
 
-// 修复2: 重新组织事件监听器
+// 设置滚轮事件
 function setupWheelEvents() {
     const startDrag = (e) => {
         isDragging = true;
         startAngle = getAngle(e) - currentAngle;
-        e.preventDefault(); // 防止触摸事件的默认行为
+        e.preventDefault();
+        unlockAudio(); // 在用户操作滚轮时解锁音频
     };
 
     const duringDrag = (e) => {
@@ -338,14 +346,6 @@ function setupWheelEvents() {
 
 // 初始化
 setupWheelEvents();
-
-// 修复3: 修改全局点击事件监听
-document.body.addEventListener('click', function(e) {
-    // 只有当点击的不是交互元素时才解锁音频
-    if (!e.target.closest('button, .wheel')) {
-        unlockAudio();
-    }
-}, { once: true });
     </script>
 </body>
 </html>
