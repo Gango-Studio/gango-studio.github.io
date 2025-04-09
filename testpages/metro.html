@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电车GO简易版</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #gameCanvas {
+            border: 1px solid #333;
+            background-color: #87CEEB;
+            margin-bottom: 10px;
+        }
+        #controls {
+            margin-bottom: 15px;
+        }
+        #status {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .mobile-controls {
+            display: none;
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .mobile-row {
+                display: flex;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>电车GO简易版</h1>
+    <div id="status">准备出发 - 当前速度: 0 km/h</div>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div id="controls">
+        <p>键盘控制: ↑加速 ↓减速 空格停车</p>
+    </div>
+    <div class="mobile-controls">
+        <div class="mobile-row">
+            <button id="btnAccelerate">↑ 加速</button>
+        </div>
+        <div class="mobile-row">
+            <button id="btnBrake">↓ 减速</button>
+            <button id="btnStop">停车</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
