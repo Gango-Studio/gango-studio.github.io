@@ -13,6 +13,44 @@
 .STYLE2 {font-size: x-large}
 .STYLE3 {font-size: large}
 -->
+	 body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007aff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #005bb5;
+        }
+
+         /* 页眉样式 - 统一设计 */
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin: 0;
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+
                a{
                    text-decoration: none;
                    color:blue;
@@ -53,68 +91,15 @@
  }
        .pic{width:100%;height:100%;}
        html, body { margin:0; height:100%; }
-	/* 页首样式 */
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
 
-header h1 {
-    font-size: 2.5em;
-    margin: 0;
-    color: #1d1d1f; /* 深色文字 */
-    font-weight: 500;
-}
-
-/* 页脚样式 */
-footer {
-    width: 100%;
-    background-color: #ffffff; /* 白色背景 */
-    padding: 20px 0;
-    text-align: left;
-    margin-top: auto;
-    border-top: 1px solid #e0e0e0;
-}
-
-footer h3 {
-    font-size: 1.8em; /* 增大字体 */
-    margin: 0;
-    padding-left: 10%;
-    color: #1d1d1f; /* 深色文字 */
-    font-weight: 500;
-}
-
-footer h4, footer h5 {
-    margin: 0;
-    padding: 5px 0;
-    padding-left: 10%;
-    color: #1d1d1f; /* 深色文字 */
-}
-
-footer a {
-    color: #1d1d1f; /* 深色文字 */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-footer a:hover {
-    color: #007aff; /* 苹果蓝 */
-}
-
-footer div {
-    float: left;
-    width: 50%;
-    box-sizing: border-box;
-}
   </style>
 	
 </head>
 <body>
-<header>
-    <a href="https://gango-studio.github.io">
-        <h1>Gango</h1>
-    </a>
-</header>
+  <header>
+        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango Games🧰></a> 高堡棋人</h1>
+    </header>
+
  <br/>
  <br/>
  <h1 align = "center">高堡棋人</h1>
@@ -415,20 +400,20 @@ footer div {
 	 	<h5>[Sammuel]Ministry of Administration*争议内容出版许可（2023/7）</h5></div>
 	 <br/><br/>
  <br/>
-<footer>
-    <h3>Gango Studio</h3>
-    <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
-    <div>
-        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
-        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
-    </div>
-    <div>
-        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-    </div>
-</footer>
+ <footer>
+        <h3>Gango Studio</h3>
+        <div>
+            <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+            <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+            <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+        </div>
+        <div>
+            <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        </div>
+    </footer>
 
 </body>
 <script>
