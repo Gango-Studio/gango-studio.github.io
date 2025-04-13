@@ -12,13 +12,15 @@
             --hoi-border: #3a3a5a;
             --hoi-light-border: #5a5a7a;
             --hoi-button-bg: #2a2a3e;
+            --hoi-paper: #f0e6d2;
+            --hoi-newsprint: #8b7d6b;
         }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             background-color: var(--hoi-dark-blue);
-            color: #e6e6e6;
+            color: #333;
             background-image: 
                 linear-gradient(rgba(10, 10, 30, 0.9), rgba(10, 10, 30, 0.9)),
                 url('https://gango-studio.github.io/games/pic/hoi_background.jpg');
@@ -29,93 +31,148 @@
             flex-direction: column;
         }
 
+        /* 报纸风格标题 */
         header {
-            background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e);
-            border-bottom: 2px solid var(--hoi-gold);
+            background: var(--hoi-paper);
+            border-bottom: 3px double var(--hoi-newsprint);
             padding: 15px 0;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://gango-studio.github.io/games/pic/paper_texture.jpg');
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         header h1 {
-            font-size: 2.2em;
+            font-size: 2.5em;
             margin: 0;
-            color: var(--hoi-gold);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #222;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             letter-spacing: 1px;
-            font-weight: normal;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
         }
 
+        /* 报纸风格事件弹窗 */
         .hoi-event-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 600px;
-            background: linear-gradient(to bottom, #2a2a3e, #1a1a2e);
-            border: 3px solid var(--hoi-gold);
-            border-radius: 5px;
-            padding: 20px;
+            width: 85%;
+            max-width: 650px;
+            background: var(--hoi-paper);
+            border: 1px solid var(--hoi-newsprint);
+            border-radius: 0;
+            padding: 0;
             z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
             display: none;
+            font-family: 'Times New Roman', Times, serif;
+            overflow: hidden;
+        }
+
+        .hoi-event-popup::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://gango-studio.github.io/games/pic/paper_texture.jpg');
+            opacity: 0.2;
+            pointer-events: none;
         }
 
         .hoi-event-header {
-            border-bottom: 1px solid var(--hoi-gold);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            background: linear-gradient(to right, #3a3a3a, #2a2a2a);
             color: var(--hoi-gold);
-            font-size: 1.5em;
+            padding: 12px 20px;
+            margin: 0;
+            font-size: 1.3em;
+            border-bottom: 1px solid var(--hoi-newsprint);
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .hoi-event-content {
-            margin-bottom: 20px;
+            padding: 25px;
+            margin: 0;
             line-height: 1.6;
+            color: #222;
+            font-size: 1.1em;
+            text-align: justify;
+            border-bottom: 1px dashed var(--hoi-newsprint);
+            position: relative;
+        }
+
+        .hoi-event-date {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: var(--hoi-newsprint);
+            font-size: 0.9em;
+            font-style: italic;
         }
 
         .hoi-event-buttons {
             display: flex;
             justify-content: flex-end;
+            padding: 15px;
+            background: rgba(210, 200, 180, 0.5);
         }
 
         .hoi-event-button {
-            background-color: var(--hoi-button-bg);
-            border: 1px solid var(--hoi-light-border);
-            color: #e6e6e6;
-            padding: 8px 20px;
+            background: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+            border: 1px solid #2a2a2a;
+            color: var(--hoi-gold);
+            padding: 8px 25px;
             margin-left: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1em;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
 
         .hoi-event-button:hover {
-            background-color: #3a3a5a;
-            border-color: var(--hoi-gold);
+            background: linear-gradient(to bottom, #5a5a5a, #4a4a4a);
+            border-color: #3a3a3a;
         }
 
+        /* 棋盘区域报纸风格 */
         .hoi-strategic-map {
             width: 90%;
             max-width: 500px;
-            margin: 20px auto;
-            background-color: rgba(26, 26, 46, 0.8);
-            border: 2px solid var(--hoi-gold);
-            border-radius: 5px;
-            padding: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            margin: 30px auto;
+            background: var(--hoi-paper);
+            border: 1px solid var(--hoi-newsprint);
+            border-radius: 0;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
         }
 
         .hoi-strategic-map::before {
             content: "";
             position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: 1px solid rgba(212, 177, 112, 0.3);
-            border-radius: 3px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(139, 125, 107, 0.3);
             pointer-events: none;
         }
 
@@ -123,9 +180,8 @@
             width: 30%;
             aspect-ratio: 1/1;
             margin: 5px;
-            background-color: rgba(40, 40, 60, 0.8);
-            border: 1px solid var(--hoi-border);
-            border-radius: 3px;
+            background-color: rgba(240, 230, 210, 0.8);
+            border: 1px solid var(--hoi-newsprint);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -133,141 +189,187 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .hoi-province:hover {
-            border-color: var(--hoi-gold);
-            box-shadow: 0 0 10px rgba(212, 177, 112, 0.5);
+            border-color: #5a5a5a;
+            box-shadow: 0 0 8px rgba(90, 90, 90, 0.3);
         }
 
-        .hoi-province::after {
+        .hoi-province img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .hoi-button {
+            background: linear-gradient(to bottom, #e6e6e6, #d0d0d0);
+            border: 1px solid var(--hoi-newsprint);
+            color: #333;
+            padding: 10px 25px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1em;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .hoi-button:hover {
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            border-color: #5a5a5a;
+        }
+
+        /* 报纸风格的声明框 */
+        .hoi-doctrine-box {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 25px;
+            background: var(--hoi-paper);
+            border: 1px solid var(--hoi-newsprint);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+            line-height: 1.6;
+            position: relative;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .hoi-doctrine-box::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(139, 125, 107, 0.3);
+            pointer-events: none;
+        }
+
+        .hoi-doctrine-box h3 {
+            font-size: 1.5em;
+            color: #222;
+            border-bottom: 1px solid var(--hoi-newsprint);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .hoi-doctrine-box p {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+
+        .hoi-doctrine-box em {
+            font-style: italic;
+            color: #555;
+        }
+
+        /* 页脚调整为报纸风格 */
+        footer {
+            width: 100%;
+            background: var(--hoi-paper);
+            padding: 20px 0;
+            text-align: left;
+            border-top: 3px double var(--hoi-newsprint);
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: auto;
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
+        }
+
+        footer::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(212, 177, 112, 0.1) 0%, transparent 50%);
-        }
-
-        .hoi-button {
-            background: linear-gradient(to bottom, #3a3a5a, #2a2a3e);
-            border: 1px solid var(--hoi-border);
-            color: var(--hoi-gold);
-            padding: 10px 25px;
-            margin: 0 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            font-size: 1em;
-            border-radius: 3px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .hoi-button:hover {
-            background: linear-gradient(to bottom, #4a4a6a, #3a3a5a);
-            border-color: var(--hoi-gold);
-            transform: translateY(-2px);
-        }
-
-        .hoi-doctrine-box {
-            width: 90%;
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: rgba(26, 26, 46, 0.8);
-            border: 1px solid var(--hoi-gold);
-            border-radius: 5px;
-            color: #e6e6e6;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        .hoi-doctrine-box::before {
-            content: "";
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: 1px solid rgba(212, 177, 112, 0.2);
-            border-radius: 3px;
+            background: url('https://gango-studio.github.io/games/pic/paper_texture.jpg');
+            opacity: 0.2;
             pointer-events: none;
-        }
-
-        /* 保持原有页脚样式不变 */
-        footer {
-            width: 100%;
-            background-color: #ffffff;
-            padding: 20px 0;
-            text-align: left;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: auto;
         }
 
         footer h3 {
             font-size: 1.8em;
             margin: 0;
             padding-left: 10%;
-            color: #1d1d1f;
-            font-weight: 500;
+            color: #222;
+            font-weight: bold;
             width: 100%;
+            position: relative;
         }
 
         footer h4, footer h5 {
             margin: 0;
             padding: 5px 0;
             padding-left: 10%;
-            color: #1d1d1f;
+            color: #333;
+            position: relative;
         }
 
         footer a {
-            color: #1d1d1f;
+            color: #333;
             text-decoration: none;
             transition: color 0.3s ease;
+            border-bottom: 1px dotted #666;
         }
 
         footer a:hover {
-            color: #007aff;
+            color: #000;
+            border-bottom: 1px solid #000;
         }
 
         footer div {
             width: 50%;
             box-sizing: border-box;
-            background-color: #ffffff;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         @media (max-width: 768px) {
             .hoi-strategic-map {
                 width: 95%;
-                padding: 10px;
+                padding: 15px;
             }
             
             .hoi-province {
                 width: 28%;
-                margin: 0 3px;
+                margin: 3px;
             }
             
             .hoi-button {
                 padding: 8px 15px;
                 font-size: 0.9em;
+                margin: 0 5px;
+            }
+            
+            .hoi-event-content {
+                padding: 15px;
+                font-size: 1em;
+            }
+            
+            footer h3 {
+                padding-left: 5%;
+            }
+            
+            footer h4, footer h5 {
+                padding-left: 5%;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1><i class="fas fa-chess-queen"></i> 高堡棋人 <span style="font-size:0.6em;color:#7a7a9a;">v1.0</span></h1>
+        <h1><i class="fas fa-chess-queen"></i> 高堡棋人 <span style="font-size:0.6em;color:#666;">- 战略版</span></h1>
     </header>
 
     <div class="hoi-strategic-map" id="box">
-        <div style="display:flex; justify-content:center; margin-bottom:10px;">
+        <div style="display:flex; justify-content:center; margin-bottom:15px;">
             <button class="hoi-button" onclick="single()"><i class="fas fa-user"></i> 单人模式</button>
-            <button class="hoi-button" onclick="resetGame()"><i class="fas fa-redo"></i> 重新部署</button>
+            <button class="hoi-button" onclick="resetGame()"><i class="fas fa-redo"></i> 重新开始</button>
         </div>
         
         <div style="display:flex; justify-content:center;">
@@ -289,23 +391,24 @@
         </div>
     </div>
 
-    <!-- 钢铁雄心风格的事件弹窗 -->
+    <!-- 钢铁雄心报纸风格的事件弹窗 -->
     <div class="hoi-event-popup" id="eventPopup">
-        <div class="hoi-event-header" id="eventTitle">战略事件</div>
-        <div class="hoi-event-content" id="eventContent">
-            这里是事件描述内容...
+        <div class="hoi-event-header">战略通讯社快报</div>
+        <div class="hoi-event-content">
+            <div class="hoi-event-date" id="eventDate">1936年1月1日</div>
+            <div id="eventContent">这里是事件描述内容...</div>
         </div>
         <div class="hoi-event-buttons">
-            <button class="hoi-event-button" onclick="closeEvent()">确认</button>
+            <button class="hoi-event-button" onclick="closeEvent()"><i class="fas fa-check"></i> 确认</button>
         </div>
     </div>
 
     <div class="hoi-doctrine-box">
-        <h3><i class="fas fa-scroll"></i> 战略声明</h3>
+        <h3><i class="fas fa-newspaper"></i> 战略声明</h3>
         <p>本游戏灵感来源于架空历史题材。游戏内容不代表Gango Studios和Sam Mu立场。我们坚定站在反对侵略和法西斯战线上，反对种族主义。</p>
         <p><em>*这只是一个泛左自由壬为了乐子开发的战略模拟*</em></p>
         <div style="text-align:right; margin-top:15px;">
-            <small style="color:var(--hoi-gold);">[Sammuel] Ministry of Administration *争议内容出版许可（2023/7）</small>
+            <small style="color:var(--hoi-newsprint);">[Sammuel] Ministry of Administration *争议内容出版许可（2023/7）</small>
         </div>
     </div>
     
@@ -325,10 +428,18 @@
     </footer>
 
     <script>
-        // 钢铁雄心风格的事件系统
+        // 生成随机日期
+        function randomDate() {
+            const year = 1936 + Math.floor(Math.random() * 10);
+            const month = 1 + Math.floor(Math.random() * 12);
+            const day = 1 + Math.floor(Math.random() * 28);
+            return `${year}年${month}月${day}日`;
+        }
+
+        // 钢铁雄心报纸风格的事件系统
         function showEvent(title, content) {
-            document.getElementById('eventTitle').textContent = title;
-            document.getElementById('eventContent').textContent = content;
+            document.getElementById('eventDate').textContent = randomDate();
+            document.getElementById('eventContent').innerHTML = `<strong>${title}</strong><br><br>${content}`;
             document.getElementById('eventPopup').style.display = 'block';
         }
 
@@ -337,7 +448,7 @@
         }
 
         function single() {
-            showEvent("情报报告", "没有人陪你玩吗？🤣👉🤡\n\n我们的情报部门报告称这是一场单人军事演习。");
+            showEvent("前线记者报道", "据我方记者从前线发回的报道：<br><br>没有人陪你玩吗？🤣👉🤡<br><br>我们的情报部门报告称这是一场单人军事演习。");
         }
 
         var cnt = 0;
@@ -351,7 +462,7 @@
             for (let i = 0; i < 9; i++) {
                 document.getElementById("pic"+i).src = "https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg";
             }
-            showEvent("战略重置", "战场已重置！\n\n所有部队已撤回起始位置，准备新一轮的战略部署。");
+            showEvent("战场重置", "最新军事公报：<br><br>战场已重置！<br><br>所有部队已撤回起始位置，准备新一轮的战略部署。");
         }
 
         function checkWin(player) {
@@ -381,9 +492,9 @@
             if (checkWin(player)) {
                 ifwin = 1;
                 const winner = player === 1 ? "德意志国" : "日本帝国";
-                setTimeout(() => showEvent("战役结果", `${winner}取得了决定性胜利！\n\n战场已被我方控制，敌方部队已撤退。`), 100);
+                setTimeout(() => showEvent("胜利公报", `前线特讯：<br><br>${winner}取得了决定性胜利！<br><br>战场已被我方控制，敌方部队已撤退。`), 100);
             } else if (cnt === 9) {
-                setTimeout(() => showEvent("战略僵局", "战场陷入僵持状态！\n\n双方均未能取得决定性优势，建议重新部署战略。"), 100);
+                setTimeout(() => showEvent("战况僵持", "军事观察家报道：<br><br>战场陷入僵持状态！<br><br>双方均未能取得决定性优势，建议重新部署战略。"), 100);
             }
         }
 
