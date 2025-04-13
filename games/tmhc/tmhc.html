@@ -7,469 +7,331 @@
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>  
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
- <style>
-  <!--
-.STYLE1 {font-size: xx-large}
-.STYLE2 {font-size: x-large}
-.STYLE3 {font-size: large}
--->
-	 body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #1a1a2e;
+    color: #e6e6e6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('https://gango-studio.github.io/games/pic/hoi_background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
 
-        a {
-            text-decoration: none;
-            color: #007aff;
-            transition: color 0.3s ease;
-        }
+header {
+    text-align: center;
+    padding: 20px 0;
+    background-color: rgba(26, 26, 46, 0.9);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid #3a3a5a;
+}
 
-        a:hover {
-            color: #005bb5;
-        }
+header h1 {
+    font-size: 2.2em;
+    margin: 0;
+    color: #d4b170;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
 
-         /* 页眉样式 - 统一设计 */
-        header {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+.game-title {
+    text-align: center;
+    color: #d4b170;
+    margin: 20px 0;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        header h1 {
-            font-size: 2em;
-            margin: 0;
-            color: #1d1d1f;
-            font-weight: 500;
-        }
+.button-container {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
 
+.button1 {
+    transition-duration: 0.4s;
+    padding: 12px 24px;
+    text-align: center;
+    background-color: rgba(26, 26, 46, 0.8);
+    color: #d4b170;
+    border: 2px solid #5a3a3a;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin: 0 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
 
-               a{
-                   text-decoration: none;
-                   color:blue;
-               }
-	 /* 页脚样式 */
-        footer {
-            width: 100%;
-            background-color: #ffffff;
-            padding: 20px 0;
-            text-align: left;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            flex-wrap: wrap;
-        }
+.button1:hover {
+    background-color: #3a2e2e;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
 
-        footer h3 {
-            font-size: 1.8em;
-            margin: 0;
-            padding-left: 10%;
-            color: #1d1d1f;
-            font-weight: 500;
-            width: 100%;
-        }
+.game-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(26, 26, 46, 0.8);
+    border: 2px solid #3a3a5a;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
 
-        footer h4, footer h5 {
-            margin: 0;
-            padding: 5px 0;
-            padding-left: 10%;
-            color: #1d1d1f;
-        }
+.game-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
 
-        footer a {
-            color: #1d1d1f;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+.game-cell {
+    width: 30%;
+    max-width: 150px;
+    aspect-ratio: 1/1;
+    margin: 0 5px;
+    background-color: rgba(40, 40, 60, 0.8);
+    border: 2px solid #5a5a7a;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-        footer a:hover {
-            color: #007aff;
-        }
+.game-cell:hover {
+    border-color: #7a7a9a;
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(90, 90, 122, 0.5);
+}
 
-        footer div {
-            width: 50%;
-            box-sizing: border-box;
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-        } 
-               .a1:visited{color:Blue;}
-               .a1:hover{color:Purple;}
-               .a1:active{color:Red;}
-          .nav1 {
-            display:block;
-            padding:20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-        }
-      .navs {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-        }
-      .mainpara{
-           padding-left : 10%;
-       }
-	.button1 {
- -webkit-transition-duration: 0.4s;
- transition-duration: 0.4s;
- padding: 16px 32px;
- text-align: center;
- background-color: white;
- color: black;
- border: 2px solid #4CAF50;
- border-radius:5px;
- }
- .button1:hover {
- background-color: #4CAF50;
- color: white;
- }
-       .pic{width:100%;height:100%;}
-       html, body { margin:0; height:100%; }
+.game-cell img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    transition: all 0.3s;
+}
 
-  </style>
-	
+.disclaimer {
+    width: 90%;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: rgba(26, 26, 46, 0.8);
+    border: 1px solid #3a3a5a;
+    border-radius: 5px;
+    color: #e6e6e6;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.disclaimer h3 {
+    color: #d4b170;
+    border-bottom: 1px solid #3a3a5a;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* 保持原有的页脚样式不变 */
+footer {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px 0;
+    text-align: left;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+footer h3 {
+    font-size: 1.8em;
+    margin: 0;
+    padding-left: 10%;
+    color: #1d1d1f;
+    font-weight: 500;
+    width: 100%;
+}
+
+footer h4, footer h5 {
+    margin: 0;
+    padding: 5px 0;
+    padding-left: 10%;
+    color: #1d1d1f;
+}
+
+footer a {
+    color: #1d1d1f;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #007aff;
+}
+
+footer div {
+    width: 50%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        width: 95%;
+        padding: 10px;
+    }
+    
+    .game-cell {
+        width: 28%;
+        margin: 0 3px;
+    }
+    
+    .button1 {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+}
+</style>
 </head>
 <body>
   <header>
-        <h1 class="STYLE1"><a style="text-decoration: none;color:black;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango Games🧰></a> 高堡棋人</h1>
-    </header>
+    <h1><a style="text-decoration: none; color: #d4b170;" href="https://gango-studio.github.io/serves/tools/indexpage.html">Gango Games <i class="fas fa-chess-queen"></i></a> 高堡棋人</h1>
+  </header>
 
- <br/>
- <br/>
- <h1 align = "center">高堡棋人</h1>
- <div style="width:100%;text-align:center;"><input type = "button" id ="单人游玩>" class ="button1" value ="单人游玩>" onClick="single()" class = "STYLE2">&nbsp;</div>
-	<script>function single(){alert ("没有人陪你玩吗？🤣👉🤡");}</script>
-	<br/>
- <div style="width:100%;text-align:center;border:0px solid #000;vertical-align:middle;margin:0 auto;" class = "STYLE2 navpro" id = "box">
- 	<div style="text-align:center;width:100%;height:30%">
-			<nobr>
-			<div style="display:inline-block;width:30%;height:100%" onClick="zero();"class ="nav1" ><img style="border:0px solid black;" class ="pic" id = "pic0" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;width:30%;height:100%;" onClick="one();"class ="nav1"><img style="border:0px solid black;" class ="pic"  id = "pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;width:30%;height:100%;" onClick="two();"class ="nav1"><img style="border:0px solid black;" class ="pic"  id = "pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			</nobr>
-			<script>
-					var cnt = 0;
-        				var bo = [0,0,0,0,0,0,0,0,0];
-					var num;
-				        var ifwin = 0;
-					function zero(){
-						if(cnt % 2 ==0 && bo[0] == 0){
-							bo[0] = 1;
-  							document.getElementById("pic0").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      							if(bo[0] == 1 && bo[1] == 1 && bo[2] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	
-								        ifwin =1;
-    							}
-							if(bo[0] == 1 && bo[3] == 1 && bo[6] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	
-								        ifwin = 1;
-    							}
-							if(bo[0] == 1 && bo[4] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	
-								        ifwin =1;
-    							}
-						}else if(cnt % 2 ==1 && bo[0] == 0){
-							bo[0] = 2;
-							document.getElementById("pic0").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-							if(bo[0] == 2 && bo[1] == 2 && bo[2] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");	
-								ifwin =1;
-    							}
-							if(bo[0] == 2 && bo[3] == 2 && bo[6] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");	
-								ifwin = 1;
-    							}
-							if(bo[0] == 2 && bo[4] == 2 && bo[8] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");	
-								ifwin = 1;
-    							}
-						}
-	         				cnt = cnt + 1;
-					}
-					function one(){
-						if(cnt %2 ==0&& bo[1] == 0){
-							bo[1] = 1;
-  							document.getElementById("pic1").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      							if(bo[0] == 1 && bo[1] == 1 && bo[2] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	
-								ifwin =1;
-    							}
-							if(bo[1] == 1 && bo[4] == 1 && bo[7] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");
-								ifwin =1;	
-    							}
-						}else if(cnt % 2 ==1 && bo[1] == 0){
-							bo[1] = 2;
-							document.getElementById("pic1").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-							if(bo[0] == 2 && bo[1] == 2 && bo[2] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	
-								ifwin =1;
-    							}
-							if(bo[1] == 2 && bo[4] == 2 && bo[7] ==2 && ifwin == 0){
-									alert ("日本帝国 胜利");	
-								ifwin =1;
-    							}
-						}
-	         				cnt=cnt+1;
-					}
-					function two(){
-						if(cnt %2 ==0&& bo[2] == 0){
-							bo[2] = 1;
-  							document.getElementById("pic2").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      							if(bo[0] == 1 && bo[1] == 1 && bo[2] == 1 && ifwin == 0){
-								alert ("德意志国 胜利");	
-								ifwin =1;
-   							}
-   							if(bo[2] == 1 && bo[5] == 1 && bo[8] == 1 && ifwin == 0){
-								alert ("德意志国 胜利");	
-								ifwin =1;
-							}
-   							if(bo[2] == 1 && bo[4] == 1 && bo[6] == 1 && ifwin ==0 ){
-								alert ("德意志国 胜利");	
-								ifwin =1;
-    							}
-						}else if(cnt % 2 ==1 && bo[2] == 0){
-							bo[2] = 2;
-							document.getElementById("pic2").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-							if(bo[0] == 2 && bo[1] == 2 && bo[2] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");
-								ifwin =1;
-   							}
-							   if(bo[2] == 2 && bo[5] == 2 && bo[8] == 2 && ifwin==0 ){
-								alert ("日本帝国 胜利");
-								   ifwin =1;
-							    }
-							   if(bo[2] == 2 && bo[4] ==2 && bo[6] == 2 && ifwin == 0 ){
-								alert ("日本帝国 胜利");	
-								   ifwin =1;
-							    }
-						}
-	         				cnt=cnt+1;
-					}
-			</script>
-		</div>
-		<br/>
-		<div style="text-align:center;width:100%;height:30%">
-			<nobr>
-			<div style="display:inline-block;width:30%;height:100%" onClick="three()"class ="nav1"><img style="border:0px solid black;" id = "pic3" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;width:30%;height:100%" onClick="four()"class ="nav1"><img style="border:0px solid black;" id = "pic4" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;width:30%;height:100%" onClick="five()"class ="nav1"><img style="border:0px solid black;"  id = "pic5" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			</nobr>
-			<script>
-				function three(){
-					if(cnt %2 ==0&& bo[3] == 0){
-						bo[3] = 1;
-  						document.getElementById("pic3").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[3] == 1 && bo[4] == 1 && bo[5] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	
-							ifwin =1;
-    							}
-							if(bo[0] == 1 && bo[3] == 1 && bo[6] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");
-								ifwin =1;
-    							}
-					}else if(cnt % 2 ==1 && bo[3] == 0){
-						bo[3] = 2;
-						document.getElementById("pic3").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[3] == 2 && bo[4] == 2 && bo[5] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	
-							ifwin =1;
-    							}
-							if(bo[0] == 2 && bo[3] == 2 && bo[6] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	
-								ifwin =1;
-    							}
-					}
-	         			cnt=cnt+1;
-				}
-				function four(){
-					if(cnt %2 ==0&& bo[4] == 0){
-						bo[4] = 1;
-  						document.getElementById("pic4").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[3] == 1 && bo[4] == 1 && bo[5] == 1 && ifwin == 0){
-							alert ("德意志国 胜利");	ifwin =1;
-    						}
-						if(bo[1] == 1 && bo[4] == 1 && bo[7] == 1 && ifwin == 0){
-							alert ("德意志国 胜利");	ifwin =1;
-    						}
-						if(bo[0] == 1 && bo[4] == 1 && bo[8] == 1 && ifwin == 0){
-							alert ("德意志国 胜利");	ifwin =1;
-    						}
-						if(bo[2] == 1 && bo[4] == 1 && bo[6] == 1 && ifwin == 0){
-							alert ("德意志国 胜利");	ifwin =1;
-    						}
-					}else if(cnt % 2 ==1 && bo[4] == 0){
-						bo[4] = 2;
-						document.getElementById("pic4").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[3] == 2 && bo[4] == 2 && bo[5] == 2 && ifwin == 0){
-							alert ("日本帝国 胜利");	ifwin =1;
-    						}
-						if(bo[1] == 2 && bo[4] == 2 && bo[7] == 2 && ifwin == 0){
-							alert ("日本帝国 胜利");	ifwin =1;
-    						}
-						if(bo[0] == 2 && bo[4] == 2 && bo[8] == 2 && ifwin == 0){
-							alert ("日本帝国 胜利");	ifwin =1;
-    						}
-						if(bo[2] == 2 && bo[4] == 2 && bo[6] == 2 && ifwin == 0){
-							alert ("日本帝国 胜利");	ifwin =1;
-    						}
-					}
-	         			cnt=cnt+1;
-				}
-				function five(){
-					if(cnt %2 ==0&& bo[5] == 0){
-						bo[5] = 1;
-  						document.getElementById("pic5").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[2] == 1 && bo[5] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-							if(bo[3] == 1 && bo[4] == 1 && bo[5] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-					}else if(cnt % 2 ==1 && bo[5] == 0){
-						bo[5] = 2;
-						document.getElementById("pic5").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[2] == 2 && bo[5] == 2 && bo[8] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    						}
-						if(bo[3] == 2 && bo[4] == 2 && bo[5] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    						}
-					}
-	         			cnt=cnt+1;  
-				}
-			</script>
-		</div>
-		<br/>
-		<div style="text-align:center;width:100%;height:30%">
-			<nobr>
-			<div style="display:inline-block;width:30%;height:100%" onClick="six()"class ="nav1"><img style="border:0px solid black;" id = "pic6" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			<div style="display:inline-block;width:30%;height:100%" onClick="seven()"class ="nav1"><img style="border:0px solid black;" id = "pic7" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp;
-			<div style="display:inline-block;width:30%;height:100%" onClick="eight()"class ="nav1"><img style="border:0px solid black;" id = "pic8" class ="pic"  src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>&nbsp; 
-			</nobr>
-			<script>
-				function six(){
-					if(cnt %2 ==0&& bo[6] == 0){
-						bo[6] = 1;
-  						document.getElementById("pic6").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[6] == 1 && bo[7] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-							if(bo[6] == 1 && bo[4] == 1 && bo[2] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-							if(bo[0] == 1 && bo[3] == 1 && bo[6] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-					}else if(cnt % 2 ==1 && bo[6] == 0){
-						bo[6] = 2;
-						document.getElementById("pic6").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[6] == 2 && bo[7] == 2 && bo[8] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    							}
-							if(bo[6] == 2 && bo[4] == 2 && bo[2] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    							}
-							if(bo[0] == 2 && bo[3] == 2 && bo[6] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    							}
-					}
-	         			cnt=cnt+1; 
-				}
-				function seven(){
-					if(cnt %2 ==0&& bo[7] == 0){
-						bo[7] = 1;
-  						document.getElementById("pic7").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[1] == 1 && bo[4] == 1 && bo[7] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    						}
-						if(bo[6] == 1 && bo[7] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    						}
-					}else if(cnt % 2 ==1 && bo[7] == 0){
-						bo[7] = 2;
-						document.getElementById("pic7").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[1] == 2 && bo[4] == 2 && bo[7] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");		ifwin =1;
-    						}
-						if(bo[6] == 2 && bo[7] == 2 && bo[8] == 2 && ifwin == 0){
-								alert ("日本帝国 胜利");	ifwin =1;	
-    						}
-					}
-	         			cnt=cnt+1; 
-				}
-				function eight(){
-					if(cnt %2 ==0&& bo[8] == 0){
-						bo[8] = 1;
-  						document.getElementById("pic8").src ="https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg";
-      						if(bo[2] == 1 && bo[5] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-							if(bo[6] == 1 && bo[7] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-							if(bo[0] == 1 && bo[4] == 1 && bo[8] == 1 && ifwin == 0){
-									alert ("德意志国 胜利");	ifwin =1;
-    							}
-					}else if(cnt % 2 ==1 && bo[8] == 0){
-						bo[8] = 2;
-						document.getElementById("pic8").src ="https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
-						if(bo[2] == 2 && bo[5] == 2 && bo[8] ==2){
-									alert ("日本帝国 胜利");	ifwin =1;
-    							}
-							if(bo[6] == 2 && bo[7] == 2 && bo[8] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");	ifwin =1;
-    							}
-							if(bo[0] == 2 && bo[4] == 2 && bo[8] == 2 && ifwin == 0){
-									alert ("日本帝国 胜利");ifwin =1;
-    							}
-					}
-	         		cnt=cnt+1; 
-				}
-			</script>
-		</div>
-</div>
-	 <br/><br/><br/><br/>
-	 	<div  style="width:100%;text-align:center;"><h3>声明：本游戏灵感来源于美剧《高堡奇人》游戏内容不代表Gango Studios 和 Sam Mu立场 我们坚定站在反对侵略和法西斯战线上 反对种族主义 *这只是一个泛左自由壬为了乐子开发的*</h3>
-	 	<h5>[Sammuel]Ministry of Administration*争议内容出版许可（2023/7）</h5></div>
-	 <br/><br/>
- <br/>
- <footer>
-        <h3>Gango Studio</h3>
-        <div>
-            <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
-            <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
-            <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
-            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
-        </div>
-        <div>
-            <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-            <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-            <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-        </div>
-    </footer>
+  <h1 class="game-title">高堡棋人</h1>
+  
+  <div class="button-container">
+    <input type="button" id="单人游玩" class="button1" value="单人模式 <i class="fas fa-user"></i>" onClick="single()">
+    <input type="button" class="button1" value="重新开始 <i class="fas fa-redo"></i>" onClick="resetGame()">
+  </div>
+  
+  <div class="game-container" id="box">
+    <div class="game-row">
+      <div class="game-cell" onClick="zero();"><img id="pic0" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="one();"><img id="pic1" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="two();"><img id="pic2" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+    </div>
+    
+    <div class="game-row">
+      <div class="game-cell" onClick="three();"><img id="pic3" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="four();"><img id="pic4" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="five();"><img id="pic5" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+    </div>
+    
+    <div class="game-row">
+      <div class="game-cell" onClick="six();"><img id="pic6" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="seven();"><img id="pic7" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+      <div class="game-cell" onClick="eight();"><img id="pic8" src="https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg"></div>
+    </div>
+  </div>
+  
+  <div class="disclaimer">
+    <h3><i class="fas fa-exclamation-circle"></i> 声明</h3>
+    <p>本游戏灵感来源于美剧《高堡奇人》。游戏内容不代表Gango Studios和Sam Mu立场。我们坚定站在反对侵略和法西斯战线上，反对种族主义。</p>
+    <p>*这只是一个泛左自由壬为了乐子开发的*</p>
+    <h5>[Sammuel] Ministry of Administration *争议内容出版许可（2023/7）</h5>
+  </div>
+  
+  <footer>
+    <h3>Gango Studio</h3>
+    <div>
+      <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+      <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+      <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+      <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+    <div>
+      <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+      <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+      <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+    </div>
+  </footer>
 
-</body>
 <script>
-            var innerwidth = window.innerWidth; 
-	    var x = 40;
-            if (innerwidth >= 750){
-	            document.getElementById("box").style.width = "75%";
-		    document.getElementById("box").style.height = "75%";
-            }
-            if (innerwidth <= 750){
-            	document.getElementById("box").style.height = "90%";
-	        document.getElementById("box").style.width ="90%";
-      }              
+var cnt = 0;
+var bo = [0,0,0,0,0,0,0,0,0];
+var ifwin = 0;
+
+function single() {
+    alert("没有人陪你玩吗？🤣👉🤡");
+}
+
+function resetGame() {
+    cnt = 0;
+    bo = [0,0,0,0,0,0,0,0,0];
+    ifwin = 0;
+    for (let i = 0; i < 9; i++) {
+        document.getElementById("pic"+i).src = "https://gango-studio.github.io/games/pic/IMG_20230502_190830.jpg";
+    }
+}
+
+function checkWin(player) {
+    const winConditions = [
+        [0,1,2], [3,4,5], [6,7,8], // 横排
+        [0,3,6], [1,4,7], [2,5,8], // 竖排
+        [0,4,8], [2,4,6]           // 对角线
+    ];
+    
+    return winConditions.some(condition => {
+        return condition.every(index => bo[index] === player);
+    });
+}
+
+function makeMove(cellNum) {
+    if (ifwin !== 0 || bo[cellNum] !== 0) return;
+    
+    const player = cnt % 2 === 0 ? 1 : 2;
+    bo[cellNum] = player;
+    const imgUrl = player === 1 
+        ? "https://gango-studio.github.io/games/pic/IMG_20230429_163927.jpg" 
+        : "https://gango-studio.github.io/games/pic/IMG_20230429_161153.png";
+    
+    document.getElementById("pic"+cellNum).src = imgUrl;
+    cnt++;
+    
+    if (checkWin(player)) {
+        ifwin = 1;
+        const winner = player === 1 ? "德意志国" : "日本帝国";
+        setTimeout(() => alert(winner + " 胜利！"), 100);
+    } else if (cnt === 9) {
+        setTimeout(() => alert("平局！"), 100);
+    }
+}
+
+function zero() { makeMove(0); }
+function one() { makeMove(1); }
+function two() { makeMove(2); }
+function three() { makeMove(3); }
+function four() { makeMove(4); }
+function five() { makeMove(5); }
+function six() { makeMove(6); }
+function seven() { makeMove(7); }
+function eight() { makeMove(8); }
+
+// 响应式调整
+function adjustLayout() {
+    var innerwidth = window.innerWidth; 
+    var box = document.getElementById("box");
+    if (innerwidth >= 750) {
+        box.style.width = "75%";
+    } else {
+        box.style.width = "90%";
+    }              
+}
+
+window.addEventListener('resize', adjustLayout);
+adjustLayout();
 </script>	
+</body>
 </html>
