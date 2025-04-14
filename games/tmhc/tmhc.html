@@ -251,7 +251,10 @@
             border-color: var(--hoi-gold);
         }
 
-        /* 钢铁雄心风格页脚 */
+        
+
+    
+    /* 钢铁雄心风格页脚 - 保持两栏并排布局 */
 footer {
     width: 100%;
     background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e);
@@ -261,7 +264,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     margin-top: auto;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     position: relative;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -279,60 +282,41 @@ footer::before {
 
 footer h3 {
     font-size: 1.8em;
-    margin: 0 0 15px 0;
+    margin: 0;
     padding-left: 10%;
-    color: var(--hoi-gold);
-    font-weight: normal;
+    color: #1d1d1f;
+    font-weight: 500;
     width: 100%;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    letter-spacing: 1px;
+    background-color: #ffffff;
 }
 
 footer h4, footer h5 {
     margin: 0;
-    padding: 6px 0;
+    padding: 5px 0;
     padding-left: 10%;
-    color: #d0d0d0;
-    font-weight: normal;
-    letter-spacing: 0.5px;
+    color: #1d1d1f;
+    background-color: #ffffff;
 }
 
 footer a {
-    color: #d0d0d0;
+    color: #1d1d1f;
     text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-    padding-left: 5px;
+    transition: color 0.3s ease;
 }
 
 footer a:hover {
-    color: var(--hoi-gold);
-    text-shadow: 0 0 5px rgba(212, 177, 112, 0.5);
-}
-
-footer a::before {
-    content: "▶";
-    position: absolute;
-    left: -10px;
-    opacity: 0;
-    transition: all 0.3s ease;
-    color: var(--hoi-gold);
-}
-
-footer a:hover::before {
-    opacity: 1;
-    left: -5px;
+    color: #007aff;
 }
 
 footer div {
     width: 50%;
     box-sizing: border-box;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
-/* 响应式调整 */
+/* 响应式调整 - 保持两栏布局 */
 @media (max-width: 768px) {
     footer {
         padding: 20px 0;
@@ -341,7 +325,6 @@ footer div {
     footer h3 {
         padding-left: 5%;
         font-size: 1.6em;
-        margin-bottom: 10px;
     }
     
     footer h4, footer h5 {
@@ -349,12 +332,9 @@ footer div {
         font-size: 0.9em;
     }
     
+    /* 仍然保持两栏布局 */
     footer div {
-        width: 100%;
-    }
-    
-    footer div:first-child {
-        margin-bottom: 15px;
+        width: 50%;
     }
 }
 
