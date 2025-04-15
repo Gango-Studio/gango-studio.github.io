@@ -293,19 +293,18 @@
             
             
             
-            /* 钢铁雄心风格页脚 */
+            /* 钢铁雄心风格页脚 - 保持两栏并排布局 */
 footer {
     width: 100%;
-    background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e);
+    background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e); /* 深蓝色渐变背景 */
     padding: 25px 0;
     text-align: left;
-    border-top: 2px solid var(--hoi-gold);
+    margin-top: auto;
+    border-top: 2px solid var(--hoi-gold); /* 金色顶部边框 */
     display: flex;
     flex-wrap: wrap;
-    margin-top: auto;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: relative;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); /* 添加阴影效果 */
 }
 
 footer::before {
@@ -315,7 +314,7 @@ footer::before {
     left: 5px;
     right: 5px;
     bottom: 5px;
-    border: 1px solid rgba(212, 177, 112, 0.2);
+    border: 1px solid rgba(212, 177, 112, 0.2); /* 内部金色细边框 */
     pointer-events: none;
 }
 
@@ -323,20 +322,20 @@ footer h3 {
     font-size: 1.8em;
     margin: 0 0 15px 0;
     padding-left: 10%;
-    color: var(--hoi-gold);
+    color: var(--hoi-gold); /* 金色文字 */
     font-weight: normal;
     width: 100%;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 文字阴影 */
+    letter-spacing: 0.5px;
 }
 
 footer h4, footer h5 {
     margin: 0;
-    padding: 6px 0;
+    padding: 8px 0;
     padding-left: 10%;
-    color: #d0d0d0;
+    color: #d0d0d0; /* 浅灰色文字 */
     font-weight: normal;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 footer a {
@@ -344,26 +343,11 @@ footer a {
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
-    padding-left: 5px;
 }
 
 footer a:hover {
-    color: var(--hoi-gold);
-    text-shadow: 0 0 5px rgba(212, 177, 112, 0.5);
-}
-
-footer a::before {
-    content: "▶";
-    position: absolute;
-    left: -10px;
-    opacity: 0;
-    transition: all 0.3s ease;
-    color: var(--hoi-gold);
-}
-
-footer a:hover::before {
-    opacity: 1;
-    left: -5px;
+    color: var(--hoi-gold); /* 悬停时变为金色 */
+    text-shadow: 0 0 5px rgba(212, 177, 112, 0.3);
 }
 
 footer div {
@@ -372,9 +356,22 @@ footer div {
     display: flex;
     flex-direction: column;
     position: relative;
+    padding: 5px 0;
 }
 
-/* 响应式调整 */
+/* 链接前的装饰性箭头 */
+footer a::after {
+    content: " »";
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+footer a:hover::after {
+    opacity: 1;
+    margin-left: 5px;
+}
+
+/* 响应式调整 - 保持两栏布局 */
 @media (max-width: 768px) {
     footer {
         padding: 20px 0;
@@ -383,7 +380,6 @@ footer div {
     footer h3 {
         padding-left: 5%;
         font-size: 1.6em;
-        margin-bottom: 10px;
     }
     
     footer h4, footer h5 {
@@ -391,12 +387,9 @@ footer div {
         font-size: 0.9em;
     }
     
+    /* 仍然保持两栏布局 */
     footer div {
-        width: 100%;
-    }
-    
-    footer div:first-child {
-        margin-bottom: 15px;
+        width: 50%;
     }
 }
     </style>
