@@ -18,24 +18,83 @@
             flex-direction: column;
             height: 100vh;
         }
-        #mapContainer {
+        #display {
             flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-        #gameCanvas {
-            display: block;
             background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .display-panel {
             width: 100%;
-            height: 100%;
+            max-width: 500px;
+            background-color: #111;
+            border: 3px solid #006847; /* 山手线绿色 */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .station-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .station-label {
+            font-size: 22px;
+            color: #ccc;
+        }
+        .station-name {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .current-station {
+            color: #fff;
+        }
+        .next-station {
+            color: #006847; /* 山手线绿色 */
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .info-box {
+            flex: 1;
+            margin: 0 5px;
+        }
+        .info-label {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 32px;
+            font-weight: bold;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #222;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .speed-value {
+            color: #0f0;
+        }
+        .distance-value {
+            color: #006847; /* 山手线绿色 */
         }
         #controls {
-            height: 120px;
-            background-color: #222;
+            height: 150px;
+            background-color: #111;
             display: flex;
             flex-direction: column;
             padding: 10px;
             box-sizing: border-box;
+            border-top: 3px solid #006847; /* 山手线绿色 */
         }
         .control-row {
             display: flex;
@@ -44,13 +103,13 @@
             margin-bottom: 10px;
         }
         .control-btn {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background-color: #333;
             color: white;
             border: 3px solid #666;
-            font-size: 20px;
+            font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -64,11 +123,17 @@
             background-color: #d22;
         }
         #brake {
-            background-color: #22d;
+            background-color: #006847; /* 山手线绿色 */
         }
         #stop {
             background-color: #dd2;
             color: #000;
+        }
+        #speedNotches {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-bottom: 10px;
         }
         .speed-notch {
             width: 40px;
@@ -81,57 +146,10 @@
             font-size: 14px;
         }
         .speed-notch.active {
-            background-color: #0a0;
-        }
-        #speedNotches {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        #stationDisplay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 2px solid #444;
-            padding: 10px;
-            width: 250px;
-        }
-        .station-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        .station-name {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .current-station {
-            color: #ff0;
-        }
-        .next-station {
-            color: #0ff;
-        }
-        .speed-info {
-            font-size: 18px;
-            color: #0f0;
-        }
-        .distance-info {
-            font-size: 16px;
-            color: #fff;
-        }
-        #scoreDisplay {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 2px solid #444;
-            padding: 10px;
-            font-size: 16px;
+            background-color: #006847; /* 山手线绿色 */
         }
         #message {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -142,25 +160,41 @@
             border-radius: 10px;
             text-align: center;
             display: none;
+            border: 2px solid #006847; /* 山手线绿色 */
+        }
+        #scoreDisplay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #006847; /* 山手线绿色 */
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div id="mapContainer">
-        <canvas id="gameCanvas"></canvas>
-        
-        <div id="stationDisplay">
-            <div class="station-info">
-                <span class="current-station">現在: <span class="station-name">Pigsty</span></span>
+    <div id="display">
+        <div class="display-panel">
+            <div class="station-row">
+                <span class="station-label">現在:</span>
+                <span class="station-name current-station">Pigsty</span>
             </div>
-            <div class="station-info">
-                <span class="next-station">次: <span class="station-name">新橋</span></span>
+            <div class="station-row">
+                <span class="station-label">次:</span>
+                <span class="station-name next-station">新橋</span>
             </div>
-            <div class="station-info">
-                <span class="speed-info">速度: <span id="speedValue">0</span> km/h</span>
-            </div>
-            <div class="station-info">
-                <span class="distance-info">距離: <span id="distanceValue">0</span> m</span>
+            
+            <div class="info-row">
+                <div class="info-box">
+                    <div class="info-label">速度</div>
+                    <div class="info-value speed-value">0 km/h</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">距離</div>
+                    <div class="info-value distance-value">0 m</div>
+                </div>
             </div>
         </div>
         
