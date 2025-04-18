@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #000;
+            background-color: #006847; /* 山手线绿色背景 */
             color: white;
             font-family: 'MS Gothic', 'Osaka', 'Meiryo', sans-serif;
             overflow: hidden;
@@ -20,7 +20,7 @@
         }
         #display {
             flex: 1;
-            background-color: #000;
+            background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -32,7 +32,7 @@
             width: 100%;
             max-width: 500px;
             background-color: #111;
-            border: 3px solid #006847; /* 山手线绿色 */
+            border: 3px solid #fff; /* 白色边框 */
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
@@ -54,7 +54,7 @@
             color: #fff;
         }
         .next-station {
-            color: #006847; /* 山手线绿色 */
+            color: #8cff00; /* 明亮的山手线绿色 */
         }
         .info-row {
             display: flex;
@@ -85,7 +85,7 @@
             color: #0f0;
         }
         .distance-value {
-            color: #006847; /* 山手线绿色 */
+            color: #8cff00; /* 明亮的山手线绿色 */
         }
         #controls {
             height: 150px;
@@ -94,7 +94,7 @@
             flex-direction: column;
             padding: 10px;
             box-sizing: border-box;
-            border-top: 3px solid #006847; /* 山手线绿色 */
+            border-top: 3px solid #fff; /* 白色边框 */
         }
         .control-row {
             display: flex;
@@ -126,7 +126,7 @@
             background-color: #006847; /* 山手线绿色 */
         }
         #stop {
-            background-color: #dd2;
+            background-color: #ff0;
             color: #000;
         }
         #speedNotches {
@@ -146,7 +146,7 @@
             font-size: 14px;
         }
         .speed-notch.active {
-            background-color: #006847; /* 山手线绿色 */
+            background-color: #8cff00; /* 明亮的山手线绿色 */
         }
         #message {
             position: fixed;
@@ -160,14 +160,15 @@
             border-radius: 10px;
             text-align: center;
             display: none;
-            border: 2px solid #006847; /* 山手线绿色 */
+            border: 2px solid #8cff00; /* 明亮的山手线绿色 */
+            z-index: 100;
         }
         #scoreDisplay {
             position: absolute;
             top: 20px;
             right: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            border: 2px solid #006847; /* 山手线绿色 */
+            border: 2px solid #8cff00; /* 明亮的山手线绿色 */
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
