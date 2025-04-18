@@ -1,12 +1,5 @@
 // 游戏主对象
 const game = {
-    canvas: null,
-    ctx: null,
-    width: 0,
-    height: 0,
-    centerX: 0,
-    centerY: 0,
-    trackRadius: 0,
     trainAngle: 0,
     speed: 0,
     maxSpeed: 0.02,
@@ -23,25 +16,18 @@ const game = {
     totalStops: 0,
     successfulStops: 0,
     stations: [
-        { name: "Pigsty", angle: 0, color: "#FF6347", platformLength: 1.2 },
-        { name: "新橋", angle: Math.PI, color: "#4682B4", platformLength: 1.0 }
+        { name: "Pigsty", angle: 0 },
+        { name: "新橋", angle: Math.PI }
     ],
     gameLoopId: null,
-    lastFrameTime: 0,
     kmhConversionFactor: 1800,
     meterConversionFactor: 1000,
+    trackRadius: 500, // 虚拟轨道半径(用于距离计算)
     accelerating: false,
     braking: false,
     
     // 初始化游戏
     init() {
-        this.canvas = document.getElementById('gameCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        
-        // 设置画布大小
-        this.resizeCanvas();
-        window.addEventListener('resize', this.resizeCanvas.bind(this));
-        
         // 设置事件监听
         document.getElementById('accelerate').addEventListener('mousedown', () => this.startAccelerate());
         document.getElementById('accelerate').addEventListener('touchstart', () => this.startAccelerate());
@@ -68,32 +54,13 @@ const game = {
         });
         
         // 开始游戏循环
-        this.lastFrameTime = performance.now();
         this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
-        
-        // 更新车站信息
-        this.updateStationInfo();
-    },
-    
-    // 调整画布大小
-    resizeCanvas() {
-        this.width = window.innerWidth;
-        this.height = window.innerHeight - 120; // 减去控制区高度
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-        
-        this.centerX = this.width / 2;
-        this.centerY = this.height / 2;
-        this.trackRadius = Math.min(this.width, this.height) * 0.35;
     },
     
     // 游戏主循环
-    gameLoop(timestamp) {
+    gameLoop() {
         // 更新游戏状态
         this.update();
-        
-        // 绘制游戏
-        this.draw();
         
         // 继续循环
         this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
@@ -125,7 +92,7 @@ const game = {
     updateUI() {
         // 更新速度显示
         const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
-        document.getElementById('speedValue').textContent = speedKmh;
+        document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
         
         // 更新到下一站距离
         if (this.approachingStation !== null) {
@@ -133,9 +100,9 @@ const game = {
             let angleDiff = nextStation.angle - this.trainAngle;
             if (angleDiff < 0) angleDiff += Math.PI * 2;
             const distance = Math.floor(angleDiff * this.trackRadius * this.meterConversionFactor);
-            document.getElementById('distanceValue').textContent = distance;
+            document.querySelector('.distance-value').textContent = `${distance} m`;
         } else {
-            document.getElementById('distanceValue').textContent = "0";
+            document.querySelector('.distance-value').textContent = "0 m";
         }
     },
     
@@ -149,69 +116,6 @@ const game = {
                 notch.classList.remove('active');
             }
         });
-    },
-    
-    // 绘制游戏
-    draw() {
-        const ctx = this.ctx;
-        
-        // 清空画布
-        ctx.clearRect(0, 0, this.width, this.height);
-        
-        // 绘制背景
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, this.width, this.height);
-        
-        // 绘制轨道
-        ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, this.trackRadius, 0, Math.PI * 2);
-        ctx.strokeStyle = '#555';
-        ctx.lineWidth = 10;
-        ctx.stroke();
-        
-        // 绘制轨道内部
-        ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, this.trackRadius - 20, 0, Math.PI * 2);
-        ctx.fillStyle = '#222';
-        ctx.fill();
-        
-        // 绘制车站
-        this.stations.forEach((station, index) => {
-            const angle = station.angle;
-            const x = this.centerX + Math.cos(angle) * this.trackRadius;
-            const y = this.centerY + Math.sin(angle) * this.trackRadius;
-            
-            // 车站标记
-            ctx.beginPath();
-            ctx.arc(x, y, 8, 0, Math.PI * 2);
-            ctx.fillStyle = station.color;
-            ctx.fill();
-            
-            // 当前车站高亮显示
-            if (index === this.currentStationIndex) {
-                ctx.beginPath();
-                ctx.arc(x, y, 12, 0, Math.PI * 2);
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 3;
-                ctx.stroke();
-            }
-        });
-        
-        // 绘制电车
-        const trainX = this.centerX + Math.cos(this.trainAngle) * this.trackRadius;
-        const trainY = this.centerY + Math.sin(this.trainAngle) * this.trackRadius;
-        
-        // 电车主体
-        ctx.beginPath();
-        ctx.arc(trainX, trainY, 15, 0, Math.PI * 2);
-        ctx.fillStyle = '#0f0';
-        ctx.fill();
-        
-        // 电车窗户
-        ctx.beginPath();
-        ctx.arc(trainX, trainY, 10, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
     },
     
     // 检查车站状态
@@ -228,7 +132,7 @@ const game = {
             this.approachingStation = nextStationIndex;
             
             // 更新下一站信息
-            document.querySelector('.next-station .station-name').textContent = nextStation.name;
+            document.querySelector('.next-station').textContent = nextStation.name;
             
             // 计算需要的减速度
             const requiredDeceleration = (this.speed * this.speed) / (2 * angleDiff);
@@ -259,11 +163,11 @@ const game = {
                 this.updateScore();
                 
                 this.currentStationIndex = nextStationIndex;
-                document.querySelector('.current-station .station-name').textContent = nextStation.name;
+                document.querySelector('.current-station').textContent = nextStation.name;
                 
                 // 更新下一站信息
                 const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                document.querySelector('.next-station .station-name').textContent = this.stations[newNextIndex].name;
+                document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
                 
                 // 模拟停车时间
                 setTimeout(() => {
@@ -276,11 +180,11 @@ const game = {
                 setTimeout(() => {
                     this.isInStation = false;
                     this.currentStationIndex = nextStationIndex;
-                    document.querySelector('.current-station .station-name').textContent = nextStation.name;
+                    document.querySelector('.current-station').textContent = nextStation.name;
                     
                     // 更新下一站信息
                     const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                    document.querySelector('.next-station .station-name').textContent = this.stations[newNextIndex].name;
+                    document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
                 }, 1000);
             }
             
@@ -293,16 +197,6 @@ const game = {
         document.getElementById('scoreValue').textContent = this.score;
         const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
         document.getElementById('accuracyValue').textContent = accuracy;
-    },
-    
-    // 更新车站信息
-    updateStationInfo() {
-        const currentStation = this.stations[this.currentStationIndex];
-        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-        const nextStation = this.stations[nextStationIndex];
-        
-        document.querySelector('.current-station .station-name').textContent = currentStation.name;
-        document.querySelector('.next-station .station-name').textContent = nextStation.name;
     },
     
     // 显示消息
