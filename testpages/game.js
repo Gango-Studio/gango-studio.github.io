@@ -25,21 +25,29 @@ const game = {
     trackRadius: 500, // 虚拟轨道半径(用于距离计算)
     accelerating: false,
     braking: false,
+    accelerationInterval: null,
+    brakeInterval: null,
     
     // 初始化游戏
     init() {
         // 设置事件监听
-        document.getElementById('accelerate').addEventListener('mousedown', () => this.startAccelerate());
-        document.getElementById('accelerate').addEventListener('touchstart', () => this.startAccelerate());
-        document.getElementById('accelerate').addEventListener('mouseup', () => this.stopAccelerate());
-        document.getElementById('accelerate').addEventListener('touchend', () => this.stopAccelerate());
+        const accelerateBtn = document.getElementById('accelerate');
+        const brakeBtn = document.getElementById('brake');
+        const stopBtn = document.getElementById('stop');
         
-        document.getElementById('brake').addEventListener('mousedown', () => this.startBrake());
-        document.getElementById('brake').addEventListener('touchstart', () => this.startBrake());
-        document.getElementById('brake').addEventListener('mouseup', () => this.stopBrake());
-        document.getElementById('brake').addEventListener('touchend', () => this.stopBrake());
+        accelerateBtn.addEventListener('mousedown', this.startAccelerate.bind(this));
+        accelerateBtn.addEventListener('touchstart', this.startAccelerate.bind(this), { passive: true });
+        accelerateBtn.addEventListener('mouseup', this.stopAccelerate.bind(this));
+        accelerateBtn.addEventListener('mouseleave', this.stopAccelerate.bind(this));
+        accelerateBtn.addEventListener('touchend', this.stopAccelerate.bind(this), { passive: true });
         
-        document.getElementById('stop').addEventListener('click', () => this.stopTrain());
+        brakeBtn.addEventListener('mousedown', this.startBrake.bind(this));
+        brakeBtn.addEventListener('touchstart', this.startBrake.bind(this), { passive: true });
+        brakeBtn.addEventListener('mouseup', this.stopBrake.bind(this));
+        brakeBtn.addEventListener('mouseleave', this.stopBrake.bind(this));
+        brakeBtn.addEventListener('touchend', this.stopBrake.bind(this), { passive: true });
+        
+        stopBtn.addEventListener('click', this.stopTrain.bind(this));
         
         // 键盘控制
         window.addEventListener('keydown', (e) => {
@@ -54,7 +62,7 @@ const game = {
         });
         
         // 开始游戏循环
-        this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+        this.gameLoop();
     },
     
     // 游戏主循环
@@ -64,6 +72,14 @@ const game = {
         
         // 继续循环
         this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+    },
+    
+    // 停止游戏循环
+    stopGameLoop() {
+        if (this.gameLoopId) {
+            cancelAnimationFrame(this.gameLoopId);
+            this.gameLoopId = null;
+        }
     },
     
     // 更新游戏状态
@@ -212,14 +228,13 @@ const game = {
     
     // 开始加速
     startAccelerate() {
-        if (this.speedLevel < 5 && !this.isInStation) {
+        if (this.speedLevel < 5 && !this.isInStation && !this.accelerating) {
             this.accelerating = true;
             this.accelerationInterval = setInterval(() => {
                 this.speed = Math.min(this.speed + this.acceleration, this.speedLevels[this.speedLevel + 1]);
                 if (this.speed >= this.speedLevels[this.speedLevel + 1] * 0.95) {
                     this.speedLevel = Math.min(this.speedLevel + 1, 5);
-                    clearInterval(this.accelerationInterval);
-                    this.accelerating = false;
+                    this.stopAccelerate();
                 }
             }, 16);
         }
@@ -235,14 +250,13 @@ const game = {
     
     // 开始减速
     startBrake() {
-        if (this.speedLevel > 0) {
+        if (this.speedLevel > 0 && !this.braking) {
             this.braking = true;
             this.brakeInterval = setInterval(() => {
                 this.speed = Math.max(this.speed - this.deceleration, this.speedLevels[this.speedLevel - 1]);
                 if (this.speed <= this.speedLevels[this.speedLevel - 1] * 1.05) {
                     this.speedLevel = Math.max(this.speedLevel - 1, 0);
-                    clearInterval(this.brakeInterval);
-                    this.braking = false;
+                    this.stopBrake();
                 }
             }, 16);
         }
@@ -260,12 +274,12 @@ const game = {
     stopTrain() {
         if (this.approachingStation !== null && !this.isInStation) {
             this.braking = true;
+            clearInterval(this.brakeInterval);
             this.brakeInterval = setInterval(() => {
                 this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
                 if (this.speed === 0) {
                     this.speedLevel = 0;
-                    clearInterval(this.brakeInterval);
-                    this.braking = false;
+                    this.stopBrake();
                 }
             }, 16);
         }
@@ -274,3 +288,8 @@ const game = {
 
 // 启动游戏
 window.onload = () => game.init();
+
+// 确保游戏循环在页面卸载时停止
+window.addEventListener('beforeunload', () => {
+    game.stopGameLoop();
+});
