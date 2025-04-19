@@ -11,6 +11,7 @@
             --jr-blue: #0095d9;
             --jr-gray: #e6e6e6;
             --jr-dark: #333333;
+            --jr-dark-bg: #424242;
         }
         
         html, body {
@@ -47,54 +48,70 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
+            overflow: hidden;
             margin-bottom: 20px;
         }
         
-        .station-display {
-            border-bottom: 2px solid var(--jr-green);
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+        .station-header {
+            display: flex;
+            background-color: var(--jr-dark-bg);
+            padding: 15px;
+            position: relative;
         }
         
-        .current-station {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        .station-marker {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: var(--jr-green);
+        }
+        
+        .current-station-container {
+            flex: 1;
+            padding-right: 15px;
+            border-right: 1px solid #666;
+        }
+        
+        .next-station-container {
+            flex: 1;
+            padding-left: 15px;
         }
         
         .station-label {
-            font-size: 16px;
-            color: var(--jr-dark);
-            margin-right: 10px;
+            font-size: 14px;
+            color: white;
+            margin-bottom: 5px;
         }
         
-        .station-name {
+        .current-station-name {
             font-size: 28px;
             font-weight: bold;
-            color: var(--jr-green);
+            color: black;
         }
         
-        .next-station {
-            display: flex;
-            align-items: center;
-        }
-        
-        .next-label {
-            font-size: 16px;
-            color: var(--jr-dark);
-            margin-right: 10px;
-        }
-        
-        .next-name {
-            font-size: 24px;
+        .next-station-name {
+            font-size: 22px;
             font-weight: bold;
-            color: var(--jr-blue);
+            color: black;
+        }
+        
+        .station-code {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--jr-green);
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 8px;
         }
         
         .info-display {
             display: flex;
             justify-content: space-between;
+            padding: 15px;
         }
         
         .info-box {
@@ -245,14 +262,21 @@
 <body>
     <div id="display">
         <div class="jr-panel">
-            <div class="station-display">
-                <div class="current-station">
-                    <span class="station-label">現在</span>
-                    <span class="station-name">Pigsty</span>
+            <div class="station-header">
+                <div class="station-marker"></div>
+                <div class="current-station-container">
+                    <div class="station-label">現在</div>
+                    <div>
+                        <span class="current-station-name">Pigsty</span>
+                        <span class="station-code">PSY SY00</span>
+                    </div>
                 </div>
-                <div class="next-station">
-                    <span class="next-label">次</span>
-                    <span class="next-name">新橋</span>
+                <div class="next-station-container">
+                    <div class="station-label">次</div>
+                    <div>
+                        <span class="next-station-name">新橋</span>
+                        <span class="station-code">SMB SY01</span>
+                    </div>
                 </div>
             </div>
             
@@ -320,8 +344,8 @@
             totalStops: 0,
             successfulStops: 0,
             stations: [
-                { name: "Pigsty", angle: 0 },
-                { name: "新橋", angle: Math.PI * (1900 / 3000) }
+                { name: "Pigsty", code: "PSY SY00", angle: 0 },
+                { name: "新橋", code: "SMB SY01", angle: Math.PI * (1900 / 3000) }
             ],
             gameLoopId: null,
             kmhConversionFactor: 1800,
@@ -455,7 +479,8 @@
                 
                 if (distance < 150 && !this.isInStation) {
                     this.approachingStation = nextStationIndex;
-                    document.querySelector('.next-name').textContent = nextStation.name;
+                    document.querySelector('.next-station-name').textContent = nextStation.name;
+                    document.querySelector('.next-station-container .station-code').textContent = nextStation.code;
                     
                     const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
                     
@@ -477,10 +502,14 @@
                         this.updateScore();
                         
                         this.currentStationIndex = nextStationIndex;
-                        document.querySelector('.station-name').textContent = nextStation.name;
+                        const currentStation = this.stations[this.currentStationIndex];
+                        document.querySelector('.current-station-name').textContent = currentStation.name;
+                        document.querySelector('.current-station-container .station-code').textContent = currentStation.code;
                         
                         const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                        document.querySelector('.next-name').textContent = this.stations[newNextIndex].name;
+                        const newNextStation = this.stations[newNextIndex];
+                        document.querySelector('.next-station-name').textContent = newNextStation.name;
+                        document.querySelector('.next-station-container .station-code').textContent = newNextStation.code;
                         
                         setTimeout(() => {
                             this.isInStation = false;
@@ -492,10 +521,14 @@
                         setTimeout(() => {
                             this.isInStation = false;
                             this.currentStationIndex = nextStationIndex;
-                            document.querySelector('.station-name').textContent = nextStation.name;
+                            const currentStation = this.stations[this.currentStationIndex];
+                            document.querySelector('.current-station-name').textContent = currentStation.name;
+                            document.querySelector('.current-station-container .station-code').textContent = currentStation.code;
                             
                             const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                            document.querySelector('.next-name').textContent = this.stations[newNextIndex].name;
+                            const newNextStation = this.stations[newNextIndex];
+                            document.querySelector('.next-station-name').textContent = newNextStation.name;
+                            document.querySelector('.next-station-container .station-code').textContent = newNextStation.code;
                         }, 1000);
                     }
                     
