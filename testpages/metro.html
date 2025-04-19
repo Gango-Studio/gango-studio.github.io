@@ -59,53 +59,71 @@
             position: relative;
         }
         
-        .station-marker {
+        .station-divider {
             position: absolute;
-            left: 0;
+            left: 30%;
             top: 0;
             bottom: 0;
-            width: 5px;
+            width: 3px;
             background-color: var(--jr-green);
+        }
+        
+        .next-station-container {
+            flex: 0 0 30%;
+            padding-right: 15px;
+            color: white;
         }
         
         .current-station-container {
             flex: 1;
-            padding-right: 15px;
-            border-right: 1px solid #666;
-        }
-        
-        .next-station-container {
-            flex: 1;
             padding-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
         .station-label {
             font-size: 14px;
-            color: white;
+            color: rgba(255,255,255,0.8);
             margin-bottom: 5px;
         }
         
-        .current-station-name {
-            font-size: 28px;
+        .station-name {
+            font-size: 24px;
             font-weight: bold;
-            color: black;
+            color: white;
         }
         
         .next-station-name {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
-            color: black;
+            color: white;
         }
         
-        .station-code {
-            display: inline-block;
-            padding: 3px 8px;
+        .station-code-box {
+            width: 60px;
+            height: 60px;
             background-color: var(--jr-green);
-            color: white;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+        
+        .station-code-line1 {
+            font-size: 16px;
             font-weight: bold;
-            margin-left: 8px;
+            color: white;
+            line-height: 1;
+        }
+        
+        .station-code-line2 {
+            font-size: 12px;
+            color: white;
+            line-height: 1;
+            margin-top: 3px;
         }
         
         .info-display {
@@ -263,19 +281,19 @@
     <div id="display">
         <div class="jr-panel">
             <div class="station-header">
-                <div class="station-marker"></div>
-                <div class="current-station-container">
-                    <div class="station-label">現在</div>
-                    <div>
-                        <span class="current-station-name">Pigsty</span>
-                        <span class="station-code">PSY SY00</span>
-                    </div>
-                </div>
+                <div class="station-divider"></div>
                 <div class="next-station-container">
-                    <div class="station-label">次</div>
+                    <div class="station-label">次駅</div>
+                    <div class="next-station-name">新橋</div>
+                </div>
+                <div class="current-station-container">
                     <div>
-                        <span class="next-station-name">新橋</span>
-                        <span class="station-code">SMB SY01</span>
+                        <div class="station-label">現在</div>
+                        <div class="station-name">Pigsty</div>
+                    </div>
+                    <div class="station-code-box">
+                        <div class="station-code-line1">PSY</div>
+                        <div class="station-code-line2">SY00</div>
                     </div>
                 </div>
             </div>
@@ -344,8 +362,8 @@
             totalStops: 0,
             successfulStops: 0,
             stations: [
-                { name: "Pigsty", code: "PSY SY00", angle: 0 },
-                { name: "新橋", code: "SMB SY01", angle: Math.PI * (1900 / 3000) }
+                { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
+                { name: "新橋", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3000) }
             ],
             gameLoopId: null,
             kmhConversionFactor: 1800,
@@ -410,7 +428,20 @@
                     if (e.key === 'ArrowDown') this.stopBrake();
                 });
                 
+                // 初始化显示
+                this.updateStationDisplay();
                 this.gameLoop();
+            },
+            
+            updateStationDisplay() {
+                const currentStation = this.stations[this.currentStationIndex];
+                const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+                const nextStation = this.stations[nextStationIndex];
+                
+                document.querySelector('.station-name').textContent = currentStation.name;
+                document.querySelector('.station-code-line1').textContent = currentStation.code[0];
+                document.querySelector('.station-code-line2').textContent = currentStation.code[1];
+                document.querySelector('.next-station-name').textContent = nextStation.name;
             },
             
             gameLoop() {
@@ -480,7 +511,6 @@
                 if (distance < 150 && !this.isInStation) {
                     this.approachingStation = nextStationIndex;
                     document.querySelector('.next-station-name').textContent = nextStation.name;
-                    document.querySelector('.next-station-container .station-code').textContent = nextStation.code;
                     
                     const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
                     
@@ -502,14 +532,7 @@
                         this.updateScore();
                         
                         this.currentStationIndex = nextStationIndex;
-                        const currentStation = this.stations[this.currentStationIndex];
-                        document.querySelector('.current-station-name').textContent = currentStation.name;
-                        document.querySelector('.current-station-container .station-code').textContent = currentStation.code;
-                        
-                        const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                        const newNextStation = this.stations[newNextIndex];
-                        document.querySelector('.next-station-name').textContent = newNextStation.name;
-                        document.querySelector('.next-station-container .station-code').textContent = newNextStation.code;
+                        this.updateStationDisplay();
                         
                         setTimeout(() => {
                             this.isInStation = false;
@@ -521,14 +544,7 @@
                         setTimeout(() => {
                             this.isInStation = false;
                             this.currentStationIndex = nextStationIndex;
-                            const currentStation = this.stations[this.currentStationIndex];
-                            document.querySelector('.current-station-name').textContent = currentStation.name;
-                            document.querySelector('.current-station-container .station-code').textContent = currentStation.code;
-                            
-                            const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                            const newNextStation = this.stations[newNextIndex];
-                            document.querySelector('.next-station-name').textContent = newNextStation.name;
-                            document.querySelector('.next-station-container .station-code').textContent = newNextStation.code;
+                            this.updateStationDisplay();
                         }, 1000);
                     }
                     
