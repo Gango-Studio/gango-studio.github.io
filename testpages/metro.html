@@ -5,34 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电车GO 山手線スタイル</title>
     <style>
-        body {
+        html, body {
             margin: 0;
             padding: 0;
-            background-color: #006847; /* 山手线绿色背景 */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        body {
+            background-color: #006847;
             color: white;
             font-family: 'MS Gothic', 'Osaka', 'Meiryo', sans-serif;
-            overflow: hidden;
-            touch-action: manipulation;
-            user-select: none;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
         #display {
             flex: 1;
-            background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
+            overflow: auto;
         }
         .display-panel {
             width: 100%;
             max-width: 500px;
             background-color: #111;
-            border: 3px solid #fff; /* 白色边框 */
+            border: 3px solid #fff;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
@@ -54,7 +57,7 @@
             color: #fff;
         }
         .next-station {
-            color: #8cff00; /* 明亮的山手线绿色 */
+            color: #8cff00;
         }
         .info-row {
             display: flex;
@@ -85,7 +88,7 @@
             color: #0f0;
         }
         .distance-value {
-            color: #8cff00; /* 明亮的山手线绿色 */
+            color: #8cff00;
         }
         #controls {
             height: 150px;
@@ -94,7 +97,7 @@
             flex-direction: column;
             padding: 10px;
             box-sizing: border-box;
-            border-top: 3px solid #fff; /* 白色边框 */
+            border-top: 3px solid #fff;
         }
         .control-row {
             display: flex;
@@ -114,7 +117,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            touch-action: manipulation;
         }
         .control-btn:active {
             background-color: #555;
@@ -123,7 +125,7 @@
             background-color: #d22;
         }
         #brake {
-            background-color: #006847; /* 山手线绿色 */
+            background-color: #006847;
         }
         #stop {
             background-color: #ff0;
@@ -146,7 +148,7 @@
             font-size: 14px;
         }
         .speed-notch.active {
-            background-color: #8cff00; /* 明亮的山手线绿色 */
+            background-color: #8cff00;
         }
         #message {
             position: fixed;
@@ -160,7 +162,7 @@
             border-radius: 10px;
             text-align: center;
             display: none;
-            border: 2px solid #8cff00; /* 明亮的山手线绿色 */
+            border: 2px solid #8cff00;
             z-index: 100;
         }
         #scoreDisplay {
@@ -168,7 +170,7 @@
             top: 20px;
             right: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            border: 2px solid #8cff00; /* 明亮的山手线绿色 */
+            border: 2px solid #8cff00;
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
@@ -223,6 +225,275 @@
         </div>
     </div>
     
-    <script src="game.js"></script>
+    <script>
+        // 游戏主对象
+        const game = {
+            trainAngle: 0,
+            speed: 0,
+            maxSpeed: 0.02,
+            speedLevel: 0,
+            speedLevels: [0, 0.004, 0.008, 0.012, 0.016, 0.02],
+            acceleration: 0.0005,
+            deceleration: 0.0008,
+            brakingDeceleration: 0.0015,
+            currentStationIndex: 0,
+            approachingStation: null,
+            isInStation: false,
+            laps: 0,
+            score: 0,
+            totalStops: 0,
+            successfulStops: 0,
+            stations: [
+                { name: "Pigsty", angle: 0 },
+                { name: "新橋", angle: Math.PI }
+            ],
+            gameLoopId: null,
+            kmhConversionFactor: 1800,
+            meterConversionFactor: 1000,
+            trackRadius: 500,
+            accelerating: false,
+            braking: false,
+            accelerationInterval: null,
+            brakeInterval: null,
+            
+            init() {
+                const accelerateBtn = document.getElementById('accelerate');
+                const brakeBtn = document.getElementById('brake');
+                const stopBtn = document.getElementById('stop');
+                
+                // 触摸事件
+                accelerateBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.startAccelerate();
+                }, { passive: false });
+                
+                accelerateBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.stopAccelerate();
+                }, { passive: false });
+                
+                brakeBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.startBrake();
+                }, { passive: false });
+                
+                brakeBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.stopBrake();
+                }, { passive: false });
+                
+                stopBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.stopTrain();
+                }, { passive: false });
+                
+                // 鼠标事件
+                accelerateBtn.addEventListener('mousedown', this.startAccelerate.bind(this));
+                accelerateBtn.addEventListener('mouseup', this.stopAccelerate.bind(this));
+                accelerateBtn.addEventListener('mouseleave', this.stopAccelerate.bind(this));
+                
+                brakeBtn.addEventListener('mousedown', this.startBrake.bind(this));
+                brakeBtn.addEventListener('mouseup', this.stopBrake.bind(this));
+                brakeBtn.addEventListener('mouseleave', this.stopBrake.bind(this));
+                
+                stopBtn.addEventListener('click', this.stopTrain.bind(this));
+                
+                // 键盘控制
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowUp') this.startAccelerate();
+                    if (e.key === 'ArrowDown') this.startBrake();
+                    if (e.key === ' ') this.stopTrain();
+                });
+                
+                window.addEventListener('keyup', (e) => {
+                    if (e.key === 'ArrowUp') this.stopAccelerate();
+                    if (e.key === 'ArrowDown') this.stopBrake();
+                });
+                
+                this.gameLoop();
+            },
+            
+            gameLoop() {
+                this.update();
+                this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+            },
+            
+            stopGameLoop() {
+                if (this.gameLoopId) {
+                    cancelAnimationFrame(this.gameLoopId);
+                    this.gameLoopId = null;
+                }
+            },
+            
+            update() {
+                this.trainAngle += this.speed;
+                
+                if (this.trainAngle >= Math.PI * 2) {
+                    this.trainAngle -= Math.PI * 2;
+                    this.laps++;
+                    document.getElementById('lapsValue').textContent = this.laps;
+                }
+                
+                this.updateSpeedLevel();
+                this.checkStations();
+                this.updateUI();
+            },
+            
+            updateUI() {
+                const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
+                document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
+                
+                if (this.approachingStation !== null) {
+                    const nextStation = this.stations[this.approachingStation];
+                    let angleDiff = nextStation.angle - this.trainAngle;
+                    if (angleDiff < 0) angleDiff += Math.PI * 2;
+                    const distance = Math.floor(angleDiff * this.trackRadius * this.meterConversionFactor);
+                    document.querySelector('.distance-value').textContent = `${distance} m`;
+                } else {
+                    document.querySelector('.distance-value').textContent = "0 m";
+                }
+            },
+            
+            updateSpeedLevel() {
+                const notches = document.querySelectorAll('.speed-notch');
+                notches.forEach((notch, index) => {
+                    notch.classList.toggle('active', index <= this.speedLevel);
+                });
+            },
+            
+            checkStations() {
+                const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+                const nextStation = this.stations[nextStationIndex];
+                
+                let angleDiff = nextStation.angle - this.trainAngle;
+                if (angleDiff < 0) angleDiff += Math.PI * 2;
+                
+                if (angleDiff < 0.15 && !this.isInStation) {
+                    this.approachingStation = nextStationIndex;
+                    document.querySelector('.next-station').textContent = nextStation.name;
+                    
+                    if ((this.speed * this.speed) / (2 * angleDiff) > this.brakingDeceleration * 1.5) {
+                        this.showMessage("減速不足! 速度を落としてください!");
+                    }
+                }
+                
+                if (angleDiff < 0.02) {
+                    this.isInStation = true;
+                    this.totalStops++;
+                    
+                    if (this.speed < 0.001) {
+                        const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(angleDiff - 0.01) * 10000));
+                        this.successfulStops++;
+                        this.score += 100 + stopAccuracy;
+                        
+                        this.showMessage(`${nextStation.name} 停車成功! 精度: ${stopAccuracy}%`);
+                        this.updateScore();
+                        
+                        this.currentStationIndex = nextStationIndex;
+                        document.querySelector('.current-station').textContent = nextStation.name;
+                        
+                        const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
+                        document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
+                        
+                        setTimeout(() => {
+                            this.isInStation = false;
+                        }, 3000);
+                    } else {
+                        this.showMessage(`通過: ${nextStation.name}`);
+                        this.updateScore();
+                        
+                        setTimeout(() => {
+                            this.isInStation = false;
+                            this.currentStationIndex = nextStationIndex;
+                            document.querySelector('.current-station').textContent = nextStation.name;
+                            
+                            const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
+                            document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
+                        }, 1000);
+                    }
+                    
+                    this.approachingStation = null;
+                }
+            },
+            
+            updateScore() {
+                document.getElementById('scoreValue').textContent = this.score;
+                const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+                document.getElementById('accuracyValue').textContent = accuracy;
+            },
+            
+            showMessage(msg) {
+                const messageElement = document.getElementById('message');
+                messageElement.textContent = msg;
+                messageElement.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 2000);
+            },
+            
+            startAccelerate() {
+                if (this.speedLevel < 5 && !this.isInStation && !this.accelerating) {
+                    this.accelerating = true;
+                    this.accelerationInterval = setInterval(() => {
+                        this.speed = Math.min(this.speed + this.acceleration, this.speedLevels[this.speedLevel + 1]);
+                        if (this.speed >= this.speedLevels[this.speedLevel + 1] * 0.95) {
+                            this.speedLevel = Math.min(this.speedLevel + 1, 5);
+                            this.stopAccelerate();
+                        }
+                    }, 16);
+                }
+            },
+            
+            stopAccelerate() {
+                if (this.accelerating) {
+                    clearInterval(this.accelerationInterval);
+                    this.accelerating = false;
+                }
+            },
+            
+            startBrake() {
+                if (this.speedLevel > 0 && !this.braking) {
+                    this.braking = true;
+                    this.brakeInterval = setInterval(() => {
+                        this.speed = Math.max(this.speed - this.deceleration, this.speedLevels[this.speedLevel - 1]);
+                        if (this.speed <= this.speedLevels[this.speedLevel - 1] * 1.05) {
+                            this.speedLevel = Math.max(this.speedLevel - 1, 0);
+                            this.stopBrake();
+                        }
+                    }, 16);
+                }
+            },
+            
+            stopBrake() {
+                if (this.braking) {
+                    clearInterval(this.brakeInterval);
+                    this.braking = false;
+                }
+            },
+            
+            stopTrain() {
+                if (this.approachingStation !== null && !this.isInStation) {
+                    this.braking = true;
+                    clearInterval(this.brakeInterval);
+                    this.brakeInterval = setInterval(() => {
+                        this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
+                        if (this.speed === 0) {
+                            this.speedLevel = 0;
+                            this.stopBrake();
+                        }
+                    }, 16);
+                }
+            }
+        };
+
+        // 启动游戏
+        window.onload = () => game.init();
+
+        // 确保游戏循环在页面卸载时停止
+        window.addEventListener('beforeunload', () => {
+            game.stopGameLoop();
+        });
+    </script>
 </body>
 </html>
