@@ -196,7 +196,7 @@
                 </div>
                 <div class="info-box">
                     <div class="info-label">距離</div>
-                    <div class="info-value distance-value">0 m</div>
+                    <div class="info-value distance-value">1900 m</div>
                 </div>
             </div>
         </div>
@@ -245,12 +245,12 @@
             successfulStops: 0,
             stations: [
                 { name: "Pigsty", angle: 0 },
-                { name: "新橋", angle: Math.PI }
+                { name: "新橋", angle: Math.PI * (1900 / 3000) } // 修改为1900米间距
             ],
             gameLoopId: null,
             kmhConversionFactor: 1800,
-            meterConversionFactor: 1000,
-            trackRadius: 500,
+            meterConversionFactor: 1, // 直接使用米作为单位
+            trackLength: 3000, // 虚拟轨道长度(米) - 用于计算角度
             accelerating: false,
             braking: false,
             accelerationInterval: null,
@@ -326,7 +326,9 @@
             },
             
             update() {
-                this.trainAngle += this.speed;
+                // 更新电车位置 (基于实际距离计算)
+                const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
+                this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
                 
                 if (this.trainAngle >= Math.PI * 2) {
                     this.trainAngle -= Math.PI * 2;
@@ -347,10 +349,18 @@
                     const nextStation = this.stations[this.approachingStation];
                     let angleDiff = nextStation.angle - this.trainAngle;
                     if (angleDiff < 0) angleDiff += Math.PI * 2;
-                    const distance = Math.floor(angleDiff * this.trackRadius * this.meterConversionFactor);
+                    
+                    // 计算实际距离（米）
+                    const distance = Math.floor(angleDiff * this.trackLength / (2 * Math.PI));
                     document.querySelector('.distance-value').textContent = `${distance} m`;
                 } else {
-                    document.querySelector('.distance-value').textContent = "0 m";
+                    // 计算到下一站的初始距离
+                    const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+                    const nextStation = this.stations[nextStationIndex];
+                    let angleDiff = nextStation.angle - this.trainAngle;
+                    if (angleDiff < 0) angleDiff += Math.PI * 2;
+                    const distance = Math.floor(angleDiff * this.trackLength / (2 * Math.PI));
+                    document.querySelector('.distance-value').textContent = `${distance} m`;
                 }
             },
             
@@ -368,21 +378,31 @@
                 let angleDiff = nextStation.angle - this.trainAngle;
                 if (angleDiff < 0) angleDiff += Math.PI * 2;
                 
-                if (angleDiff < 0.15 && !this.isInStation) {
+                // 转换为实际距离（米）
+                const distance = angleDiff * this.trackLength / (2 * Math.PI);
+                
+                // 如果接近车站（距离小于150米）
+                if (distance < 150 && !this.isInStation) {
                     this.approachingStation = nextStationIndex;
                     document.querySelector('.next-station').textContent = nextStation.name;
                     
-                    if ((this.speed * this.speed) / (2 * angleDiff) > this.brakingDeceleration * 1.5) {
+                    // 计算需要的减速度
+                    const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
+                    
+                    if (requiredDeceleration > this.brakingDeceleration * 1.5) {
                         this.showMessage("減速不足! 速度を落としてください!");
                     }
                 }
                 
-                if (angleDiff < 0.02) {
+                // 如果进入车站区域（距离小于20米）
+                if (distance < 20) {
                     this.isInStation = true;
                     this.totalStops++;
                     
-                    if (this.speed < 0.001) {
-                        const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(angleDiff - 0.01) * 10000));
+                    // 如果速度足够低（小于3.6km/h），可以停车
+                    if (this.speed * this.kmhConversionFactor < 3.6) {
+                        // 计算停靠精度 (0-100%)
+                        const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
                         this.successfulStops++;
                         this.score += 100 + stopAccuracy;
                         
