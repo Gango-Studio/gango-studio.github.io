@@ -3,26 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电车GO 山手線スタイル</title>
+    <title>电车GO 山手線</title>
     <style>
+        :root {
+            --jr-green: #00a160;
+            --jr-orange: #f39800;
+            --jr-blue: #0095d9;
+            --jr-gray: #e6e6e6;
+            --jr-dark: #333333;
+        }
+        
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
         }
+        
         body {
-            background-color: #006847;
-            color: white;
-            font-family: 'MS Gothic', 'Osaka', 'Meiryo', sans-serif;
+            background-color: #f5f5f5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
+        
         #display {
             flex: 1;
-            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -30,166 +38,225 @@
             padding: 20px;
             box-sizing: border-box;
             overflow: auto;
+            background-color: var(--jr-gray);
         }
-        .display-panel {
+        
+        .jr-panel {
             width: 100%;
             max-width: 500px;
-            background-color: #111;
-            border: 3px solid #fff;
-            border-radius: 10px;
-            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
             margin-bottom: 20px;
         }
-        .station-row {
-            display: flex;
-            justify-content: space-between;
+        
+        .station-display {
+            border-bottom: 2px solid var(--jr-green);
+            padding-bottom: 15px;
             margin-bottom: 15px;
         }
-        .station-label {
-            font-size: 22px;
-            color: #ccc;
+        
+        .current-station {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
+        
+        .station-label {
+            font-size: 16px;
+            color: var(--jr-dark);
+            margin-right: 10px;
+        }
+        
         .station-name {
             font-size: 28px;
             font-weight: bold;
+            color: var(--jr-green);
         }
-        .current-station {
-            color: #fff;
-        }
+        
         .next-station {
-            color: #8cff00;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .info-box {
-            flex: 1;
-            margin: 0 5px;
-        }
-        .info-label {
-            font-size: 18px;
-            color: #ccc;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-size: 32px;
-            font-weight: bold;
-            height: 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            background-color: #222;
-            border-radius: 5px;
-            padding: 5px;
         }
+        
+        .next-label {
+            font-size: 16px;
+            color: var(--jr-dark);
+            margin-right: 10px;
+        }
+        
+        .next-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--jr-blue);
+        }
+        
+        .info-display {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .info-box {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--jr-gray);
+            border-radius: 6px;
+            margin: 0 5px;
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: var(--jr-dark);
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
         .speed-value {
-            color: #0f0;
+            color: var(--jr-orange);
         }
+        
         .distance-value {
-            color: #8cff00;
+            color: var(--jr-blue);
         }
+        
         #controls {
-            height: 150px;
-            background-color: #111;
+            height: 160px;
+            background-color: white;
             display: flex;
             flex-direction: column;
-            padding: 10px;
+            padding: 15px;
             box-sizing: border-box;
-            border-top: 3px solid #fff;
+            border-top: 2px solid var(--jr-green);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
+        
         .control-row {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
+        
         .control-btn {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background-color: #333;
+            background-color: var(--jr-gray);
             color: white;
-            border: 3px solid #666;
+            border: none;
             font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        
         .control-btn:active {
-            background-color: #555;
+            transform: translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
+        
         #accelerate {
-            background-color: #d22;
+            background-color: var(--jr-orange);
         }
+        
         #brake {
-            background-color: #006847;
+            background-color: var(--jr-green);
         }
+        
         #stop {
-            background-color: #ff0;
-            color: #000;
+            background-color: #e74c3c;
         }
+        
         #speedNotches {
             display: flex;
             gap: 5px;
             justify-content: center;
             margin-bottom: 10px;
         }
+        
         .speed-notch {
             width: 40px;
             height: 20px;
-            background-color: #333;
-            border: 1px solid #666;
+            background-color: var(--jr-gray);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
         }
+        
         .speed-notch.active {
-            background-color: #8cff00;
+            background-color: var(--jr-green);
+            color: white;
         }
+        
         #message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 28px;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.9);
+            font-size: 24px;
+            color: white;
+            background-color: var(--jr-green);
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             display: none;
-            border: 2px solid #8cff00;
             z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        
         #scoreDisplay {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 2px solid #8cff00;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .score-label {
+            color: var(--jr-dark);
+            margin-right: 10px;
+        }
+        
+        .score-value {
+            font-weight: bold;
+            color: var(--jr-green);
         }
     </style>
 </head>
 <body>
     <div id="display">
-        <div class="display-panel">
-            <div class="station-row">
-                <span class="station-label">現在:</span>
-                <span class="station-name current-station">Pigsty</span>
-            </div>
-            <div class="station-row">
-                <span class="station-label">次:</span>
-                <span class="station-name next-station">新橋</span>
+        <div class="jr-panel">
+            <div class="station-display">
+                <div class="current-station">
+                    <span class="station-label">現在</span>
+                    <span class="station-name">Pigsty</span>
+                </div>
+                <div class="next-station">
+                    <span class="next-label">次</span>
+                    <span class="next-name">新橋</span>
+                </div>
             </div>
             
-            <div class="info-row">
+            <div class="info-display">
                 <div class="info-box">
                     <div class="info-label">速度</div>
                     <div class="info-value speed-value">0 km/h</div>
@@ -202,9 +269,18 @@
         </div>
         
         <div id="scoreDisplay">
-            <div>スコア: <span id="scoreValue">0</span></div>
-            <div>停車精度: <span id="accuracyValue">0</span>%</div>
-            <div>完走回数: <span id="lapsValue">0</span></div>
+            <div class="score-item">
+                <span class="score-label">スコア</span>
+                <span class="score-value" id="scoreValue">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">停車精度</span>
+                <span class="score-value" id="accuracyValue">0%</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">完走回数</span>
+                <span class="score-value" id="lapsValue">0</span>
+            </div>
         </div>
         
         <div id="message"></div>
@@ -245,12 +321,12 @@
             successfulStops: 0,
             stations: [
                 { name: "Pigsty", angle: 0 },
-                { name: "新橋", angle: Math.PI * (1900 / 3000) } // 修改为1900米间距
+                { name: "新橋", angle: Math.PI * (1900 / 3000) }
             ],
             gameLoopId: null,
             kmhConversionFactor: 1800,
-            meterConversionFactor: 1, // 直接使用米作为单位
-            trackLength: 3000, // 虚拟轨道长度(米) - 用于计算角度
+            meterConversionFactor: 1,
+            trackLength: 3000,
             accelerating: false,
             braking: false,
             accelerationInterval: null,
@@ -326,7 +402,6 @@
             },
             
             update() {
-                // 更新电车位置 (基于实际距离计算)
                 const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
                 this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
                 
@@ -350,11 +425,9 @@
                     let angleDiff = nextStation.angle - this.trainAngle;
                     if (angleDiff < 0) angleDiff += Math.PI * 2;
                     
-                    // 计算实际距离（米）
                     const distance = Math.floor(angleDiff * this.trackLength / (2 * Math.PI));
                     document.querySelector('.distance-value').textContent = `${distance} m`;
                 } else {
-                    // 计算到下一站的初始距离
                     const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
                     const nextStation = this.stations[nextStationIndex];
                     let angleDiff = nextStation.angle - this.trainAngle;
@@ -378,15 +451,12 @@
                 let angleDiff = nextStation.angle - this.trainAngle;
                 if (angleDiff < 0) angleDiff += Math.PI * 2;
                 
-                // 转换为实际距离（米）
                 const distance = angleDiff * this.trackLength / (2 * Math.PI);
                 
-                // 如果接近车站（距离小于150米）
                 if (distance < 150 && !this.isInStation) {
                     this.approachingStation = nextStationIndex;
-                    document.querySelector('.next-station').textContent = nextStation.name;
+                    document.querySelector('.next-name').textContent = nextStation.name;
                     
-                    // 计算需要的减速度
                     const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
                     
                     if (requiredDeceleration > this.brakingDeceleration * 1.5) {
@@ -394,14 +464,11 @@
                     }
                 }
                 
-                // 如果进入车站区域（距离小于20米）
                 if (distance < 20) {
                     this.isInStation = true;
                     this.totalStops++;
                     
-                    // 如果速度足够低（小于3.6km/h），可以停车
                     if (this.speed * this.kmhConversionFactor < 3.6) {
-                        // 计算停靠精度 (0-100%)
                         const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
                         this.successfulStops++;
                         this.score += 100 + stopAccuracy;
@@ -410,10 +477,10 @@
                         this.updateScore();
                         
                         this.currentStationIndex = nextStationIndex;
-                        document.querySelector('.current-station').textContent = nextStation.name;
+                        document.querySelector('.station-name').textContent = nextStation.name;
                         
                         const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                        document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
+                        document.querySelector('.next-name').textContent = this.stations[newNextIndex].name;
                         
                         setTimeout(() => {
                             this.isInStation = false;
@@ -425,10 +492,10 @@
                         setTimeout(() => {
                             this.isInStation = false;
                             this.currentStationIndex = nextStationIndex;
-                            document.querySelector('.current-station').textContent = nextStation.name;
+                            document.querySelector('.station-name').textContent = nextStation.name;
                             
                             const newNextIndex = (this.currentStationIndex + 1) % this.stations.length;
-                            document.querySelector('.next-station').textContent = this.stations[newNextIndex].name;
+                            document.querySelector('.next-name').textContent = this.stations[newNextIndex].name;
                         }, 1000);
                     }
                     
@@ -439,7 +506,7 @@
             updateScore() {
                 document.getElementById('scoreValue').textContent = this.score;
                 const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-                document.getElementById('accuracyValue').textContent = accuracy;
+                document.getElementById('accuracyValue').textContent = `${accuracy}%`;
             },
             
             showMessage(msg) {
