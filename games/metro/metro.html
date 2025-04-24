@@ -5,50 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Train Simulator - Yamanote Line</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        /* 全局样式 */
         :root {
-            --jr-green: #00a160;
-            --jr-orange: #f39800;
-            --jr-blue: #0095d9;
-            --jr-gray: #e6e6e6;
-            --jr-dark: #333333;
-            --jr-dark-bg: #424242;
-            --jr-light-bg: #f5f5f5;
-            --jr-red: #e74c3c;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --jr-green: #00a05b;
+            --jr-red: #ed1c24;
+            --jr-orange: #f58220;
+            --jr-blue: #0068b7;
+            --jr-yellow: #fff100;
         }
         
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-            background-color: var(--jr-light-bg);
-            color: var(--jr-dark);
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 页眉样式 */
-        header {
-            background-color: var(--jr-green);
-            color: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
+        a {
+            text-decoration: none;
+            color: #007aff;
+            transition: color 0.3s ease;
         }
-        
+
+        a:hover {
+            color: #005bb5;
+        }
+
+        /* 页首样式 */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         header h1 {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 2.5em;
             margin: 0;
-            color: white;
+            color: #1d1d1f;
+            font-weight: 500;
         }
 
         /* 游戏容器样式 */
@@ -67,8 +69,8 @@
             height: 300px;
             background-color: #333;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -100,7 +102,6 @@
             right: 190px;
         }
 
-        /* 控制按钮样式 */
         #controls {
             display: flex;
             justify-content: center;
@@ -109,92 +110,42 @@
         }
 
         button {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: var(--jr-gray);
-            color: white;
+            padding: 10px 20px;
             border: none;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        button:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        #start-btn {
-            background-color: var(--jr-orange);
-        }
-
-        #stop-btn {
-            background-color: var(--jr-red);
-        }
-
-        #brake-btn {
+            border-radius: 8px;
             background-color: var(--jr-green);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        #reset-btn {
-            background-color: var(--jr-blue);
+        button:hover {
+            background-color: #008a4f;
         }
 
         button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
-            opacity: 0.7;
         }
 
-        /* 速度控制条样式 */
         #speed-control {
             width: 100%;
             margin-bottom: 20px;
-            -webkit-appearance: none;
-            height: 8px;
-            background: var(--jr-gray);
-            border-radius: 4px;
-            outline: none;
         }
 
-        #speed-control::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--jr-green);
-            cursor: pointer;
-        }
-
-        #speed-control::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--jr-green);
-            cursor: pointer;
-        }
-
-        /* 统计信息样式 */
         #stats {
             display: flex;
             justify-content: space-around;
             background-color: white;
             padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
         .stat-box {
             text-align: center;
-            flex: 1;
-            padding: 10px;
         }
 
         .stat-box h3 {
@@ -206,26 +157,11 @@
         .stat-box p {
             margin: 0;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 500;
+            color: #1d1d1f;
         }
 
-        #speedValue {
-            color: var(--jr-orange);
-        }
-
-        #distanceValue {
-            color: var(--jr-blue);
-        }
-
-        #scoreValue {
-            color: var(--jr-green);
-        }
-
-        .accuracy-clickable {
-            cursor: pointer;
-        }
-
-        /* 通关弹窗样式 */
+        /* 添加通关弹窗样式 */
         #success-modal {
             position: fixed;
             top: 0;
@@ -260,64 +196,58 @@
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         /* 页脚样式 */
         footer {
-            background-color: var(--jr-dark-bg);
-            color: white;
-            padding: 30px 20px;
-            margin-top: auto;
-        }
-        
-        footer h3 {
-            color: var(--jr-green);
-            font-size: 20px;
-            margin-bottom: 15px;
             width: 100%;
-            text-align: center;
+            background-color: #ffffff;
+            padding: 20px 0;
+            text-align: left;
+            margin-top: auto;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
         }
-        
-        footer div {
-            flex: 1;
-            min-width: 150px;
-            margin: 10px 0;
-            text-align: center;
+
+        footer h3 {
+            font-size: 1.8em;
+            margin: 0;
+            padding-left: 10%;
+            color: #1d1d1f;
+            font-weight: 500;
+            width: 100%;
         }
-        
+
         footer h4, footer h5 {
-            margin: 8px 0;
+            margin: 0;
+            padding: 5px 0;
+            padding-left: 10%;
+            color: #1d1d1f;
         }
-        
+
         footer a {
-            color: white;
+            color: #1d1d1f;
             text-decoration: none;
-            display: inline-block;
-            padding: 3px 0;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
-        
+
         footer a:hover {
-            color: var(--jr-green);
+            color: #007aff;
         }
-        
-        @media (max-width: 768px) {
-            footer div {
-                min-width: 100%;
-                margin: 5px 0;
-            }
-            
-            #controls {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            button {
-                width: 70px;
-                height: 70px;
-                font-size: 14px;
-            }
+
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .accuracy-clickable {
+            cursor: pointer;
         }
     </style>
 </head>
