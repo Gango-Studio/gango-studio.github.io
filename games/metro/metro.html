@@ -14,105 +14,82 @@
             --jr-dark-bg: #424242;
         }
         
-        /* 全局样式 */
+        /* 页首样式 */
+        header {
+            text-align: center;
+            padding: 15px 0;
+            background-color: var(--jr-green);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 1.8em;
+            margin: 0;
+            color: white;
+            font-weight: 500;
+        }
+        
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            width: 100%;
+            background-color: var(--jr-dark-bg);
+            padding: 15px 0;
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        footer h3 {
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+            padding-left: 15px;
+            color: white;
+            width: 100%;
+        }
+        
+        footer h4, footer h5 {
+            margin: 0;
+            padding: 3px 0;
+            padding-left: 15px;
+            color: white;
+            font-weight: normal;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--jr-orange);
+        }
+        
+        footer div {
+            width: 50%;
+        }
+        
+        /* 游戏主体样式 */
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background-color: #f5f5f5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-
-        /* 页首样式 - 使用JR绿色主题 */
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 20px 0;
-            background-color: var(--jr-green);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            color: white;
-            font-weight: 500;
-        }
-
-        header a {
-            text-decoration: none;
-            color: white;
-            transition: color 0.3s ease;
-        }
-
-        header a:hover {
-            color: var(--jr-orange);
-        }
-
-        /* 页脚样式 - 使用JR深色主题 */
-        footer {
-            width: 100%;
-            background-color: var(--jr-dark-bg);
-            padding: 20px 0;
-            text-align: left;
-            margin-top: auto;
-            border-top: 1px solid var(--jr-gray);
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        footer h3 {
-            font-size: 1.8em;
-            margin: 0;
-            padding-left: 10%;
-            color: white;
-            font-weight: 500;
-            width: 100%;
-        }
-
-        footer h4, footer h5 {
-            margin: 0;
-            padding: 5px 0;
-            padding-left: 10%;
-            color: white;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: var(--jr-orange);
-        }
-
-        footer div {
-            width: 50%;
-            box-sizing: border-box;
-            background-color: transparent;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
+        
         .main-content {
             flex: 1;
-            background-color: var(--jr-gray);
-        }
-
-        /* 游戏原有样式 */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
+            display: flex;
+            flex-direction: column;
         }
         
         #display {
@@ -336,13 +313,14 @@
         
         #scoreDisplay {
             position: absolute;
-            top: 20px;
+            top: 70px;
             right: 20px;
             background-color: white;
             border-radius: 8px;
             padding: 10px 15px;
             font-size: 14px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
         
         .score-item {
@@ -369,72 +347,70 @@
         </a>
     </header>
 
-    <div class="main-content" id="display">
-        <div class="jr-panel">
-            <div class="station-header">
-                <div class="station-divider"></div>
-                <div class="next-station-container">
-                    <div class="station-label">下一站</div>
-                    <div class="next-station-name">新桥</div>
-                </div>
-                <div class="current-station-container">
-                    <div>
-                        <div class="station-label">当前</div>
-                        <div class="station-name">Pigsty</div>
+    <div class="main-content">
+        <div id="display">
+            <div class="jr-panel">
+                <div class="station-header">
+                    <div class="station-divider"></div>
+                    <div class="next-station-container">
+                        <div class="station-label">下一站</div>
+                        <div class="next-station-name">新桥</div>
                     </div>
-                    <div class="station-code-box">
-                        <div class="station-code-line1">PSY</div>
-                        <div class="station-code-line2">SY00</div>
+                    <div class="current-station-container">
+                        <div>
+                            <div class="station-label">当前</div>
+                            <div class="station-name">Pigsty</div>
+                        </div>
+                        <div class="station-code-box">
+                            <div class="station-code-line1">PSY</div>
+                            <div class="station-code-line2">SY00</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-display">
+                    <div class="info-box">
+                        <div class="info-label">速度</div>
+                        <div class="info-value speed-value">0 km/h</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">距离</div>
+                        <div class="info-value distance-value">1900 m</div>
                     </div>
                 </div>
             </div>
             
-            <div class="info-display">
-                <div class="info-box">
-                    <div class="info-label">速度</div>
-                    <div class="info-value speed-value">0 km/h</div>
+            <div id="scoreDisplay">
+                <div class="score-item">
+                    <span class="score-label">得分</span>
+                    <span class="score-value" id="scoreValue">0</span>
                 </div>
-                <div class="info-box">
-                    <div class="info-label">距离</div>
-                    <div class="info-value distance-value">1900 m</div>
+                <div class="score-item">
+                    <span class="score-label">停站准确率</span>
+                    <span class="score-value" id="accuracyValue">0%</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">完成圈数</span>
+                    <span class="score-value" id="lapsValue">0</span>
                 </div>
             </div>
+            
+            <div id="message"></div>
         </div>
         
-        <div id="scoreDisplay">
-            <div class="score-item">
-                <span class="score-label">得分</span>
-                <span class="score-value" id="scoreValue">0</span>
+        <div id="controls">
+            <div id="speedNotches">
+                <div class="speed-notch" data-level="1">1</div>
+                <div class="speed-notch" data-level="2">2</div>
+                <div class="speed-notch" data-level="3">3</div>
+                <div class="speed-notch" data-level="4">4</div>
+                <div class="speed-notch" data-level="5">5</div>
             </div>
-            <div class="score-item">
-                <span class="score-label">停站准确率</span>
-                <span class="score-value" id="accuracyValue">0%</span>
+            <div class="control-row">
+                <div id="brake" class="control-btn">减速</div>
+                <div id="stop" class="control-btn">停车</div>
+                <div id="accelerate" class="control-btn">加速</div>
             </div>
-            <div class="score-item">
-                <span class="score-label">完成圈数</span>
-                <span class="score-value" id="lapsValue">0</span>
-            </div>
-            <div class="score-item">
-                <span class="score-label">点击准确率</span>
-                <span class="score-value" id="clickAccuracyValue">0%</span>
-            </div>
-        </div>
-        
-        <div id="message"></div>
-    </div>
-    
-    <div id="controls">
-        <div id="speedNotches">
-            <div class="speed-notch" data-level="1">1</div>
-            <div class="speed-notch" data-level="2">2</div>
-            <div class="speed-notch" data-level="3">3</div>
-            <div class="speed-notch" data-level="4">4</div>
-            <div class="speed-notch" data-level="5">5</div>
-        </div>
-        <div class="control-row">
-            <div id="brake" class="control-btn">减速</div>
-            <div id="stop" class="control-btn">停车</div>
-            <div id="accelerate" class="control-btn">加速</div>
         </div>
     </div>
     
@@ -472,8 +448,6 @@
             score: 0,
             totalStops: 0,
             successfulStops: 0,
-            totalClicks: 0,
-            accurateClicks: 0,
             stations: [
                 { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
                 { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3000) }
@@ -541,16 +515,9 @@
                     if (e.key === 'ArrowDown') this.stopBrake();
                 });
                 
-                // 点击准确率检测
-                document.querySelectorAll('.control-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.totalClicks++;
-                        // 假设在接近车站时点击是准确的
-                        if (this.approachingStation !== null) {
-                            this.accurateClicks++;
-                        }
-                        this.updateClickAccuracy();
-                    });
+                // 添加点击计分板触发通关提示的功能
+                document.getElementById('scoreDisplay').addEventListener('click', () => {
+                    this.showMessage("测试通关提示！点击右上角计分板可触发此提示");
                 });
                 
                 // 初始化显示
@@ -622,16 +589,6 @@
                 notches.forEach((notch, index) => {
                     notch.classList.toggle('active', index <= this.speedLevel);
                 });
-            },
-            
-            updateClickAccuracy() {
-                const accuracy = this.totalClicks > 0 ? Math.floor((this.accurateClicks / this.totalClicks) * 100) : 0;
-                document.getElementById('clickAccuracyValue').textContent = `${accuracy}%`;
-                
-                // 当点击准确率达到100%时触发通关提示
-                if (accuracy === 100 && this.totalClicks >= 5) {
-                    this.showMessage("恭喜！点击准确率100%！完美操作！");
-                }
             },
             
             checkStations() {
