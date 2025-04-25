@@ -12,43 +12,75 @@
             --jr-gray: #e6e6e6;
             --jr-dark: #333333;
             --jr-dark-bg: #424242;
+            --header-height: 60px;
+            --footer-height: 120px;
         }
         
         /* 页首样式 */
         header {
-            text-align: center;
-            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
             background-color: var(--jr-green);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .header-title {
+            flex: 1;
+            text-align: center;
         }
         
         header h1 {
-            font-size: 1.8em;
+            font-size: 1.5em;
             margin: 0;
             color: white;
             font-weight: 500;
         }
         
-        header a {
-            text-decoration: none;
+        .home-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
             color: white;
+            text-decoration: none;
+            font-size: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255,255,255,0.3);
         }
         
         /* 页脚样式 */
         footer {
-            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--footer-height);
             background-color: var(--jr-dark-bg);
-            padding: 15px 0;
-            text-align: left;
+            padding: 10px 0;
             display: flex;
             flex-wrap: wrap;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
         }
         
         footer h3 {
             font-size: 1.2em;
-            margin: 0 0 10px 0;
-            padding-left: 15px;
+            margin: 0 0 5px 0;
+            padding-left: 20px;
             color: white;
             width: 100%;
         }
@@ -56,7 +88,7 @@
         footer h4, footer h5 {
             margin: 0;
             padding: 3px 0;
-            padding-left: 15px;
+            padding-left: 20px;
             color: white;
             font-weight: normal;
         }
@@ -81,15 +113,20 @@
             padding: 0;
             font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
             background-color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
+            padding-top: var(--header-height);
+            padding-bottom: var(--footer-height);
+            box-sizing: border-box;
         }
         
-        .main-content {
-            flex: 1;
+        #game-container {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         #display {
@@ -97,16 +134,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: auto;
-            background-color: var(--jr-gray);
+            margin-bottom: 20px;
         }
         
         .jr-panel {
             width: 100%;
-            max-width: 500px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -192,14 +224,14 @@
             display: flex;
             justify-content: space-between;
             padding: 15px;
+            gap: 10px;
         }
         
         .info-box {
             flex: 1;
-            padding: 10px;
+            padding: 15px;
             background-color: var(--jr-gray);
             border-radius: 6px;
-            margin: 0 5px;
             text-align: center;
         }
         
@@ -223,14 +255,13 @@
         }
         
         #controls {
-            height: 160px;
             background-color: white;
             display: flex;
             flex-direction: column;
             padding: 15px;
-            box-sizing: border-box;
-            border-top: 2px solid var(--jr-green);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
         
         .control-row {
@@ -253,6 +284,7 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
         }
         
         .control-btn:active {
@@ -276,7 +308,7 @@
             display: flex;
             gap: 5px;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .speed-notch {
@@ -307,13 +339,14 @@
             border-radius: 8px;
             text-align: center;
             display: none;
-            z-index: 100;
+            z-index: 200;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 80%;
         }
         
         #scoreDisplay {
-            position: absolute;
-            top: 70px;
+            position: fixed;
+            top: calc(var(--header-height) + 20px);
             right: 20px;
             background-color: white;
             border-radius: 8px;
@@ -321,6 +354,7 @@
             font-size: 14px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             cursor: pointer;
+            z-index: 100;
         }
         
         .score-item {
@@ -338,16 +372,47 @@
             font-weight: bold;
             color: var(--jr-green);
         }
+        
+        /* 响应式调整 */
+        @media (max-width: 500px) {
+            .station-name {
+                font-size: 20px;
+            }
+            
+            .next-station-name {
+                font-size: 16px;
+            }
+            
+            .info-value {
+                font-size: 24px;
+            }
+            
+            .control-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 18px;
+            }
+            
+            footer h3 {
+                font-size: 1em;
+            }
+            
+            footer h4, footer h5 {
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <a href="https://gango-studio.github.io">
+        <a href="https://gango-studio.github.io/games/game.html" class="home-btn">🏠</a>
+        <div class="header-title">
             <h1>电车GO 山手线</h1>
-        </a>
+        </div>
+        <div style="width: 40px;"></div> <!-- 用于平衡布局 -->
     </header>
 
-    <div class="main-content">
+    <div id="game-container">
         <div id="display">
             <div class="jr-panel">
                 <div class="station-header">
@@ -379,23 +444,6 @@
                     </div>
                 </div>
             </div>
-            
-            <div id="scoreDisplay">
-                <div class="score-item">
-                    <span class="score-label">得分</span>
-                    <span class="score-value" id="scoreValue">0</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">停站准确率</span>
-                    <span class="score-value" id="accuracyValue">0%</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">完成圈数</span>
-                    <span class="score-value" id="lapsValue">0</span>
-                </div>
-            </div>
-            
-            <div id="message"></div>
         </div>
         
         <div id="controls">
@@ -413,6 +461,23 @@
             </div>
         </div>
     </div>
+    
+    <div id="scoreDisplay">
+        <div class="score-item">
+            <span class="score-label">得分</span>
+            <span class="score-value" id="scoreValue">0</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">停站准确率</span>
+            <span class="score-value" id="accuracyValue">0%</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">完成圈数</span>
+            <span class="score-value" id="lapsValue">0</span>
+        </div>
+    </div>
+    
+    <div id="message"></div>
     
     <footer>
         <h3>Gango Studio</h3>
@@ -460,6 +525,7 @@
             braking: false,
             accelerationInterval: null,
             brakeInterval: null,
+            hasShownCongrats: false,
             
             init() {
                 const accelerateBtn = document.getElementById('accelerate');
@@ -515,9 +581,9 @@
                     if (e.key === 'ArrowDown') this.stopBrake();
                 });
                 
-                // 添加点击计分板触发通关提示的功能
+                // 添加点击计分板触发测试提示的功能
                 document.getElementById('scoreDisplay').addEventListener('click', () => {
-                    this.showMessage("测试通关提示！点击右上角计分板可触发此提示");
+                    this.showMessage("测试提示：点击计分板可查看当前状态");
                 });
                 
                 // 初始化显示
@@ -621,6 +687,14 @@
                         this.score += 100 + stopAccuracy;
                         
                         this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
+                        
+                        // 检查是否达到通关条件（准确率70%以上且至少停靠3次）
+                        const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+                        if (accuracy >= 70 && this.totalStops >= 3 && !this.hasShownCongrats) {
+                            this.showMessage(`恭喜！停站准确率${accuracy}%！\n您已掌握电车驾驶技巧！`, 3000);
+                            this.hasShownCongrats = true;
+                        }
+                        
                         this.updateScore();
                         
                         this.currentStationIndex = nextStationIndex;
@@ -650,14 +724,14 @@
                 document.getElementById('accuracyValue').textContent = `${accuracy}%`;
             },
             
-            showMessage(msg) {
+            showMessage(msg, duration = 2000) {
                 const messageElement = document.getElementById('message');
                 messageElement.textContent = msg;
                 messageElement.style.display = 'block';
                 
                 setTimeout(() => {
                     messageElement.style.display = 'none';
-                }, 2000);
+                }, duration);
             },
             
             startAccelerate() {
