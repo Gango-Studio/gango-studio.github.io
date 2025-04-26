@@ -76,7 +76,7 @@
             width: 100%;
         }
         
-        /* 计分板 - 改为相对定位 */
+        /* 计分板 */
         #scoreDisplay {
             background-color: white;
             border-radius: 8px;
@@ -86,6 +86,7 @@
             margin: 0 auto 20px auto;
             width: calc(100% - 40px);
             max-width: 500px;
+            cursor: pointer;
         }
         
         .score-item {
@@ -314,6 +315,44 @@
             max-width: 80%;
         }
         
+        /* 通关弹窗 */
+        #success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+        }
+        
+        #success-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+        }
+        
+        #success-image {
+            max-width: 100%;
+            max-height: 60vh;
+            margin-bottom: 15px;
+        }
+        
+        #close-modal {
+            background-color: var(--jr-green);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
         /* 页脚 */
         footer {
             background-color: var(--jr-dark-bg);
@@ -370,6 +409,15 @@
                 height: 70px;
                 font-size: 18px;
             }
+            
+            #success-content {
+                padding: 15px;
+            }
+            
+            #close-modal {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -383,7 +431,7 @@
     </header>
 
     <div class="main-content">
-        <!-- 计分板 - 现在作为普通元素排列 -->
+        <!-- 计分板 -->
         <div id="scoreDisplay">
             <div class="score-item">
                 <span class="score-label">得分</span>
@@ -450,6 +498,16 @@
     
     <!-- 消息提示 -->
     <div id="message"></div>
+    
+    <!-- 通关弹窗 -->
+    <div id="success-modal">
+        <div id="success-content">
+            <h2>おめでとうございます!</h2>
+            <p id="congrats-message">高精度な停車を達成しました!</p>
+            <img id="success-image" src="../pic/metro.jpg" alt="祝贺图片" onerror="this.style.display='none'">
+            <button id="close-modal">閉じる</button>
+        </div>
+    </div>
     
     <!-- 页脚 -->
     <footer>
@@ -554,14 +612,31 @@
                     if (e.key === 'ArrowDown') this.stopBrake();
                 });
                 
-                // 添加点击计分板触发测试提示的功能
+                // 点击计分板直接触发通关弹窗
                 document.getElementById('scoreDisplay').addEventListener('click', () => {
-                    this.showMessage("测试提示：点击计分板可查看当前状态");
+                    this.showCongratsMessage();
+                });
+                
+                // 关闭弹窗按钮
+                document.getElementById('close-modal').addEventListener('click', () => {
+                    document.getElementById('success-modal').style.display = 'none';
                 });
                 
                 // 初始化显示
                 this.updateStationDisplay();
                 this.gameLoop();
+            },
+            
+            // 显示统一祝贺消息
+            showCongratsMessage() {
+                const accuracy = this.totalStops > 0 ? 
+                    Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+                const stops = this.totalStops;
+                
+                const message = `おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: ${accuracy}%\n停靠次数: ${stops}`;
+                document.getElementById('congrats-message').textContent = message;
+                document.getElementById('success-modal').style.display = 'flex';
+                this.hasShownCongrats = true;
             },
             
             updateStationDisplay() {
@@ -624,10 +699,21 @@
             },
             
             updateSpeedLevel() {
-                const notches = document.querySelectorAll('.speed-notch');
-                notches.forEach((notch, index) => {
-                    notch.classList.toggle('active', index <= this.speedLevel);
-                });
+                let newLevel = 0;
+                for (let i = this.speedLevels.length - 1; i >= 0; i--) {
+                    if (this.speed >= this.speedLevels[i] * 0.9) {
+                        newLevel = i;
+                        break;
+                    }
+                }
+                
+                if (newLevel !== this.speedLevel) {
+                    this.speedLevel = newLevel;
+                    const notches = document.querySelectorAll('.speed-notch');
+                    notches.forEach((notch, index) => {
+                        notch.classList.toggle('active', index <= this.speedLevel);
+                    });
+                }
             },
             
             checkStations() {
@@ -661,11 +747,11 @@
                         
                         this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
                         
-                        // 检查是否达到通关条件（准确率70%以上且至少停靠3次）
-                        const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-                        if (accuracy >= 70 && this.totalStops >= 3 && !this.hasShownCongrats) {
-                            this.showMessage(`恭喜！停站准确率${accuracy}%！\n您已掌握电车驾驶技巧！`, 3000);
-                            this.hasShownCongrats = true;
+                        // 自动触发通关弹窗
+                        const accuracy = this.totalStops > 0 ? 
+                            Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+                        if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
+                            this.showCongratsMessage();
                         }
                         
                         this.updateScore();
@@ -708,14 +794,11 @@
             },
             
             startAccelerate() {
-                if (this.speedLevel < 5 && !this.isInStation && !this.accelerating) {
+                if (!this.isInStation && !this.accelerating) {
                     this.accelerating = true;
                     this.accelerationInterval = setInterval(() => {
-                        this.speed = Math.min(this.speed + this.acceleration, this.speedLevels[this.speedLevel + 1]);
-                        if (this.speed >= this.speedLevels[this.speedLevel + 1] * 0.95) {
-                            this.speedLevel = Math.min(this.speedLevel + 1, 5);
-                            this.stopAccelerate();
-                        }
+                        this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
+                        this.updateSpeedLevel();
                     }, 16);
                 }
             },
@@ -728,14 +811,11 @@
             },
             
             startBrake() {
-                if (this.speedLevel > 0 && !this.braking) {
+                if (!this.isInStation && !this.braking) {
                     this.braking = true;
                     this.brakeInterval = setInterval(() => {
-                        this.speed = Math.max(this.speed - this.deceleration, this.speedLevels[this.speedLevel - 1]);
-                        if (this.speed <= this.speedLevels[this.speedLevel - 1] * 1.05) {
-                            this.speedLevel = Math.max(this.speedLevel - 1, 0);
-                            this.stopBrake();
-                        }
+                        this.speed = Math.max(this.speed - this.deceleration, 0);
+                        this.updateSpeedLevel();
                     }, 16);
                 }
             },
@@ -753,8 +833,8 @@
                     clearInterval(this.brakeInterval);
                     this.brakeInterval = setInterval(() => {
                         this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
+                        this.updateSpeedLevel();
                         if (this.speed === 0) {
-                            this.speedLevel = 0;
                             this.stopBrake();
                         }
                     }, 16);
