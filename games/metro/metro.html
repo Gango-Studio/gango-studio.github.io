@@ -341,6 +341,12 @@
             max-width: 100%;
             max-height: 60vh;
             margin-bottom: 15px;
+            display: block; /* 确保图片默认显示 */
+        }
+        
+        #congrats-message {
+            margin: 10px 0;
+            white-space: pre-line; /* 保留换行符 */
         }
         
         #close-modal {
@@ -351,6 +357,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
         
         /* 页脚 */
@@ -503,8 +510,8 @@
     <div id="success-modal">
         <div id="success-content">
             <h2>おめでとうございます!</h2>
-            <p id="congrats-message">高精度な停車を達成しました!</p>
-            <img id="success-image" src="../pic/metro.jpg" alt="祝贺图片" onerror="this.style.display='none'">
+            <p id="congrats-message"></p>
+            <img id="success-image" src="https://gango-studio.github.io/pic/metro.jpg" alt="祝贺图片" onerror="this.style.display='none'">
             <button id="close-modal">閉じる</button>
         </div>
     </div>
@@ -612,9 +619,9 @@
                     if (e.key === 'ArrowDown') this.stopBrake();
                 });
                 
-                // 点击计分板直接触发通关弹窗
+                // 点击计分板直接触发通关弹窗(包含图片)
                 document.getElementById('scoreDisplay').addEventListener('click', () => {
-                    this.showCongratsMessage();
+                    this.showCongratsMessage(true);
                 });
                 
                 // 关闭弹窗按钮
@@ -627,14 +634,26 @@
                 this.gameLoop();
             },
             
-            // 显示统一祝贺消息
-            showCongratsMessage() {
+            // 显示统一祝贺消息(包含图片)
+            showCongratsMessage(isManual = false) {
                 const accuracy = this.totalStops > 0 ? 
                     Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
                 const stops = this.totalStops;
                 
-                const message = `おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: ${accuracy}%\n停靠次数: ${stops}`;
+                let message;
+                if (isManual) {
+                    message = "手动触发: 通关祝贺!\n\n当前停站准确率: " + accuracy + "%\n停靠次数: " + stops;
+                } else {
+                    message = "おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: " + accuracy + "%\n停靠次数: " + stops;
+                }
+                
                 document.getElementById('congrats-message').textContent = message;
+                
+                // 确保图片显示
+                const successImage = document.getElementById('success-image');
+                successImage.style.display = 'block';
+                
+                // 显示弹窗
                 document.getElementById('success-modal').style.display = 'flex';
                 this.hasShownCongrats = true;
             },
@@ -747,11 +766,11 @@
                         
                         this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
                         
-                        // 自动触发通关弹窗
+                        // 自动触发通关弹窗(包含图片)
                         const accuracy = this.totalStops > 0 ? 
                             Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
                         if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
-                            this.showCongratsMessage();
+                            this.showCongratsMessage(false);
                         }
                         
                         this.updateScore();
