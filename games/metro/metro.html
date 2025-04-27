@@ -533,7 +533,7 @@
         </div>
     </footer>
     
-    <script>
+   <script>
     // 游戏主对象
     const game = {
         trainAngle: 0,
@@ -553,7 +553,7 @@
         successfulStops: 0,
         stations: [
             { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3000) } // 1900米距离
+            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3000) }
         ],
         gameLoopId: null,
         kmhConversionFactor: 1800,
@@ -570,62 +570,83 @@
             const brakeBtn = document.getElementById('brake');
             const stopBtn = document.getElementById('stop');
             
+            // 修复事件监听器绑定问题
+            const self = this; // 保存this引用
+            
             // 触摸事件
-            accelerateBtn.addEventListener('touchstart', (e) => {
+            accelerateBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                this.startAccelerate();
+                self.startAccelerate();
             }, { passive: false });
             
-            accelerateBtn.addEventListener('touchend', (e) => {
+            accelerateBtn.addEventListener('touchend', function(e) {
                 e.preventDefault();
-                this.stopAccelerate();
+                self.stopAccelerate();
             }, { passive: false });
             
-            brakeBtn.addEventListener('touchstart', (e) => {
+            brakeBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                this.startBrake();
+                self.startBrake();
             }, { passive: false });
             
-            brakeBtn.addEventListener('touchend', (e) => {
+            brakeBtn.addEventListener('touchend', function(e) {
                 e.preventDefault();
-                this.stopBrake();
+                self.stopBrake();
             }, { passive: false });
             
-            stopBtn.addEventListener('touchstart', (e) => {
+            stopBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                this.stopTrain();
+                self.stopTrain();
             }, { passive: false });
             
-            // 鼠标事件
-            accelerateBtn.addEventListener('mousedown', this.startAccelerate.bind(this));
-            accelerateBtn.addEventListener('mouseup', this.stopAccelerate.bind(this));
-            accelerateBtn.addEventListener('mouseleave', this.stopAccelerate.bind(this));
-            
-            brakeBtn.addEventListener('mousedown', this.startBrake.bind(this));
-            brakeBtn.addEventListener('mouseup', this.stopBrake.bind(this));
-            brakeBtn.addEventListener('mouseleave', this.stopBrake.bind(this));
-            
-            stopBtn.addEventListener('click', this.stopTrain.bind(this));
-            
-            // 键盘控制
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowUp') this.startAccelerate();
-                if (e.key === 'ArrowDown') this.startBrake();
-                if (e.key === ' ') this.stopTrain();
+            // 鼠标事件 - 使用function保持正确this指向
+            accelerateBtn.addEventListener('mousedown', function() {
+                self.startAccelerate();
             });
             
-            window.addEventListener('keyup', (e) => {
-                if (e.key === 'ArrowUp') this.stopAccelerate();
-                if (e.key === 'ArrowDown') this.stopBrake();
+            accelerateBtn.addEventListener('mouseup', function() {
+                self.stopAccelerate();
+            });
+            
+            accelerateBtn.addEventListener('mouseleave', function() {
+                self.stopAccelerate();
+            });
+            
+            brakeBtn.addEventListener('mousedown', function() {
+                self.startBrake();
+            });
+            
+            brakeBtn.addEventListener('mouseup', function() {
+                self.stopBrake();
+            });
+            
+            brakeBtn.addEventListener('mouseleave', function() {
+                self.stopBrake();
+            });
+            
+            stopBtn.addEventListener('click', function() {
+                self.stopTrain();
+            });
+            
+            // 键盘控制
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowUp') self.startAccelerate();
+                if (e.key === 'ArrowDown') self.startBrake();
+                if (e.key === ' ') self.stopTrain();
+            });
+            
+            window.addEventListener('keyup', function(e) {
+                if (e.key === 'ArrowUp') self.stopAccelerate();
+                if (e.key === 'ArrowDown') self.stopBrake();
             });
             
             // 点击计分板直接触发通关弹窗(包含图片)
-            document.getElementById('scoreDisplay').addEventListener('click', () => {
-                this.showCongratsMessage(true);
+            document.getElementById('scoreDisplay').addEventListener('click', function() {
+                self.showCongratsMessage(true);
             });
             
             // 关闭弹窗按钮
-            document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('close-modal').addEventListener('click', function() {
                 document.getElementById('success-modal').style.display = 'none';
             });
             
@@ -634,7 +655,7 @@
             this.gameLoop();
         },
         
-        // 显示统一祝贺消息(包含图片)
+        // [其余方法保持不变...]
         showCongratsMessage(isManual = false) {
             const accuracy = this.totalStops > 0 ? 
                 Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
@@ -816,7 +837,7 @@
                     
                     // 检查是否需要升档
                     if (this.speedLevel < this.maxSpeedLevel && 
-                        this.speed >= this.kmhToSpeedUnit(this.speedLevelsKmh[this.speedLevel + 1] * 0.9) {
+                        this.speed >= this.kmhToSpeedUnit(this.speedLevelsKmh[this.speedLevel + 1] * 0.9)) {
                         this.speedLevel++;
                     }
                 }, 16);
@@ -874,10 +895,12 @@
     };
 
     // 启动游戏
-    window.onload = () => game.init();
+    window.onload = function() {
+        game.init();
+    };
 
     // 确保游戏循环在页面卸载时停止
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener('beforeunload', function() {
         game.stopGameLoop();
     });
 </script>
