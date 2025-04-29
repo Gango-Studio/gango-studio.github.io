@@ -537,13 +537,13 @@
     // 游戏主对象
     const game = {
         trainAngle: 0,
-        speed: 0,
+        speed: 0, // 内部速度单位
         maxSpeedLevel: 5,
         speedLevel: 0,
         speedLevelsKmh: [0, 15, 30, 45, 60, 75], // 各档位对应的km/h
-        acceleration: 0.0008,
-        deceleration: 0.001,
-        brakingDeceleration: 0.002,
+        acceleration: 0.002,
+        deceleration: 0.003,
+        brakingDeceleration: 0.005,
         currentStationIndex: 0,
         approachingStation: null,
         isInStation: false,
@@ -553,81 +553,42 @@
         successfulStops: 0,
         stations: [
             { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-            { name: "新桥", code: ["SMB", "SY01"], angle: (1900 / 3000) * 2 * Math.PI } // 修正1900米计算
+            { name: "新桥", code: ["SMB", "SY01"], angle: (1900 / 3000) * 2 * Math.PI }
         ],
         gameLoopId: null,
-        kmhConversionFactor: 1800,
-        meterConversionFactor: 1,
-        trackLength: 3000, // 轨道总长度3000米
+        trackLength: 3000,
         accelerating: false,
         braking: false,
-        accelerationInterval: null,
-        brakeInterval: null,
         hasShownCongrats: false,
         
         init() {
-            const accelerateBtn = document.getElementById('accelerate');
-            const brakeBtn = document.getElementById('brake');
-            const stopBtn = document.getElementById('stop');
-            
-            // 使用self保持this引用
             const self = this;
             
-            // 触摸事件
-            accelerateBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                self.startAccelerate();
-            }, { passive: false });
-            
-            accelerateBtn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                self.stopAccelerate();
-            }, { passive: false });
-            
-            brakeBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                self.startBrake();
-            }, { passive: false });
-            
-            brakeBtn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                self.stopBrake();
-            }, { passive: false });
-            
-            stopBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                self.stopTrain();
-            }, { passive: false });
-            
-            // 鼠标事件
-            accelerateBtn.addEventListener('mousedown', function() {
+            // 控制按钮事件
+            document.getElementById('accelerate').addEventListener('mousedown', function() {
                 self.startAccelerate();
             });
-            
-            accelerateBtn.addEventListener('mouseup', function() {
+            document.getElementById('accelerate').addEventListener('mouseup', function() {
+                self.stopAccelerate();
+            });
+            document.getElementById('accelerate').addEventListener('mouseleave', function() {
                 self.stopAccelerate();
             });
             
-            accelerateBtn.addEventListener('mouseleave', function() {
-                self.stopAccelerate();
-            });
-            
-            brakeBtn.addEventListener('mousedown', function() {
+            document.getElementById('brake').addEventListener('mousedown', function() {
                 self.startBrake();
             });
-            
-            brakeBtn.addEventListener('mouseup', function() {
+            document.getElementById('brake').addEventListener('mouseup', function() {
+                self.stopBrake();
+            });
+            document.getElementById('brake').addEventListener('mouseleave', function() {
                 self.stopBrake();
             });
             
-            brakeBtn.addEventListener('mouseleave', function() {
-                self.stopBrake();
-            });
-            
-            stopBtn.addEventListener('click', function() {
+            document.getElementById('stop').addEventListener('click', function() {
                 self.stopTrain();
             });
-            
+
             // 键盘控制
             window.addEventListener('keydown', function(e) {
                 if (e.key === 'ArrowUp') self.startAccelerate();
@@ -639,62 +600,21 @@
                 if (e.key === 'ArrowUp') self.stopAccelerate();
                 if (e.key === 'ArrowDown') self.stopBrake();
             });
-            
-            // 点击计分板
-            document.getElementById('scoreDisplay').addEventListener('click', function() {
-                self.showCongratsMessage(true);
-            });
-            
-            // 关闭弹窗按钮
-            document.getElementById('close-modal').addEventListener('click', function() {
-                document.getElementById('success-modal').style.display = 'none';
-            });
-            
-            // 初始化显示
+
+            // 初始化
             this.updateStationDisplay();
             this.gameLoop();
         },
-        
-        // [其他方法保持不变...]
-        showCongratsMessage(isManual = false) {
-            const accuracy = this.totalStops > 0 ? 
-                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-            const stops = this.totalStops;
-            
-            let message;
-            if (isManual) {
-                message = "手动触发: 通关祝贺!\n\n当前停站准确率: " + accuracy + "%\n停靠次数: " + stops;
-            } else {
-                message = "おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: " + accuracy + "%\n停靠次数: " + stops;
-            }
-            
-            document.getElementById('congrats-message').textContent = message;
-            document.getElementById('success-image').style.display = 'block';
-            document.getElementById('success-modal').style.display = 'flex';
-            this.hasShownCongrats = true;
-        },
-        
-        updateStationDisplay() {
-            const currentStation = this.stations[this.currentStationIndex];
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            
-            document.querySelector('.station-name').textContent = currentStation.name;
-            document.querySelector('.station-code-line1').textContent = currentStation.code[0];
-            document.querySelector('.station-code-line2').textContent = currentStation.code[1];
-            document.querySelector('.next-station-name').textContent = nextStation.name;
-        },
-        
+
         gameLoop() {
             this.update();
+            this.updateUI();
             this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
         },
-        
+
         update() {
-            // 计算每帧行驶距离(米)
-            const distancePerFrame = (this.speed * this.kmhConversionFactor) / (60 * 60 * 60); // km/h -> m/frame
-            
-            // 更新角度(确保1900米站距准确)
+            // 更新位置 (保持最初的计算方式但调整距离)
+            const distancePerFrame = (this.speed * this.trackLength) / (2 * Math.PI);
             this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
             
             if (this.trainAngle >= 2 * Math.PI) {
@@ -702,42 +622,104 @@
                 this.laps++;
                 document.getElementById('lapsValue').textContent = this.laps;
             }
-            
+
             this.checkStations();
-            this.updateUI();
         },
-        
+
         updateUI() {
-            // 显示当前速度(km/h)
-            const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
+            // 显示当前速度(km/h) - 新档位系统
+            const speedKmh = Math.floor(this.speed * 1800); // 转换为km/h
             document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
             
-            // 计算并显示到下一站距离(确保1900米准确)
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            let angleDiff = nextStation.angle - this.trainAngle;
-            if (angleDiff < 0) angleDiff += 2 * Math.PI;
-            
-            const distance = Math.floor((angleDiff / (2 * Math.PI)) * this.trackLength);
-            document.querySelector('.distance-value').textContent = `${distance} m`;
-            
-            // 更新速度档位显示
+            // 更新档位显示
             const notches = document.querySelectorAll('.speed-notch');
             notches.forEach((notch, index) => {
                 notch.classList.toggle('active', index <= this.speedLevel);
             });
+
+            // 更新距离显示 (1900米站距)
+            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+            const nextStation = this.stations[nextStationIndex];
+            let angleDiff = nextStation.angle - this.trainAngle;
+            if (angleDiff < 0) angleDiff += 2 * Math.PI;
+            const distance = Math.floor((angleDiff / (2 * Math.PI)) * this.trackLength);
+            document.querySelector('.distance-value').textContent = `${distance} m`;
         },
-        
-        // 将km/h转换为游戏内部速度单位
-        kmhToSpeedUnit(kmh) {
-            return kmh / this.kmhConversionFactor;
+
+        // 新档位系统控制
+        startAccelerate() {
+            if (!this.isInStation && !this.accelerating) {
+                this.accelerating = true;
+                this.accelerationInterval = setInterval(() => {
+                    // 计算目标速度(下一档位)
+                    const targetSpeed = (this.speedLevelsKmh[Math.min(this.speedLevel + 1, this.maxSpeedLevel)] / 1800;
+                    
+                    // 加速
+                    this.speed = Math.min(this.speed + this.acceleration, targetSpeed);
+                    
+                    // 检查是否需要升档
+                    if (this.speedLevel < this.maxSpeedLevel && 
+                        this.speed >= (this.speedLevelsKmh[this.speedLevel + 1] / 1800) * 0.9) {
+                        this.speedLevel++;
+                    }
+                }, 16);
+            }
         },
-        
+
+        stopAccelerate() {
+            if (this.accelerating) {
+                clearInterval(this.accelerationInterval);
+                this.accelerating = false;
+            }
+        },
+
+        startBrake() {
+            if (!this.isInStation && !this.braking) {
+                this.braking = true;
+                this.brakeInterval = setInterval(() => {
+                    // 计算目标速度(上一档位)
+                    const targetSpeed = (this.speedLevelsKmh[Math.max(this.speedLevel - 1, 0)] / 1800);
+                    
+                    // 减速
+                    this.speed = Math.max(this.speed - this.deceleration, targetSpeed);
+                    
+                    // 检查是否需要降档
+                    if (this.speedLevel > 0 && 
+                        this.speed <= (this.speedLevelsKmh[this.speedLevel] / 1800) * 0.8) {
+                        this.speedLevel--;
+                    }
+                }, 16);
+            }
+        },
+
+        stopBrake() {
+            if (this.braking) {
+                clearInterval(this.brakeInterval);
+                this.braking = false;
+            }
+        },
+
+        stopTrain() {
+            if (this.approachingStation !== null && !this.isInStation) {
+                this.braking = true;
+                clearInterval(this.brakeInterval);
+                this.brakeInterval = setInterval(() => {
+                    this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
+                    if (this.speed <= (15 / 1800)) { // 低于15km/h归零档
+                        this.speedLevel = 0;
+                    }
+                    if (this.speed === 0) {
+                        this.stopBrake();
+                    }
+                }, 16);
+            }
+        },
+
+        // 保持原有的车站检查逻辑
         checkStations() {
             const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
             const nextStation = this.stations[nextStationIndex];
             
-            // 计算到下一站的距离(确保1900米准确)
             let angleDiff = nextStation.angle - this.trainAngle;
             if (angleDiff < 0) angleDiff += 2 * Math.PI;
             const distance = (angleDiff / (2 * Math.PI)) * this.trackLength;
@@ -747,34 +729,33 @@
                 document.querySelector('.next-station-name').textContent = nextStation.name;
                 
                 // 减速提示
-                const requiredDeceleration = Math.pow(this.speed * this.kmhConversionFactor / 3.6, 2) / (2 * distance);
-                if (requiredDeceleration > (this.brakingDeceleration * this.kmhConversionFactor / 3.6)) {
+                const requiredDeceleration = Math.pow(this.speed * 1800 / 3.6, 2) / (2 * distance);
+                if (requiredDeceleration > (this.brakingDeceleration * 1800 / 3.6)) {
                     this.showMessage("减速不足! 请降低速度!");
                 }
             }
             
-            // 进站检测(20米范围内)
             if (distance < 20) {
                 this.handleStationArrival(nextStation, distance);
             }
         },
-        
+
         handleStationArrival(station, distance) {
             this.isInStation = true;
             this.totalStops++;
             
-            if (this.speed * this.kmhConversionFactor < 3.6) { // 低于3.6km/h视为成功停站
+            if (this.speed * 1800 < 3.6) { // 3.6 km/h
                 const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
                 this.successfulStops++;
                 this.score += 100 + stopAccuracy;
                 
                 this.showMessage(`${station.name} 停站成功! 精度: ${stopAccuracy}%`);
                 
-                // 检查是否通关
-                const accuracy = this.totalStops > 0 ? 
-                    Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-                if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
-                    this.showCongratsMessage(false);
+                if (this.totalStops >= 2 && !this.hasShownCongrats) {
+                    const accuracy = Math.floor((this.successfulStops / this.totalStops) * 100);
+                    if (accuracy >= 70) {
+                        this.showCongratsMessage(false);
+                    }
                 }
             } else {
                 this.showMessage(`通过: ${station.name}`);
@@ -787,16 +768,21 @@
             setTimeout(() => {
                 this.isInStation = false;
                 this.approachingStation = null;
-            }, this.speed * this.kmhConversionFactor < 3.6 ? 3000 : 1000);
+            }, this.speed * 1800 < 3.6 ? 3000 : 1000);
         },
-        
-        updateScore() {
-            document.getElementById('scoreValue').textContent = this.score;
-            const accuracy = this.totalStops > 0 ? 
-                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-            document.getElementById('accuracyValue').textContent = `${accuracy}%`;
+
+        // 保持原有的其他方法
+        updateStationDisplay() {
+            const currentStation = this.stations[this.currentStationIndex];
+            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+            const nextStation = this.stations[nextStationIndex];
+            
+            document.querySelector('.station-name').textContent = currentStation.name;
+            document.querySelector('.station-code-line1').textContent = currentStation.code[0];
+            document.querySelector('.station-code-line2').textContent = currentStation.code[1];
+            document.querySelector('.next-station-name').textContent = nextStation.name;
         },
-        
+
         showMessage(msg, duration = 2000) {
             const messageElement = document.getElementById('message');
             messageElement.textContent = msg;
@@ -806,77 +792,27 @@
                 messageElement.style.display = 'none';
             }, duration);
         },
-        
-        startAccelerate() {
-            if (!this.isInStation && !this.accelerating) {
-                this.accelerating = true;
-                this.accelerationInterval = setInterval(() => {
-                    // 计算目标速度(下一档位)
-                    const targetSpeedKmh = this.speedLevel < this.maxSpeedLevel ? 
-                        this.speedLevelsKmh[this.speedLevel + 1] : this.speedLevelsKmh[this.maxSpeedLevel];
-                    const targetSpeed = this.kmhToSpeedUnit(targetSpeedKmh);
-                    
-                    // 加速
-                    this.speed = Math.min(this.speed + this.acceleration, targetSpeed);
-                    
-                    // 检查是否需要升档(达到当前档位90%速度)
-                    if (this.speedLevel < this.maxSpeedLevel && 
-                        this.speed >= this.kmhToSpeedUnit(this.speedLevelsKmh[this.speedLevel + 1] * 0.9)) {
-                        this.speedLevel++;
-                    }
-                }, 16);
-            }
+
+        updateScore() {
+            document.getElementById('scoreValue').textContent = this.score;
+            const accuracy = this.totalStops > 0 ? 
+                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+            document.getElementById('accuracyValue').textContent = `${accuracy}%`;
         },
-        
-        stopAccelerate() {
-            if (this.accelerating) {
-                clearInterval(this.accelerationInterval);
-                this.accelerating = false;
-            }
-        },
-        
-        startBrake() {
-            if (!this.isInStation && !this.braking) {
-                this.braking = true;
-                this.brakeInterval = setInterval(() => {
-                    // 计算目标速度(上一档位或0)
-                    const targetSpeedKmh = this.speedLevel > 0 ? 
-                        this.speedLevelsKmh[this.speedLevel - 1] : 0;
-                    const targetSpeed = this.kmhToSpeedUnit(targetSpeedKmh);
-                    
-                    // 减速
-                    this.speed = Math.max(this.speed - this.deceleration, targetSpeed);
-                    
-                    // 检查是否需要降档(低于当前档位80%速度)
-                    if (this.speedLevel > 0 && 
-                        this.speed <= this.kmhToSpeedUnit(this.speedLevelsKmh[this.speedLevel] * 0.8)) {
-                        this.speedLevel--;
-                    }
-                }, 16);
-            }
-        },
-        
-        stopBrake() {
-            if (this.braking) {
-                clearInterval(this.brakeInterval);
-                this.braking = false;
-            }
-        },
-        
-        stopTrain() {
-            if (this.approachingStation !== null && !this.isInStation) {
-                this.braking = true;
-                clearInterval(this.brakeInterval);
-                this.brakeInterval = setInterval(() => {
-                    this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
-                    if (this.speed <= this.kmhToSpeedUnit(1)) { // 低于1km/h归零档
-                        this.speedLevel = 0;
-                    }
-                    if (this.speed === 0) {
-                        this.stopBrake();
-                    }
-                }, 16);
-            }
+
+        showCongratsMessage(isManual = false) {
+            const accuracy = this.totalStops > 0 ? 
+                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+            const stops = this.totalStops;
+            
+            let message = isManual 
+                ? `手动触发: 通关祝贺!\n\n当前停站准确率: ${accuracy}%\n停靠次数: ${stops}`
+                : `おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: ${accuracy}%\n停靠次数: ${stops}`;
+            
+            document.getElementById('congrats-message').textContent = message;
+            document.getElementById('success-image').style.display = 'block';
+            document.getElementById('success-modal').style.display = 'flex';
+            this.hasShownCongrats = true;
         }
     };
 
@@ -887,7 +823,9 @@
 
     // 确保游戏循环在页面卸载时停止
     window.addEventListener('beforeunload', function() {
-        game.stopGameLoop();
+        if (game.gameLoopId) {
+            cancelAnimationFrame(game.gameLoopId);
+        }
     });
 </script>
 </body>
