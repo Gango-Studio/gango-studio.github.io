@@ -533,91 +533,62 @@
         </div>
     </footer>
    <script> 
-  // 游戏主对象
+// 游戏主对象 - 完全重新设计
 const game = {
-    trainAngle: 0,
-    speed: 0, // 当前速度(弧度/帧)
-    targetSpeed: 0, // 目标速度(基于档位)
-    maxSpeed: 0.02, // 最大速度(弧度/帧)
-    speedLevel: 0, // 当前档位(0-5)
-    speedLevels: [0, 0.004, 0.008, 0.012, 0.016, 0.02], // 各档位对应的目标速度
-    acceleration: 0.0005, // 加速度
-    deceleration: 0.0008, // 减速度
-    brakingDeceleration: 0.0015, // 刹车减速度
+    // 游戏状态
+    speed: 0,                // 当前速度 (km/h)
+    targetSpeed: 0,          // 目标速度 (km/h)
+    speedLevel: 0,           // 当前档位 (0-5)
+    maxSpeed: 75,            // 最大速度 (km/h)
+    acceleration: 1.5,       // 加速度 (km/h每帧)
+    deceleration: 2.0,       // 减速度 (km/h每帧)
+    brakingDeceleration: 3.5, // 刹车减速度 (km/h每帧)
+    
+    // 轨道和车站
+    distance: 1900,          // 当前距离下一站的距离 (米)
+    trackLength: 3800,       // 轨道总长度 (米)
+    stationDistance: 1900,   // 站间距离 (米)
     currentStationIndex: 0,
-    approachingStation: null,
-    isInStation: false,
-    laps: 0,
+    stations: [
+        { name: "Pigsty", code: ["PSY", "SY00"] },
+        { name: "新桥", code: ["SMB", "SY01"] }
+    ],
+    
+    // 游戏数据
     score: 0,
+    laps: 0,
     totalStops: 0,
     successfulStops: 0,
-    stations: [
-        { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-        { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3800) } // 站间距离1900米，总轨道长度3800米
-    ],
+    isInStation: false,
+    approachingStation: false,
     gameLoopId: null,
-    kmhConversionFactor: 1800, // 速度单位转换系数(弧度/帧 -> km/h)
-    meterConversionFactor: 1,
-    trackLength: 3800, // 轨道总长度(米)
-    accelerating: false,
-    braking: false,
     hasShownCongrats: false,
-    
+
+    // 初始化游戏
     init() {
-        const accelerateBtn = document.getElementById('accelerate');
-        const brakeBtn = document.getElementById('brake');
-        const stopBtn = document.getElementById('stop');
-        
-        // 触摸事件
-        accelerateBtn.addEventListener('touchstart', (e) => {
+        // 控制按钮事件
+        document.getElementById('accelerate').addEventListener('mousedown', () => this.changeSpeed(1));
+        document.getElementById('accelerate').addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.accelerate();
+            this.changeSpeed(1);
         }, { passive: false });
         
-        accelerateBtn.addEventListener('touchend', (e) => {
+        document.getElementById('brake').addEventListener('mousedown', () => this.changeSpeed(-1));
+        document.getElementById('brake').addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.stopAccelerate();
+            this.changeSpeed(-1);
         }, { passive: false });
         
-        brakeBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            this.brake();
-        }, { passive: false });
-        
-        brakeBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            this.stopBrake();
-        }, { passive: false });
-        
-        stopBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            this.stopTrain();
-        }, { passive: false });
-        
-        // 鼠标事件
-        accelerateBtn.addEventListener('mousedown', this.accelerate.bind(this));
-        accelerateBtn.addEventListener('mouseup', this.stopAccelerate.bind(this));
-        accelerateBtn.addEventListener('mouseleave', this.stopAccelerate.bind(this));
-        
-        brakeBtn.addEventListener('mousedown', this.brake.bind(this));
-        brakeBtn.addEventListener('mouseup', this.stopBrake.bind(this));
-        brakeBtn.addEventListener('mouseleave', this.stopBrake.bind(this));
-        
-        stopBtn.addEventListener('click', this.stopTrain.bind(this));
+        document.getElementById('stop').addEventListener('click', () => this.stopTrain());
         
         // 键盘控制
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') this.accelerate();
-            if (e.key === 'ArrowDown') this.brake();
+            if (e.key === 'ArrowUp') this.changeSpeed(1);
+            if (e.key === 'ArrowDown') this.changeSpeed(-1);
             if (e.key === ' ') this.stopTrain();
         });
         
-        window.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowUp') this.stopAccelerate();
-            if (e.key === 'ArrowDown') this.stopBrake();
-        });
-        
-        // 点击计分板直接触发通关弹窗(包含图片)
+        // 计分板点击事件
         document.getElementById('scoreDisplay').addEventListener('click', () => {
             this.showCongratsMessage(true);
         });
@@ -630,66 +601,35 @@ const game = {
         // 初始化显示
         this.updateStationDisplay();
         this.updateSpeedNotches();
-        this.gameLoop();
+        this.startGameLoop();
     },
     
-    // 显示统一祝贺消息(包含图片)
-    showCongratsMessage(isManual = false) {
-        const accuracy = this.totalStops > 0 ? 
-            Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-        const stops = this.totalStops;
-        
-        let message;
-        if (isManual) {
-            message = "手动触发: 通关祝贺!\n\n当前停站准确率: " + accuracy + "%\n停靠次数: " + stops;
-        } else {
-            message = "おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: " + accuracy + "%\n停靠次数: " + stops;
-        }
-        
-        document.getElementById('congrats-message').textContent = message;
-        
-        // 确保图片显示
-        const successImage = document.getElementById('success-image');
-        successImage.style.display = 'block';
-        
-        // 显示弹窗
-        document.getElementById('success-modal').style.display = 'flex';
-        this.hasShownCongrats = true;
-    },
-    
-    updateStationDisplay() {
-        const currentStation = this.stations[this.currentStationIndex];
-        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-        const nextStation = this.stations[nextStationIndex];
-        
-        document.querySelector('.station-name').textContent = currentStation.name;
-        document.querySelector('.station-code-line1').textContent = currentStation.code[0];
-        document.querySelector('.station-code-line2').textContent = currentStation.code[1];
-        document.querySelector('.next-station-name').textContent = nextStation.name;
-    },
-    
-    updateSpeedNotches() {
-        const notches = document.querySelectorAll('.speed-notch');
-        notches.forEach((notch, index) => {
-            notch.classList.toggle('active', index <= this.speedLevel);
-        });
-    },
-    
-    gameLoop() {
-        this.update();
+    // 开始游戏循环
+    startGameLoop() {
         this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
     },
     
-    stopGameLoop() {
-        if (this.gameLoopId) {
-            cancelAnimationFrame(this.gameLoopId);
-            this.gameLoopId = null;
-        }
+    // 主游戏循环
+    gameLoop() {
+        // 更新速度
+        this.updateSpeed();
+        
+        // 更新位置
+        this.updatePosition();
+        
+        // 检查车站
+        this.checkStation();
+        
+        // 更新UI
+        this.updateUI();
+        
+        // 继续循环
+        this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
     },
     
-    update() {
-        // 平滑调整速度至目标速度
-        if (Math.abs(this.speed - this.targetSpeed) > 0.0001) {
+    // 更新速度
+    updateSpeed() {
+        if (Math.abs(this.speed - this.targetSpeed) > 0.1) {
             if (this.speed < this.targetSpeed) {
                 this.speed = Math.min(this.speed + this.acceleration, this.targetSpeed);
             } else {
@@ -698,168 +638,153 @@ const game = {
         } else {
             this.speed = this.targetSpeed;
         }
+    },
+    
+    // 更新位置
+    updatePosition() {
+        // 计算每帧移动距离 (km/h -> m/帧)
+        const distancePerFrame = (this.speed / 3600) * 1000 * (16/1000); // 假设60fps
         
-        const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
-        this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
+        // 更新距离
+        this.distance -= distancePerFrame;
         
-        if (this.trainAngle >= Math.PI * 2) {
-            this.trainAngle -= Math.PI * 2;
+        // 如果通过车站
+        if (this.distance <= 0) {
+            this.distance += this.stationDistance;
             this.laps++;
             document.getElementById('lapsValue').textContent = this.laps;
+            
+            // 切换到下一站
+            this.currentStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+            this.updateStationDisplay();
         }
-        
-        this.checkStations();
-        this.updateUI();
     },
     
-    updateUI() {
-        const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
-        document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
+    // 检查车站状态
+    checkStation() {
+        // 接近车站 (150米内)
+        if (this.distance < 150 && !this.approachingStation) {
+            this.approachingStation = true;
+            this.showMessage("接近车站，请减速!");
+        }
         
-        if (this.approachingStation !== null) {
-            const nextStation = this.stations[this.approachingStation];
-            let angleDiff = nextStation.angle - this.trainAngle;
-            if (angleDiff < 0) angleDiff += Math.PI * 2;
+        // 进站 (20米内)
+        if (this.distance < 20 && !this.isInStation) {
+            this.handleStationArrival();
+        }
+    },
+    
+    // 处理到站
+    handleStationArrival() {
+        this.isInStation = true;
+        this.totalStops++;
+        
+        // 检查是否成功停靠
+        if (this.speed < 5) { // 5km/h以下视为成功停靠
+            const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(this.distance - 10)));
+            this.successfulStops++;
+            this.score += 100 + stopAccuracy;
             
-            const distance = Math.floor(angleDiff * this.trackLength / (2 * Math.PI));
-            document.querySelector('.distance-value').textContent = `${distance} m`;
+            this.showMessage(`${this.getNextStation().name} 停站成功! 精度: ${stopAccuracy}%`);
+            
+            // 检查是否显示通关消息
+            const accuracy = this.totalStops > 0 ? 
+                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+            if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
+                this.showCongratsMessage(false);
+            }
         } else {
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            let angleDiff = nextStation.angle - this.trainAngle;
-            if (angleDiff < 0) angleDiff += Math.PI * 2;
-            const distance = Math.floor(angleDiff * this.trackLength / (2 * Math.PI));
-            document.querySelector('.distance-value').textContent = `${distance} m`;
-        }
-    },
-    
-    checkStations() {
-        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-        const nextStation = this.stations[nextStationIndex];
-        
-        let angleDiff = nextStation.angle - this.trainAngle;
-        if (angleDiff < 0) angleDiff += Math.PI * 2;
-        
-        const distance = angleDiff * this.trackLength / (2 * Math.PI);
-        
-        if (distance < 150 && !this.isInStation) {
-            this.approachingStation = nextStationIndex;
-            document.querySelector('.next-station-name').textContent = nextStation.name;
-            
-            const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
-            
-            if (requiredDeceleration > this.brakingDeceleration * 1.5) {
-                this.showMessage("减速不足! 请降低速度!");
-            }
+            this.showMessage(`通过: ${this.getNextStation().name}`);
         }
         
-        if (distance < 20) {
-            this.isInStation = true;
-            this.totalStops++;
-            
-            if (this.speed * this.kmhConversionFactor < 3.6) {
-                const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
-                this.successfulStops++;
-                this.score += 100 + stopAccuracy;
-                
-                this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
-                
-                // 自动触发通关弹窗(包含图片)
-                const accuracy = this.totalStops > 0 ? 
-                    Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-                if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
-                    this.showCongratsMessage(false);
-                }
-                
-                this.updateScore();
-                
-                this.currentStationIndex = nextStationIndex;
-                this.updateStationDisplay();
-                
-                setTimeout(() => {
-                    this.isInStation = false;
-                }, 3000);
-            } else {
-                this.showMessage(`通过: ${nextStation.name}`);
-                this.updateScore();
-                
-                setTimeout(() => {
-                    this.isInStation = false;
-                    this.currentStationIndex = nextStationIndex;
-                    this.updateStationDisplay();
-                }, 1000);
-            }
-            
-            this.approachingStation = null;
-        }
-    },
-    
-    updateScore() {
-        document.getElementById('scoreValue').textContent = this.score;
-        const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-        document.getElementById('accuracyValue').textContent = `${accuracy}%`;
-    },
-    
-    showMessage(msg, duration = 2000) {
-        const messageElement = document.getElementById('message');
-        messageElement.textContent = msg;
-        messageElement.style.display = 'block';
+        // 更新分数
+        this.updateScore();
         
+        // 3秒后离开车站
         setTimeout(() => {
-            messageElement.style.display = 'none';
-        }, duration);
+            this.isInStation = false;
+            this.approachingStation = false;
+        }, 3000);
     },
     
-    // 加速按钮按下
-    accelerate() {
-        if (!this.isInStation && !this.accelerating) {
-            this.accelerating = true;
-            this.speedLevel = Math.min(this.speedLevel + 1, 5);
-            this.targetSpeed = this.speedLevels[this.speedLevel];
-            this.updateSpeedNotches();
-        }
-    },
-    
-    // 加速按钮释放
-    stopAccelerate() {
-        if (this.accelerating) {
-            this.accelerating = false;
-        }
-    },
-    
-    // 减速按钮按下
-    brake() {
-        if (!this.isInStation && !this.braking) {
-            this.braking = true;
-            this.speedLevel = Math.max(this.speedLevel - 1, 0);
-            this.targetSpeed = this.speedLevels[this.speedLevel];
-            this.updateSpeedNotches();
-        }
-    },
-    
-    // 减速按钮释放
-    stopBrake() {
-        if (this.braking) {
-            this.braking = false;
-        }
+    // 改变速度档位
+    changeSpeed(direction) {
+        this.speedLevel = Math.max(0, Math.min(5, this.speedLevel + direction));
+        this.targetSpeed = this.speedLevel * 15; // 每档15km/h
+        this.updateSpeedNotches();
     },
     
     // 紧急停车
     stopTrain() {
-        if (this.approachingStation !== null && !this.isInStation) {
+        if (this.approachingStation) {
             this.speedLevel = 0;
             this.targetSpeed = 0;
             this.updateSpeedNotches();
         }
+    },
+    
+    // 更新速度档位显示
+    updateSpeedNotches() {
+        const notches = document.querySelectorAll('.speed-notch');
+        notches.forEach((notch, index) => {
+            notch.classList.toggle('active', index <= this.speedLevel);
+        });
+    },
+    
+    // 更新车站显示
+    updateStationDisplay() {
+        const current = this.stations[this.currentStationIndex];
+        const next = this.getNextStation();
+        
+        document.querySelector('.station-name').textContent = current.name;
+        document.querySelector('.station-code-line1').textContent = current.code[0];
+        document.querySelector('.station-code-line2').textContent = current.code[1];
+        document.querySelector('.next-station-name').textContent = next.name;
+    },
+    
+    // 获取下一站信息
+    getNextStation() {
+        const nextIndex = (this.currentStationIndex + 1) % this.stations.length;
+        return this.stations[nextIndex];
+    },
+    
+    // 更新分数显示
+    updateScore() {
+        document.getElementById('scoreValue').textContent = this.score;
+        const accuracy = this.totalStops > 0 ? 
+            Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+        document.getElementById('accuracyValue').textContent = `${accuracy}%`;
+    },
+    
+    // 显示消息
+    showMessage(msg, duration = 2000) {
+        const el = document.getElementById('message');
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(() => el.style.display = 'none', duration);
+    },
+    
+    // 显示通关消息
+    showCongratsMessage(isManual) {
+        const accuracy = this.totalStops > 0 ? 
+            Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+        
+        const message = isManual 
+            ? `手动触发: 通关祝贺!\n\n当前停站准确率: ${accuracy}%\n停靠次数: ${this.totalStops}`
+            : `おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: ${accuracy}%\n停靠次数: ${this.totalStops}`;
+        
+        document.getElementById('congrats-message').textContent = message;
+        document.getElementById('success-modal').style.display = 'flex';
+        this.hasShownCongrats = true;
     }
 };
 
 // 启动游戏
-window.onload = () => game.init();
+window.addEventListener('load', () => game.init());
 
-// 确保游戏循环在页面卸载时停止
+// 页面卸载时停止游戏
 window.addEventListener('beforeunload', () => {
-    game.stopGameLoop();
+    cancelAnimationFrame(game.gameLoopId);
 });
             </script>
 </body>
