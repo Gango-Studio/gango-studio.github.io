@@ -532,17 +532,16 @@
             <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
-   <script> 
-// 游戏主对象 - 完全重新设计
+   <script>// 游戏主对象 
 const game = {
     // 游戏状态
     speed: 0,                // 当前速度 (km/h)
     targetSpeed: 0,          // 目标速度 (km/h)
     speedLevel: 0,           // 当前档位 (0-5)
     maxSpeed: 75,            // 最大速度 (km/h)
-    acceleration: 1.5,       // 加速度 (km/h每帧)
-    deceleration: 2.0,       // 减速度 (km/h每帧)
-    brakingDeceleration: 3.5, // 刹车减速度 (km/h每帧)
+    acceleration: 0.5,       // 加速度 (km/h每帧)
+    deceleration: 1.0,       // 减速度 (km/h每帧)
+    brakingDeceleration: 2.0, // 刹车减速度 (km/h每帧)
     
     // 轨道和车站
     distance: 1900,          // 当前距离下一站的距离 (米)
@@ -566,20 +565,33 @@ const game = {
 
     // 初始化游戏
     init() {
+        // 重置初始状态
+        this.speed = 0;
+        this.targetSpeed = 0;
+        this.speedLevel = 0;
+        this.distance = 1900;
+        
         // 控制按钮事件
-        document.getElementById('accelerate').addEventListener('mousedown', () => this.changeSpeed(1));
-        document.getElementById('accelerate').addEventListener('touchstart', (e) => {
+        const accelerateBtn = document.getElementById('accelerate');
+        const brakeBtn = document.getElementById('brake');
+        const stopBtn = document.getElementById('stop');
+        
+        // 加速按钮
+        accelerateBtn.addEventListener('mousedown', () => this.changeSpeed(1));
+        accelerateBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             this.changeSpeed(1);
         }, { passive: false });
         
-        document.getElementById('brake').addEventListener('mousedown', () => this.changeSpeed(-1));
-        document.getElementById('brake').addEventListener('touchstart', (e) => {
+        // 减速按钮
+        brakeBtn.addEventListener('mousedown', () => this.changeSpeed(-1));
+        brakeBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             this.changeSpeed(-1);
         }, { passive: false });
         
-        document.getElementById('stop').addEventListener('click', () => this.stopTrain());
+        // 停车按钮
+        stopBtn.addEventListener('click', () => this.stopTrain());
         
         // 键盘控制
         window.addEventListener('keydown', (e) => {
@@ -601,11 +613,15 @@ const game = {
         // 初始化显示
         this.updateStationDisplay();
         this.updateSpeedNotches();
+        this.updateUI();
         this.startGameLoop();
     },
     
     // 开始游戏循环
     startGameLoop() {
+        if (this.gameLoopId) {
+            cancelAnimationFrame(this.gameLoopId);
+        }
         this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
     },
     
@@ -629,10 +645,14 @@ const game = {
     
     // 更新速度
     updateSpeed() {
-        if (Math.abs(this.speed - this.targetSpeed) > 0.1) {
-            if (this.speed < this.targetSpeed) {
+        const speedDiff = this.targetSpeed - this.speed;
+        
+        if (Math.abs(speedDiff) > 0.1) {
+            if (speedDiff > 0) {
+                // 加速
                 this.speed = Math.min(this.speed + this.acceleration, this.targetSpeed);
             } else {
+                // 减速
                 this.speed = Math.max(this.speed - this.deceleration, this.targetSpeed);
             }
         } else {
@@ -642,28 +662,29 @@ const game = {
     
     // 更新位置
     updatePosition() {
-        // 计算每帧移动距离 (km/h -> m/帧)
-        const distancePerFrame = (this.speed / 3600) * 1000 * (16/1000); // 假设60fps
-        
-        // 更新距离
-        this.distance -= distancePerFrame;
-        
-        // 如果通过车站
-        if (this.distance <= 0) {
-            this.distance += this.stationDistance;
-            this.laps++;
-            document.getElementById('lapsValue').textContent = this.laps;
+        if (this.speed > 0) {
+            // 计算每帧移动距离 (km/h -> m/帧)
+            // 假设60fps: 1000ms/60frames ≈ 16.67ms/frame
+            const metersPerSecond = this.speed / 3.6; // km/h -> m/s
+            const distancePerFrame = metersPerSecond * (16/1000); // m/frame
             
-            // 切换到下一站
-            this.currentStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            this.updateStationDisplay();
+            // 更新距离
+            this.distance = Math.max(0, this.distance - distancePerFrame);
+            
+            // 如果通过车站
+            if (this.distance <= 0) {
+                this.distance += this.stationDistance;
+                this.laps++;
+                this.currentStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+                this.updateStationDisplay();
+            }
         }
     },
     
     // 检查车站状态
     checkStation() {
         // 接近车站 (150米内)
-        if (this.distance < 150 && !this.approachingStation) {
+        if (this.distance < 150 && !this.approachingStation && !this.isInStation) {
             this.approachingStation = true;
             this.showMessage("接近车站，请减速!");
         }
@@ -709,14 +730,17 @@ const game = {
     
     // 改变速度档位
     changeSpeed(direction) {
-        this.speedLevel = Math.max(0, Math.min(5, this.speedLevel + direction));
-        this.targetSpeed = this.speedLevel * 15; // 每档15km/h
-        this.updateSpeedNotches();
+        const newLevel = this.speedLevel + direction;
+        if (newLevel >= 0 && newLevel <= 5) {
+            this.speedLevel = newLevel;
+            this.targetSpeed = this.speedLevel * 15; // 每档15km/h
+            this.updateSpeedNotches();
+        }
     },
     
     // 紧急停车
     stopTrain() {
-        if (this.approachingStation) {
+        if (this.approachingStation || this.isInStation) {
             this.speedLevel = 0;
             this.targetSpeed = 0;
             this.updateSpeedNotches();
@@ -748,12 +772,20 @@ const game = {
         return this.stations[nextIndex];
     },
     
-    // 更新分数显示
-    updateScore() {
+    // 更新UI
+    updateUI() {
+        // 更新速度显示
+        document.querySelector('.speed-value').textContent = `${Math.floor(this.speed)} km/h`;
+        
+        // 更新距离显示
+        document.querySelector('.distance-value').textContent = `${Math.floor(this.distance)} m`;
+        
+        // 更新分数显示
         document.getElementById('scoreValue').textContent = this.score;
         const accuracy = this.totalStops > 0 ? 
             Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
         document.getElementById('accuracyValue').textContent = `${accuracy}%`;
+        document.getElementById('lapsValue').textContent = this.laps;
     },
     
     // 显示消息
@@ -774,6 +806,7 @@ const game = {
             : `おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: ${accuracy}%\n停靠次数: ${this.totalStops}`;
         
         document.getElementById('congrats-message').textContent = message;
+        document.getElementById('success-image').style.display = 'block';
         document.getElementById('success-modal').style.display = 'flex';
         this.hasShownCongrats = true;
     }
