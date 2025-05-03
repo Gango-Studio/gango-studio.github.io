@@ -360,104 +360,128 @@ footer {
             }
             
             
-            
-            /* 钢铁雄心风格页脚 - 保持两栏并排布局 */
-footer {
-    width: 100%;
-    background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e); /* 深蓝色渐变背景 */
-    padding: 25px 0;
-    text-align: left;
-    margin-top: auto;
-    border-top: 2px solid var(--hoi-gold); /* 金色顶部边框 */
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); /* 添加阴影效果 */
+            :root {
+    --hoi-dark-blue: #1a1a2e;
+    --hoi-gold: #d4b170;
+    --hoi-border: #3a3a5a;
+    --hoi-light-border: #5a5a7a;
+    --hoi-button-bg: #2a2a3e;
+    --hoi-paper: #f0e6d2;
+    --hoi-newsprint: #8b7d6b;
+    --footer-text: #d0d0d0; /* 统一文字颜色 */
 }
 
-footer::before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border: 1px solid rgba(212, 177, 112, 0.2); /* 内部金色细边框 */
-    pointer-events: none;
+/* 基础重置 */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--hoi-dark-blue);
+    color: #e6e6e6;
+    background-image: 
+        linear-gradient(rgba(10, 10, 30, 0.9), rgba(10, 10, 30, 0.9)),
+        url('https://gango-studio.github.io/games/pic/hoi_background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+/* 页脚样式 - 强制两栏平行布局 */
+footer {
+    width: 100%;
+    background: linear-gradient(to right, #1a1a2e, #2a2a3e, #1a1a2e);
+    padding: 25px 10%;
+    text-align: left;
+    border-top: 2px solid var(--hoi-gold);
+    display: flex;
+    flex-wrap: nowrap; /* 禁止换行 */
+    margin-top: auto;
+    position: relative;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 footer h3 {
     font-size: 1.8em;
-    margin: 0 0 15px 0;
-    padding-left: 10%;
-    color: var(--hoi-gold); /* 金色文字 */
+    margin: 0 0 20px 0;
+    color: var(--hoi-gold);
     font-weight: normal;
     width: 100%;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 文字阴影 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.footer-columns {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+footer div {
+    width: 48%; /* 留2%间隙 */
+    display: flex;
+    flex-direction: column;
+    padding: 0;
 }
 
 footer h4, footer h5 {
     margin: 0;
     padding: 8px 0;
-    padding-left: 10%;
-    color: #d0d0d0; /* 浅灰色文字 */
+    color: var(--footer-text);
     font-weight: normal;
     letter-spacing: 0.3px;
+    font-size: 1em; /* 统一字体大小 */
 }
 
 footer a {
-    color: #d0d0d0;
+    color: var(--footer-text) !important; /* 强制白色文字 */
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
+    display: inline-block;
+    padding: 2px 0;
 }
 
 footer a:hover {
-    color: var(--hoi-gold); /* 悬停时变为金色 */
+    color: var(--hoi-gold) !important;
     text-shadow: 0 0 5px rgba(212, 177, 112, 0.3);
+    transform: translateX(5px);
 }
 
-footer div {
-    width: 50%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 5px 0;
-}
-
-/* 链接前的装饰性箭头 */
-footer a::after {
-    content: " »";
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-footer a:hover::after {
-    opacity: 1;
-    margin-left: 5px;
-}
-
-/* 响应式调整 - 保持两栏布局 */
+/* 响应式调整 - 保持完全一致 */
 @media (max-width: 768px) {
     footer {
-        padding: 20px 0;
+        padding: 20px 5%;
     }
     
-    footer h3 {
-        padding-left: 5%;
-        font-size: 1.6em;
+    .footer-columns {
+        flex-direction: row; /* 保持横向排列 */
+    }
+    
+    footer div {
+        width: 48%;
+    }
+}
+
+@media (max-width: 480px) {
+    footer div {
+        width: 48%;
+        min-width: auto;
     }
     
     footer h4, footer h5 {
-        padding-left: 5%;
         font-size: 0.9em;
-    }
-    
-    /* 仍然保持两栏布局 */
-    footer div {
-        width: 50%;
     }
 }
     </style>
