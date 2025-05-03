@@ -360,67 +360,83 @@ footer {
             }
             
             
-           /* 严格依照最初版本的页脚CSS结构重写 */
+           /* 钢铁雄心风格页脚 - 精细调整版 */
 footer {
     width: 100%;
-    background: linear-gradient(to right, #1a1a2e, #2a2a3e); /* 替换原白色背景 */
+    background: linear-gradient(to right, #1a1a2e, #2a2a3e);
     padding: 20px 0;
     text-align: left;
     margin-top: auto;
-    border-top: 2px solid var(--hoi-gold); /* 替换原#e0e0e0边框 */
+    border-top: 2px solid var(--hoi-gold);
     display: flex;
     flex-wrap: wrap;
-    overflow: hidden; /* 新增：防止溢出 */
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 明确指定字体 */
 }
 
 footer h3 {
-    font-size: 1.8em; /* 完全保留 */
+    font-size: 1.8em;
     margin: 0;
     padding-left: 10%;
-    color: var(--hoi-gold); /* 原#1d1d1f改为金色 */
-    font-weight: 500;
+    color: var(--hoi-gold);
+    font-weight: 500; /* 保持标题中等粗细 */
     width: 100%;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.3); /* 新增军事风格 */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    letter-spacing: 0.5px;
 }
 
+/* 链接文字精细控制 */
 footer h4, 
 footer h5 {
     margin: 0;
     padding: 5px 0;
     padding-left: 10%;
-    color: #e0e0e0; /* 原#1d1d1f改为浅灰 */
-    font-size: 1em; /* 新增：统一字体大小 */
+    color: #e0e0e0;
+    font-weight: 400 !important; /* 强制常规粗细 */
+    font-size: 0.95em; /* 微调字号 */
+    letter-spacing: 0.3px; /* 增加字距提升可读性 */
+}
+
+footer h4 {
+    font-weight: 400; /* 主页链接同样常规粗细 */
 }
 
 footer a {
-    color: #e0e0e0 !important; /* 强制覆盖蓝色 */
+    color: #e0e0e0 !important;
     text-decoration: none;
     transition: color 0.3s ease;
-    display: inline-block; /* 新增：防止文字换行 */
+    display: inline-block;
     padding: 2px 0;
+    font-weight: 400; /* 链接文字常规粗细 */
 }
 
 footer a:hover {
-    color: var(--hoi-gold) !important; /* 悬停金色 */
+    color: var(--hoi-gold) !important;
+    text-shadow: 0 0 3px rgba(212, 177, 112, 0.3);
 }
 
 footer div {
-    width: 50%; /* 严格保留 */
+    width: 50%;
     box-sizing: border-box;
-    background-color: transparent !important; /* 移除原白色背景 */
+    background-color: transparent !important;
     display: flex;
     flex-direction: column;
-    padding: 0 10px; /* 新增：内间距 */
+    padding: 0 10px;
 }
 
-/* 电脑端专属优化 */
+/* 电脑端优化 */
 @media (min-width: 769px) {
     footer {
-        padding: 25px 15%; /* 更大的左右间距 */
+        padding: 25px 15%;
     }
     footer div {
-        width: calc(50% - 20px); /* 精确计算宽度 */
-        margin: 0 10px; /* 栏间距 */
+        width: calc(50% - 20px);
+        margin: 0 10px;
+    }
+    footer h4,
+    footer h5 {
+        font-size: 1em; /* 电脑端稍大字号 */
+        padding: 6px 0; /* 微调间距 */
     }
 }
     </style>
