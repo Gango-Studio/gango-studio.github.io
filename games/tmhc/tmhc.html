@@ -323,7 +323,7 @@ footer {
 
     
    
-        @media (max-width: 768px) {
+       /* @media (max-width: 768px) {*/
             .header-content {
                 flex-direction: column;
                 padding: 10px;
@@ -360,11 +360,11 @@ footer {
             }
             
             
-           /* 统一页脚样式 - 全平台一致 */
+          /* 钢铁雄心风格页脚 - 全平台统一样式 */
 footer {
     width: 100%;
     background: linear-gradient(to right, #1a1a2e, #2a2a3e);
-    padding: 20px 10%; /* 统一使用10%边距 */
+    padding: 25px 15%; /* 统一使用较大边距 */
     text-align: left;
     margin-top: auto;
     border-top: 2px solid var(--hoi-gold);
@@ -376,33 +376,24 @@ footer {
 
 footer h3 {
     font-size: 1.8em;
-    margin: 0 0 15px 0;
-    padding-left: 0; /* 移除左侧缩进 */
+    margin: 0;
+    padding-left: 10%;
     color: var(--hoi-gold);
     font-weight: 500;
     width: 100%;
-    text-align: center; /* 标题居中 */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
     letter-spacing: 0.5px;
-}
-
-footer div {
-    width: 50%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    padding: 0 10px;
 }
 
 footer h4, 
 footer h5 {
     margin: 0;
     padding: 6px 0;
+    padding-left: 10%;
     color: #e0e0e0;
-    font-weight: 400; /* 统一常规粗细 */
-    font-size: 0.95em;
+    font-weight: 400; /* 常规粗细 */
+    font-size: 1em;
     letter-spacing: 0.3px;
-    padding-left: 10%; /* 链接内容缩进 */
 }
 
 footer a {
@@ -417,10 +408,17 @@ footer a {
 footer a:hover {
     color: var(--hoi-gold) !important;
     text-shadow: 0 0 3px rgba(212, 177, 112, 0.3);
+    transform: translateX(3px);
 }
 
-/* 已移除所有@media媒体查询 */
-
+footer div {
+    width: calc(50% - 20px); /* 自动适应间距 */
+    margin: 0 10px;
+    box-sizing: border-box;
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: column;
+}
     </style>
 </head>
 <body>
