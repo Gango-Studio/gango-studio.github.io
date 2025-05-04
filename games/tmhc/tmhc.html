@@ -360,54 +360,58 @@ footer {
             }
             
             
-           /* 钢铁雄心风格页脚 - 精细调整版 */
+           /* 统一页脚样式 - 全平台一致 */
 footer {
     width: 100%;
     background: linear-gradient(to right, #1a1a2e, #2a2a3e);
-    padding: 20px 0;
+    padding: 20px 10%; /* 统一使用10%边距 */
     text-align: left;
     margin-top: auto;
     border-top: 2px solid var(--hoi-gold);
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 明确指定字体 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 footer h3 {
     font-size: 1.8em;
-    margin: 0;
-    padding-left: 10%;
+    margin: 0 0 15px 0;
+    padding-left: 0; /* 移除左侧缩进 */
     color: var(--hoi-gold);
-    font-weight: 500; /* 保持标题中等粗细 */
+    font-weight: 500;
     width: 100%;
+    text-align: center; /* 标题居中 */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
     letter-spacing: 0.5px;
 }
 
-/* 链接文字精细控制 */
+footer div {
+    width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+}
+
 footer h4, 
 footer h5 {
     margin: 0;
-    padding: 5px 0;
-    padding-left: 10%;
+    padding: 6px 0;
     color: #e0e0e0;
-    font-weight: 400 !important; /* 强制常规粗细 */
-    font-size: 0.95em; /* 微调字号 */
-    letter-spacing: 0.3px; /* 增加字距提升可读性 */
-}
-
-footer h4 {
-    font-weight: 400; /* 主页链接同样常规粗细 */
+    font-weight: 400; /* 统一常规粗细 */
+    font-size: 0.95em;
+    letter-spacing: 0.3px;
+    padding-left: 10%; /* 链接内容缩进 */
 }
 
 footer a {
     color: #e0e0e0 !important;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     display: inline-block;
     padding: 2px 0;
-    font-weight: 400; /* 链接文字常规粗细 */
+    font-weight: 400;
 }
 
 footer a:hover {
@@ -415,15 +419,7 @@ footer a:hover {
     text-shadow: 0 0 3px rgba(212, 177, 112, 0.3);
 }
 
-footer div {
-    width: 50%;
-    box-sizing: border-box;
-    background-color: transparent !important;
-    display: flex;
-    flex-direction: column;
-    padding: 0 10px;
-}
-
+/* 已移除所有@media媒体查询 */
 
     </style>
 </head>
