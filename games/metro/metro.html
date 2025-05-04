@@ -532,16 +532,17 @@
             <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
-   <script>// 游戏主对象 
+   <script>
+       // 游戏主对象 - 精确速度控制版
 const game = {
     // 游戏状态
-    speed: 0,                // 当前速度 (km/h)
-    targetSpeed: 0,          // 目标速度 (km/h)
+    speed: 0,                // 当前实际速度 (km/h)
+    displayedSpeed: 0,       // 显示速度 (km/h)
     speedLevel: 0,           // 当前档位 (0-5)
-    maxSpeed: 75,            // 最大速度 (km/h)
-    acceleration: 0.5,       // 加速度 (km/h每帧)
-    deceleration: 1.0,       // 减速度 (km/h每帧)
-    brakingDeceleration: 2.0, // 刹车减速度 (km/h每帧)
+    speedLevels: [0, 15, 30, 45, 60, 75], // 各档位对应的目标速度 (km/h)
+    acceleration: 0.3,       // 加速度 (km/h每帧)
+    deceleration: 0.6,       // 减速度 (km/h每帧)
+    brakingDeceleration: 1.2, // 刹车减速度 (km/h每帧)
     
     // 轨道和车站
     distance: 1900,          // 当前距离下一站的距离 (米)
@@ -562,42 +563,69 @@ const game = {
     approachingStation: false,
     gameLoopId: null,
     hasShownCongrats: false,
+    lastFrameTime: null,
 
     // 初始化游戏
     init() {
-        // 重置初始状态
+        // 重置所有状态
+        this.resetGame();
+        
+        // 设置控制按钮
+        this.setupControls();
+        
+        // 初始化显示
+        this.updateStationDisplay();
+        this.updateSpeedNotches();
+        this.updateUI();
+        
+        // 开始游戏循环
+        this.startGameLoop();
+    },
+    
+    // 重置游戏状态
+    resetGame() {
         this.speed = 0;
-        this.targetSpeed = 0;
+        this.displayedSpeed = 0;
         this.speedLevel = 0;
         this.distance = 1900;
-        
-        // 控制按钮事件
+        this.score = 0;
+        this.laps = 0;
+        this.totalStops = 0;
+        this.successfulStops = 0;
+        this.isInStation = false;
+        this.approachingStation = false;
+        this.hasShownCongrats = false;
+        this.lastFrameTime = performance.now();
+    },
+    
+    // 设置控制
+    setupControls() {
         const accelerateBtn = document.getElementById('accelerate');
         const brakeBtn = document.getElementById('brake');
         const stopBtn = document.getElementById('stop');
         
         // 加速按钮
-        accelerateBtn.addEventListener('mousedown', () => this.changeSpeed(1));
+        accelerateBtn.addEventListener('mousedown', () => this.increaseSpeedLevel());
         accelerateBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.changeSpeed(1);
+            this.increaseSpeedLevel();
         }, { passive: false });
         
         // 减速按钮
-        brakeBtn.addEventListener('mousedown', () => this.changeSpeed(-1));
+        brakeBtn.addEventListener('mousedown', () => this.decreaseSpeedLevel());
         brakeBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.changeSpeed(-1);
+            this.decreaseSpeedLevel();
         }, { passive: false });
         
         // 停车按钮
-        stopBtn.addEventListener('click', () => this.stopTrain());
+        stopBtn.addEventListener('click', () => this.emergencyStop());
         
         // 键盘控制
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') this.changeSpeed(1);
-            if (e.key === 'ArrowDown') this.changeSpeed(-1);
-            if (e.key === ' ') this.stopTrain();
+            if (e.key === 'ArrowUp') this.increaseSpeedLevel();
+            if (e.key === 'ArrowDown') this.decreaseSpeedLevel();
+            if (e.key === ' ') this.emergencyStop();
         });
         
         // 计分板点击事件
@@ -609,12 +637,6 @@ const game = {
         document.getElementById('close-modal').addEventListener('click', () => {
             document.getElementById('success-modal').style.display = 'none';
         });
-        
-        // 初始化显示
-        this.updateStationDisplay();
-        this.updateSpeedNotches();
-        this.updateUI();
-        this.startGameLoop();
     },
     
     // 开始游戏循环
@@ -622,16 +644,21 @@ const game = {
         if (this.gameLoopId) {
             cancelAnimationFrame(this.gameLoopId);
         }
-        this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+        this.lastFrameTime = performance.now();
+        this.gameLoop();
     },
     
     // 主游戏循环
     gameLoop() {
-        // 更新速度
-        this.updateSpeed();
+        const currentTime = performance.now();
+        const deltaTime = currentTime - this.lastFrameTime;
+        this.lastFrameTime = currentTime;
+        
+        // 更新速度 (基于真实时间差)
+        this.updateSpeed(deltaTime);
         
         // 更新位置
-        this.updatePosition();
+        this.updatePosition(deltaTime);
         
         // 检查车站
         this.checkStation();
@@ -640,45 +667,58 @@ const game = {
         this.updateUI();
         
         // 继续循环
-        this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+        this.gameLoopId = requestAnimationFrame(() => this.gameLoop());
     },
     
-    // 更新速度
-    updateSpeed() {
-        const speedDiff = this.targetSpeed - this.speed;
+    // 更新速度 (基于时间差)
+    updateSpeed(deltaTime) {
+        const targetSpeed = this.speedLevels[this.speedLevel];
+        const speedDiff = targetSpeed - this.speed;
+        const frameRatio = deltaTime / (1000/60); // 相对于60fps的比率
         
         if (Math.abs(speedDiff) > 0.1) {
             if (speedDiff > 0) {
                 // 加速
-                this.speed = Math.min(this.speed + this.acceleration, this.targetSpeed);
+                this.speed = Math.min(
+                    this.speed + this.acceleration * frameRatio, 
+                    targetSpeed
+                );
             } else {
                 // 减速
-                this.speed = Math.max(this.speed - this.deceleration, this.targetSpeed);
+                this.speed = Math.max(
+                    this.speed - this.deceleration * frameRatio, 
+                    targetSpeed
+                );
             }
-        } else {
-            this.speed = this.targetSpeed;
+        }
+        
+        // 更新显示速度 (与实际速度同步)
+        this.displayedSpeed = Math.floor(this.speed);
+    },
+    
+    // 更新位置 (基于时间差)
+    updatePosition(deltaTime) {
+        if (this.speed > 0) {
+            // 计算移动距离 (km/h → m/ms → m)
+            const metersPerMillisecond = (this.speed / 3.6) / 1000;
+            const distanceMoved = metersPerMillisecond * deltaTime;
+            
+            // 更新距离
+            this.distance = Math.max(0, this.distance - distanceMoved);
+            
+            // 检查是否通过车站
+            if (this.distance <= 0) {
+                this.handlePassStation();
+            }
         }
     },
     
-    // 更新位置
-    updatePosition() {
-        if (this.speed > 0) {
-            // 计算每帧移动距离 (km/h -> m/帧)
-            // 假设60fps: 1000ms/60frames ≈ 16.67ms/frame
-            const metersPerSecond = this.speed / 3.6; // km/h -> m/s
-            const distancePerFrame = metersPerSecond * (16/1000); // m/frame
-            
-            // 更新距离
-            this.distance = Math.max(0, this.distance - distancePerFrame);
-            
-            // 如果通过车站
-            if (this.distance <= 0) {
-                this.distance += this.stationDistance;
-                this.laps++;
-                this.currentStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-                this.updateStationDisplay();
-            }
-        }
+    // 通过车站处理
+    handlePassStation() {
+        this.distance += this.stationDistance;
+        this.laps++;
+        this.currentStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+        this.updateStationDisplay();
     },
     
     // 检查车站状态
@@ -700,7 +740,7 @@ const game = {
         this.isInStation = true;
         this.totalStops++;
         
-        // 检查是否成功停靠
+        // 检查停站精度
         if (this.speed < 5) { // 5km/h以下视为成功停靠
             const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(this.distance - 10)));
             this.successfulStops++;
@@ -709,40 +749,41 @@ const game = {
             this.showMessage(`${this.getNextStation().name} 停站成功! 精度: ${stopAccuracy}%`);
             
             // 检查是否显示通关消息
-            const accuracy = this.totalStops > 0 ? 
-                Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-            if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
+            if (this.shouldShowCongrats()) {
                 this.showCongratsMessage(false);
             }
         } else {
             this.showMessage(`通过: ${this.getNextStation().name}`);
         }
         
-        // 更新分数
+        // 更新分数并设置离开车站计时器
         this.updateScore();
-        
-        // 3秒后离开车站
         setTimeout(() => {
             this.isInStation = false;
             this.approachingStation = false;
         }, 3000);
     },
     
-    // 改变速度档位
-    changeSpeed(direction) {
-        const newLevel = this.speedLevel + direction;
-        if (newLevel >= 0 && newLevel <= 5) {
-            this.speedLevel = newLevel;
-            this.targetSpeed = this.speedLevel * 15; // 每档15km/h
+    // 增加速度档位
+    increaseSpeedLevel() {
+        if (this.speedLevel < 5) {
+            this.speedLevel++;
+            this.updateSpeedNotches();
+        }
+    },
+    
+    // 减少速度档位
+    decreaseSpeedLevel() {
+        if (this.speedLevel > 0) {
+            this.speedLevel--;
             this.updateSpeedNotches();
         }
     },
     
     // 紧急停车
-    stopTrain() {
+    emergencyStop() {
         if (this.approachingStation || this.isInStation) {
             this.speedLevel = 0;
-            this.targetSpeed = 0;
             this.updateSpeedNotches();
         }
     },
@@ -774,18 +815,25 @@ const game = {
     
     // 更新UI
     updateUI() {
-        // 更新速度显示
-        document.querySelector('.speed-value').textContent = `${Math.floor(this.speed)} km/h`;
+        // 速度显示
+        document.querySelector('.speed-value').textContent = `${this.displayedSpeed} km/h`;
         
-        // 更新距离显示
+        // 距离显示
         document.querySelector('.distance-value').textContent = `${Math.floor(this.distance)} m`;
         
-        // 更新分数显示
+        // 分数显示
         document.getElementById('scoreValue').textContent = this.score;
         const accuracy = this.totalStops > 0 ? 
             Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
         document.getElementById('accuracyValue').textContent = `${accuracy}%`;
         document.getElementById('lapsValue').textContent = this.laps;
+    },
+    
+    // 检查是否显示通关消息
+    shouldShowCongrats() {
+        const accuracy = this.totalStops > 0 ? 
+            Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+        return accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats;
     },
     
     // 显示消息
@@ -813,7 +861,9 @@ const game = {
 };
 
 // 启动游戏
-window.addEventListener('load', () => game.init());
+window.addEventListener('load', () => {
+    game.init();
+});
 
 // 页面卸载时停止游戏
 window.addEventListener('beforeunload', () => {
