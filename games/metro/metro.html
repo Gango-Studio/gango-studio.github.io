@@ -532,14 +532,14 @@
             <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
-   <script>
+  <script>
     // 游戏主对象
     const game = {
         trainAngle: 0,
         speed: 0,
-        maxSpeed: 0.02,
+        maxSpeed: 0.0833, // 对应150km/h (0.0833 * 1800 ≈ 150)
         speedLevel: 0,
-        speedLevels: [0, 0.0042, 0.0083, 0.0125, 0.0167, 0.02], // 调整为15km/h一档 (约0.0042每档)
+        speedLevels: [0, 0.0083, 0.0167, 0.025, 0.0333, 0.0417], // 每档15km/h (0.0083 * 1800 ≈ 15)
         acceleration: 0.0005,
         deceleration: 0.0008,
         brakingDeceleration: 0.0015,
@@ -552,17 +552,18 @@
         successfulStops: 0,
         stations: [
             { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * (1900 / 3000) } // 站间距离1900米
+            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * 2 * (1900 / (1900 * 2)) } // 两站之间1900米
         ],
         gameLoopId: null,
         kmhConversionFactor: 1800,
         meterConversionFactor: 1,
-        trackLength: 3000, // 轨道总长度保持3000米
+        trackLength: 1900 * 2, // 轨道总长为两站距离的两倍(3800米)
         accelerating: false,
         braking: false,
         accelerationInterval: null,
         brakeInterval: null,
         hasShownCongrats: false,
+        lastSpeedLevel: 0,
         
         init() {
             const accelerateBtn = document.getElementById('accelerate');
@@ -572,22 +573,12 @@
             // 触摸事件
             accelerateBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                this.startAccelerate();
-            }, { passive: false });
-            
-            accelerateBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.stopAccelerate();
+                this.increaseSpeedLevel();
             }, { passive: false });
             
             brakeBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                this.startBrake();
-            }, { passive: false });
-            
-            brakeBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.stopBrake();
+                this.decreaseSpeedLevel();
             }, { passive: false });
             
             stopBtn.addEventListener('touchstart', (e) => {
@@ -596,26 +587,21 @@
             }, { passive: false });
             
             // 鼠标事件
-            accelerateBtn.addEventListener('mousedown', this.startAccelerate.bind(this));
-            accelerateBtn.addEventListener('mouseup', this.stopAccelerate.bind(this));
-            accelerateBtn.addEventListener('mouseleave', this.stopAccelerate.bind(this));
+            accelerateBtn.addEventListener('mousedown', () => {
+                this.increaseSpeedLevel();
+            });
             
-            brakeBtn.addEventListener('mousedown', this.startBrake.bind(this));
-            brakeBtn.addEventListener('mouseup', this.stopBrake.bind(this));
-            brakeBtn.addEventListener('mouseleave', this.stopBrake.bind(this));
+            brakeBtn.addEventListener('mousedown', () => {
+                this.decreaseSpeedLevel();
+            });
             
             stopBtn.addEventListener('click', this.stopTrain.bind(this));
             
             // 键盘控制
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowUp') this.startAccelerate();
-                if (e.key === 'ArrowDown') this.startBrake();
+                if (e.key === 'ArrowUp') this.increaseSpeedLevel();
+                if (e.key === 'ArrowDown') this.decreaseSpeedLevel();
                 if (e.key === ' ') this.stopTrain();
-            });
-            
-            window.addEventListener('keyup', (e) => {
-                if (e.key === 'ArrowUp') this.stopAccelerate();
-                if (e.key === 'ArrowDown') this.stopBrake();
             });
             
             // 点击计分板直接触发通关弹窗(包含图片)
@@ -630,9 +616,77 @@
             
             // 初始化显示
             this.updateStationDisplay();
+            this.updateSpeedNotches();
             this.gameLoop();
         },
-        
+    
+        // 增加速度档位
+        increaseSpeedLevel() {
+            if (this.speedLevel < this.speedLevels.length - 1) {
+                this.speedLevel++;
+                this.updateSpeedNotches();
+                this.adjustSpeedToLevel();
+            }
+        },
+    
+        // 减少速度档位
+        decreaseSpeedLevel() {
+            if (this.speedLevel > 0) {
+                this.speedLevel--;
+                this.updateSpeedNotches();
+                this.adjustSpeedToLevel();
+            }
+        },
+    
+        // 更新速度档位显示
+        updateSpeedNotches() {
+            const notches = document.querySelectorAll('.speed-notch');
+            notches.forEach((notch, index) => {
+                notch.classList.toggle('active', index <= this.speedLevel);
+            });
+        },
+    
+        // 调整实际速度到目标档位
+        adjustSpeedToLevel() {
+            const targetSpeed = this.speedLevels[this.speedLevel];
+            
+            if (this.speed < targetSpeed) {
+                // 加速到目标档位
+                this.accelerating = true;
+                this.braking = false;
+                
+                if (this.accelerationInterval) {
+                    clearInterval(this.accelerationInterval);
+                }
+                
+                this.accelerationInterval = setInterval(() => {
+                    this.speed = Math.min(this.speed + this.acceleration, targetSpeed);
+                    
+                    if (this.speed >= targetSpeed) {
+                        clearInterval(this.accelerationInterval);
+                        this.accelerating = false;
+                    }
+                }, 16);
+            } else if (this.speed > targetSpeed) {
+                // 减速到目标档位
+                this.braking = true;
+                this.accelerating = false;
+                
+                if (this.brakeInterval) {
+                    clearInterval(this.brakeInterval);
+                }
+                
+                this.brakeInterval = setInterval(() => {
+                    this.speed = Math.max(this.speed - this.deceleration, targetSpeed);
+                    
+                    if (this.speed <= targetSpeed) {
+                        clearInterval(this.brakeInterval);
+                        this.braking = false;
+                    }
+                }, 16);
+            }
+        },
+    
         // 显示统一祝贺消息(包含图片)
         showCongratsMessage(isManual = false) {
             const accuracy = this.totalStops > 0 ? 
@@ -656,7 +710,7 @@
             document.getElementById('success-modal').style.display = 'flex';
             this.hasShownCongrats = true;
         },
-        
+    
         updateStationDisplay() {
             const currentStation = this.stations[this.currentStationIndex];
             const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
@@ -667,19 +721,19 @@
             document.querySelector('.station-code-line2').textContent = currentStation.code[1];
             document.querySelector('.next-station-name').textContent = nextStation.name;
         },
-        
+    
         gameLoop() {
             this.update();
             this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
         },
-        
+    
         stopGameLoop() {
             if (this.gameLoopId) {
                 cancelAnimationFrame(this.gameLoopId);
                 this.gameLoopId = null;
             }
         },
-        
+    
         update() {
             const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
             this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
@@ -690,11 +744,10 @@
                 document.getElementById('lapsValue').textContent = this.laps;
             }
             
-            this.updateSpeedLevel();
             this.checkStations();
             this.updateUI();
         },
-        
+    
         updateUI() {
             const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
             document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
@@ -715,23 +768,7 @@
                 document.querySelector('.distance-value').textContent = `${distance} m`;
             }
         },
-        
-        updateSpeedLevel() {
-            const speedKmh = this.speed * this.kmhConversionFactor;
-            let newLevel = Math.floor(speedKmh / 15); // 每15km/h一档
-            
-            // 确保档位在0-5之间
-            newLevel = Math.max(0, Math.min(newLevel, 5));
-            
-            if (newLevel !== this.speedLevel) {
-                this.speedLevel = newLevel;
-                const notches = document.querySelectorAll('.speed-notch');
-                notches.forEach((notch, index) => {
-                    notch.classList.toggle('active', index <= this.speedLevel);
-                });
-            }
-        },
-        
+    
         checkStations() {
             const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
             const nextStation = this.stations[nextStationIndex];
@@ -792,13 +829,13 @@
                 this.approachingStation = null;
             }
         },
-        
+    
         updateScore() {
             document.getElementById('scoreValue').textContent = this.score;
             const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
             document.getElementById('accuracyValue').textContent = `${accuracy}%`;
         },
-        
+    
         showMessage(msg, duration = 2000) {
             const messageElement = document.getElementById('message');
             messageElement.textContent = msg;
@@ -808,65 +845,26 @@
                 messageElement.style.display = 'none';
             }, duration);
         },
-        
-        startAccelerate() {
-            if (!this.isInStation && !this.accelerating) {
-                this.accelerating = true;
-                this.accelerationInterval = setInterval(() => {
-                    this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
-                    // 当速度接近档位阈值时，直接跳到下一档
-                    const speedKmh = this.speed * this.kmhConversionFactor;
-                    const targetSpeed = (this.speedLevel + 1) * 15;
-                    if (speedKmh >= targetSpeed * 0.95 && speedKmh < targetSpeed) {
-                        this.speed = targetSpeed / this.kmhConversionFactor;
-                    }
-                }, 16);
-            }
-        },
-        
-        stopAccelerate() {
-            if (this.accelerating) {
-                clearInterval(this.accelerationInterval);
-                this.accelerating = false;
-            }
-        },
-        
-        startBrake() {
-            if (!this.isInStation && !this.braking) {
-                this.braking = true;
-                this.brakeInterval = setInterval(() => {
-                    this.speed = Math.max(this.speed - this.deceleration, 0);
-                    // 当速度接近档位阈值时，直接跳到下一档
-                    const speedKmh = this.speed * this.kmhConversionFactor;
-                    const targetSpeed = (this.speedLevel - 1) * 15;
-                    if (speedKmh <= targetSpeed * 1.05 && speedKmh > targetSpeed) {
-                        this.speed = targetSpeed / this.kmhConversionFactor;
-                    }
-                }, 16);
-            }
-        },
-        
-        stopBrake() {
-            if (this.braking) {
-                clearInterval(this.brakeInterval);
-                this.braking = false;
-            }
-        },
-        
+    
         stopTrain() {
             if (this.approachingStation !== null && !this.isInStation) {
+                // 停车时直接降到0档
+                this.speedLevel = 0;
+                this.updateSpeedNotches();
+                
                 this.braking = true;
-                clearInterval(this.brakeInterval);
+                this.accelerating = false;
+                
+                if (this.brakeInterval) {
+                    clearInterval(this.brakeInterval);
+                }
+                
                 this.brakeInterval = setInterval(() => {
                     this.speed = Math.max(this.speed - this.brakingDeceleration, 0);
-                    // 刹车时也处理档位跳转
-                    const speedKmh = this.speed * this.kmhConversionFactor;
-                    const targetSpeed = (this.speedLevel - 1) * 15;
-                    if (speedKmh <= targetSpeed * 1.05 && speedKmh > targetSpeed) {
-                        this.speed = targetSpeed / this.kmhConversionFactor;
-                    }
+                    
                     if (this.speed === 0) {
-                        this.stopBrake();
+                        clearInterval(this.brakeInterval);
+                        this.braking = false;
                     }
                 }, 16);
             }
