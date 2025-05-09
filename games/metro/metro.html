@@ -539,7 +539,7 @@
         speed: 0,
         maxSpeed: 0.0833, // 对应150km/h (0.0833 * 1800 ≈ 150)
         speedLevel: 0, // 初始为0档
-        speedLevels: [0, 0.008333, 0.016667, 0.025, 0.033333, 0.041667], // 精确到每档15km/h (0.008333 * 1800 = 15)
+        speedLevels: [0, 0.008333, 0.016667, 0.025, 0.033333, 0.041667], // 精确每档15km/h (0.008333 * 1800 = 15)
         acceleration: 0.0005,
         deceleration: 0.0008,
         brakingDeceleration: 0.0015,
@@ -552,12 +552,12 @@
         successfulStops: 0,
         stations: [
             { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * 2 * (1900 / (1900 * 2)) } // 两站之间1900米
+            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI } // 两站之间1900米（轨道总长3800米）
         ],
         gameLoopId: null,
-        kmhConversionFactor: 1800, // 调整为1800使计算更精确
+        kmhConversionFactor: 1800,
         meterConversionFactor: 1,
-        trackLength: 1900 * 2, // 轨道总长为两站距离的两倍(3800米)
+        trackLength: 3800, // 轨道总长为两站距离的两倍(3800米)
         accelerating: false,
         braking: false,
         accelerationInterval: null,
@@ -641,7 +641,8 @@
         updateSpeedNotches() {
             const notches = document.querySelectorAll('.speed-notch');
             notches.forEach((notch, index) => {
-                notch.classList.toggle('active', index <= this.speedLevel);
+                // 0档时所有指示灯都不亮
+                notch.classList.toggle('active', index <= this.speedLevel && this.speedLevel > 0);
             });
         },
     
@@ -748,7 +749,8 @@
         },
     
         updateUI() {
-            const speedKmh = Math.floor(this.speed * this.kmhConversionFactor);
+            // 使用Math.round确保速度显示为整数
+            const speedKmh = Math.round(this.speed * this.kmhConversionFactor);
             document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
             
             if (this.approachingStation !== null) {
