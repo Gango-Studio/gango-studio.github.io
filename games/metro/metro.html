@@ -532,14 +532,14 @@
             <h5>&nbsp;<a></a></h5>
         </div>
     </footer>
-  <script>
+ <script>
     // 游戏主对象
     const game = {
         trainAngle: 0,
         speed: 0,
         maxSpeed: 0.0833, // 对应150km/h (0.0833 * 1800 ≈ 150)
-        speedLevel: 0,
-        speedLevels: [0, 0.0083, 0.0167, 0.025, 0.0333, 0.0417], // 每档15km/h (0.0083 * 1800 ≈ 15)
+        speedLevel: 0, // 初始为0档
+        speedLevels: [0, 0.008333, 0.016667, 0.025, 0.033333, 0.041667], // 精确到每档15km/h (0.008333 * 1800 = 15)
         acceleration: 0.0005,
         deceleration: 0.0008,
         brakingDeceleration: 0.0015,
@@ -555,7 +555,7 @@
             { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI * 2 * (1900 / (1900 * 2)) } // 两站之间1900米
         ],
         gameLoopId: null,
-        kmhConversionFactor: 1800,
+        kmhConversionFactor: 1800, // 调整为1800使计算更精确
         meterConversionFactor: 1,
         trackLength: 1900 * 2, // 轨道总长为两站距离的两倍(3800米)
         accelerating: false,
@@ -563,7 +563,6 @@
         accelerationInterval: null,
         brakeInterval: null,
         hasShownCongrats: false,
-        lastSpeedLevel: 0,
         
         init() {
             const accelerateBtn = document.getElementById('accelerate');
