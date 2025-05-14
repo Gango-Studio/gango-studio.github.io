@@ -6,7 +6,7 @@
 
 <title>Gango Studios</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
- <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
@@ -41,8 +41,8 @@
   /* 页首样式 */
   header {
       text-align: center;
-      margin-bottom: 20px;
-      padding: 20px 0;
+      margin-bottom: 0; /* 移除底部边距 */
+      padding: 20px 0 10px; /* 减少底部内边距 */
       background-color: #ffffff;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -54,17 +54,32 @@
       font-weight: 500;
   }
 
-  /* 导航样式 */
-  .nav {
+  /* 导航样式 - Apple风格 */
+  .nav-container {
       background-color: #ffffff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-radius: 0;
-      padding: 10px 0;
+      padding: 0;
+      margin-bottom: 20px; /* 增加导航栏和内容之间的间距 */
+  }
+
+  .nav {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+  }
+
+  .nav-item {
+      position: relative;
+      list-style: none;
   }
 
   .nav-link {
       color: #1d1d1f;
+      padding: 12px 20px;
+      display: block;
       transition: all 0.3s ease;
+      font-size: 0.95em;
   }
 
   .nav-link:hover, .nav-link.active {
@@ -72,22 +87,40 @@
       background-color: rgba(0, 122, 255, 0.1);
   }
 
-  /* 下拉菜单样式 */
-  select {
-      border: none;
-      background-color: transparent;
-      color: #1d1d1f;
-      padding: 8px 16px;
-      font-size: 1em;
-      cursor: pointer;
+  /* Apple风格下拉菜单 */
+  .apple-dropdown {
+      position: relative;
+      display: inline-block;
+  }
+
+  .apple-dropdown select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
+      background-color: transparent;
+      border: none;
+      padding: 12px 35px 12px 20px;
+      font-size: 0.95em;
+      color: #1d1d1f;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 16px;
       outline: none;
+      min-width: 180px;
   }
 
-  select:hover {
+  .apple-dropdown select:hover {
       color: #007aff;
+  }
+
+  /* 卡片容器 */
+  .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
   }
 
   /* 卡片样式 */
@@ -96,7 +129,9 @@
       border-radius: 12px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      width: 100%;
+      max-width: 600px;
   }
 
   .card:hover {
@@ -107,6 +142,8 @@
   .card-img-top {
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
+      width: 100%;
+      height: auto;
   }
 
   .btn-primary {
@@ -118,6 +155,12 @@
 
   .btn-primary:hover {
       background-color: #005bb5;
+  }
+
+  /* 更多视频链接 */
+  .more-link {
+      margin: 25px 0;
+      text-align: center;
   }
 
   /* 页脚样式 */
@@ -168,15 +211,21 @@
       height: 100%;
   }
 
-  .main-content {
-      flex: 1;
-  }
-
   @media (max-width: 768px) {
-      .card {
-          width: 90% !important;
-          margin-left: auto;
-          margin-right: auto;
+      .nav {
+          flex-direction: column;
+      }
+      
+      .apple-dropdown {
+          width: 100%;
+      }
+      
+      .apple-dropdown select {
+          width: 100%;
+      }
+      
+      footer div {
+          width: 100%;
       }
   }
 </style>
@@ -188,103 +237,99 @@
     </a>
 </header>
 
-<nav class="nav nav-pills flex-column flex-sm-row">
-    <select style="min-width:33%;max-width:100%" class="text-sm-center nav-link active" onchange="window.location.href=this.value">
-        <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
-        <option value="https://gango-studio.github.io/main.html#guitar">古典吉他</option>
-        <option value="https://gango-studio.github.io/main.html#samuel">Samuel</option>
-        <option value="https://gango-studio.github.io/main.html#trip">游记</option>
-    </select>
-    <a class="flex-sm-fill text-sm-center nav-link" href="https://gango-studio.github.io/introduce/blog.html">Blog</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
-    <!--<a class="flex-sm-fill text-sm-center nav-link" href="#">else</a>-->
-</nav>
+<div class="nav-container">
+    <ul class="nav">
+        <li class="nav-item apple-dropdown">
+            <select class="nav-link active" onchange="window.location.href=this.value">
+                <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
+                <option value="https://gango-studio.github.io/main.html#guitar">古典吉他</option>
+                <option value="https://gango-studio.github.io/main.html#samuel">Samuel</option>
+                <option value="https://gango-studio.github.io/main.html#trip">游记</option>
+            </select>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://gango-studio.github.io/introduce/blog.html">Blog</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
+        </li>
+    </ul>
+</div>
 
 <div class="main-content">
-    <div style="position: relative;text-align:center;" align="center">
-        <h2><a href="https://space.bilibili.com/1933356847" style="text-decoration: none;color:#1d1d1f">更多Sam_Mu视频 > </a></h2>
+    <div class="more-link">
+        <h2><a href="https://space.bilibili.com/1933356847">更多Sam_Mu视频 ></a></h2>
     </div>
-    <br/>
     
-    <h2 name="guitar" id="guitar">古典吉他</h2>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/UKR.jpeg" target="blank" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">乌克兰仍在人间</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="blank" class="btn btn-primary">播放</a>
+    <div class="card-container">
+        <h2 name="guitar" id="guitar">古典吉他</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">乌克兰仍在人间</h5>
+                <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+                <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/red.jpeg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">英国工党-红旗歌</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="_blank" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/als.png" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">友谊地久天长</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="_blank" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">Land of Hope and Glory</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="_blank" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <h2 name="samuel" id="samuel">Samuel系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">Samuel旗帜-2</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="_blank" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">[微型国家]塞缪尔旗帜</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        
+        <h2 name="trip" id="trip">游记系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">马六甲之旅</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/桂林.jpg" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">桂林遇龙河漂流</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn btn-primary">播放</a>
+            </div>
         </div>
     </div>
-    <br/>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/red.jpeg" target="blank" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">英国工党-红旗歌</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="blank" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card gcard" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/als.png" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">友谊地久天长</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="blank" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card gcard" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">Land of Hope and Glory</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="blank" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <br/>
-    
-    <h2 name="samuel" id="samuel">Samuel系列</h2>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" target="blank" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">Samuel旗帜-2</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="blank" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" target="blank" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">[微型国家]塞缪尔旗帜</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
-    <br/>
-    
-    <h2 name="trip" id="trip">游记系列</h2>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">马六甲之旅</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <div style="position: relative;text-align:center;min-width:40%;max-width:60%;left:20%" class="card" style="width: 18rem;">
-        <img src="https://gango-studio.github.io/image/video/桂林.jpg" target="blank" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">桂林遇龙河漂流</h5>
-            <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-            <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn btn-primary">播放</a>
-        </div>
-    </div>
-    <br/>
-    <br/>
 </div>
 
 <footer>
@@ -304,14 +349,21 @@
 </footer>
 
 <script>
-    var innerwidth = window.innerWidth; 
-    var x = 40;
-    if (innerwidth >= 750){
-        document.getElementByClassName("gcard").style.width = "700px";
-    }
-    if (innerwidth <= 750){
-        document.getElementByClassName("gcard").style.width ="60%";
-    }
+    // 响应式调整
+    window.addEventListener('resize', function() {
+        var cards = document.querySelectorAll('.card');
+        var width = window.innerWidth;
+        
+        if (width >= 768) {
+            cards.forEach(function(card) {
+                card.style.maxWidth = '600px';
+            });
+        } else {
+            cards.forEach(function(card) {
+                card.style.maxWidth = '100%';
+            });
+        }
+    });
 </script>
 </body>
 </html>
