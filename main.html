@@ -41,8 +41,8 @@
   /* 页首样式 */
   header {
       text-align: center;
-      margin-bottom: 0; /* 移除底部边距 */
-      padding: 20px 0 10px; /* 减少底部内边距 */
+      margin-bottom: 0;
+      padding: 20px 0 10px;
       background-color: #ffffff;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -54,24 +54,31 @@
       font-weight: 500;
   }
 
-  /* 导航样式 - Apple风格 */
+  /* 导航栏容器 */
   .nav-container {
       background-color: #ffffff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       padding: 0;
-      margin-bottom: 20px; /* 增加导航栏和内容之间的间距 */
+      margin-bottom: 20px;
   }
 
-  .nav {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 0;
-      margin: 0;
+  /* 导航栏 - 横屏布局 */
+  @media (min-width: 768px) {
+      .nav {
+          display: flex;
+          flex-direction: row;
+      }
+      
+      .nav-item {
+          flex: 1;
+          text-align: center;
+      }
   }
 
-  .nav-item {
-      position: relative;
-      list-style: none;
+  /* 恢复原版导航颜色 */
+  .nav-pills .nav-link.active {
+      background-color: #0d6efd;
+      color: white !important;
   }
 
   .nav-link {
@@ -82,7 +89,7 @@
       font-size: 0.95em;
   }
 
-  .nav-link:hover, .nav-link.active {
+  .nav-link:hover {
       color: #007aff;
       background-color: rgba(0, 122, 255, 0.1);
   }
@@ -91,6 +98,7 @@
   .apple-dropdown {
       position: relative;
       display: inline-block;
+      width: 100%;
   }
 
   .apple-dropdown select {
@@ -108,7 +116,7 @@
       background-position: right 15px center;
       background-size: 16px;
       outline: none;
-      min-width: 180px;
+      width: 100%;
   }
 
   .apple-dropdown select:hover {
@@ -162,72 +170,6 @@
       margin: 25px 0;
       text-align: center;
   }
-
-  /* 页脚样式 */
-  footer {
-      width: 100%;
-      background-color: #ffffff;
-      padding: 20px 0;
-      text-align: left;
-      margin-top: auto;
-      border-top: 1px solid #e0e0e0;
-      display: flex;
-      flex-wrap: wrap;
-  }
-
-  footer h3 {
-      font-size: 1.8em;
-      margin: 0;
-      padding-left: 10%;
-      color: #1d1d1f;
-      font-weight: 500;
-      width: 100%;
-  }
-
-  footer h4, footer h5 {
-      margin: 0;
-      padding: 5px 0;
-      padding-left: 10%;
-      color: #1d1d1f;
-  }
-
-  footer a {
-      color: #1d1d1f;
-      text-decoration: none;
-      transition: color 0.3s ease;
-  }
-
-  footer a:hover {
-      color: #007aff;
-  }
-
-  footer div {
-      width: 50%;
-      box-sizing: border-box;
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-  }
-
-  @media (max-width: 768px) {
-      .nav {
-          flex-direction: column;
-      }
-      
-      .apple-dropdown {
-          width: 100%;
-      }
-      
-      .apple-dropdown select {
-          width: 100%;
-      }
-      
-      footer div {
-          width: 100%;
-      }
-  }
 </style>
 </head>
 <body>
@@ -238,7 +180,7 @@
 </header>
 
 <div class="nav-container">
-    <ul class="nav">
+    <ul class="nav nav-pills">
         <li class="nav-item apple-dropdown">
             <select class="nav-link active" onchange="window.location.href=this.value">
                 <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
@@ -267,7 +209,6 @@
             <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img-top">
             <div class="card-body">
                 <h5 class="card-title">乌克兰仍在人间</h5>
-                <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
                 <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn btn-primary">播放</a>
             </div>
         </div>
@@ -332,20 +273,20 @@
     </div>
 </div>
 
-<footer>
-    <h3>Gango Studio</h3>
-    <div>
-        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
-        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
-        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+<!-- 原版页脚设计 -->
+<footer><div  style="background:#DCDCDC;height：100%;width:100%;"><br/></div><br/>
+    <h3  style ="padding-left : 6%;width：100% ;height:100%">Gango Studio</h3>
+    <h4 style = "width：100% ;height:100%"><a style ="color:black;text-decoration: none;padding-left : 10%;" href = "https://gango-studio.github.io">🏠主页</a></h4>
+    <div  style ="padding-left : 10%;float:left;width：100% ;height:100%">
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/main.html">🔗Vlog</h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
     </div>
-    <div>
-        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-        <h5>&nbsp;<a></a></h5>
-    </div>
+   <div style ="padding-left : 10%;float:left;width：100% ;height:100%">
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+          <h5><a  style ="text-decoration: none;color:black;"  href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+   </div>
 </footer>
 
 <script>
