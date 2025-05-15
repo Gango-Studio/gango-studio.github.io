@@ -63,30 +63,34 @@
   }
 
   /* 导航栏 - 横屏布局 */
-  @media (min-width: 768px) {
-      .nav {
-          display: flex;
-          flex-direction: row;
-      }
-      
-      .nav-item {
-          flex: 1;
-          text-align: center;
-      }
+  .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      padding: 0;
+      margin: 0;
+      width: 100%;
   }
 
-  /* 恢复原版导航颜色 */
-  .nav-pills .nav-link.active {
-      background-color: #0d6efd;
-      color: white !important;
+  .nav-item {
+      flex: 1;
+      text-align: center;
+      list-style: none;
   }
 
+  /* 导航链接样式 - 恢复原颜色方案 */
   .nav-link {
       color: #1d1d1f;
-      padding: 12px 20px;
+      padding: 12px 0;
       display: block;
       transition: all 0.3s ease;
       font-size: 0.95em;
+  }
+
+  /* 选中状态 - 深蓝背景+白色文字 */
+  .nav-link.active {
+      color: white !important;
+      background-color: #007aff !important;
   }
 
   .nav-link:hover {
@@ -97,8 +101,8 @@
   /* Apple风格下拉菜单 */
   .apple-dropdown {
       position: relative;
-      display: inline-block;
-      width: 100%;
+      display: block;
+      height: 100%;
   }
 
   .apple-dropdown select {
@@ -109,7 +113,7 @@
       border: none;
       padding: 12px 35px 12px 20px;
       font-size: 0.95em;
-      color: #1d1d1f;
+      color: inherit;
       cursor: pointer;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
@@ -117,10 +121,8 @@
       background-size: 16px;
       outline: none;
       width: 100%;
-  }
-
-  .apple-dropdown select:hover {
-      color: #007aff;
+      height: 100%;
+      text-align: center;
   }
 
   /* 卡片容器 */
@@ -159,6 +161,7 @@
       border: none;
       border-radius: 20px;
       padding: 8px 20px;
+      color: white;
   }
 
   .btn-primary:hover {
@@ -170,6 +173,70 @@
       margin: 25px 0;
       text-align: center;
   }
+
+  /* 页脚样式 - 完全还原Gango Tools的设计 */
+  footer {
+      width: 100%;
+      background-color: #ffffff;
+      padding: 20px 0;
+      text-align: left;
+      margin-top: auto;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      flex-wrap: wrap;
+  }
+
+  footer h3 {
+      font-size: 1.8em;
+      margin: 0;
+      padding-left: 10%;
+      color: #1d1d1f;
+      font-weight: 500;
+      width: 100%;
+  }
+
+  footer h4, footer h5 {
+      margin: 0;
+      padding: 5px 0;
+      padding-left: 10%;
+      color: #1d1d1f;
+  }
+
+  footer a {
+      color: #1d1d1f;
+      text-decoration: none;
+      transition: color 0.3s ease;
+  }
+
+  footer a:hover {
+      color: #007aff;
+  }
+
+  footer div {
+      width: 50%;
+      box-sizing: border-box;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+  }
+
+  /* 移动端样式 */
+  @media (max-width: 768px) {
+      .nav {
+          flex-direction: column;
+      }
+      
+      .nav-item {
+          flex: none;
+          width: 100%;
+      }
+      
+      footer div {
+          width: 100%;
+      }
+  }
 </style>
 </head>
 <body>
@@ -180,7 +247,7 @@
 </header>
 
 <div class="nav-container">
-    <ul class="nav nav-pills">
+    <ul class="nav">
         <li class="nav-item apple-dropdown">
             <select class="nav-link active" onchange="window.location.href=this.value">
                 <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
@@ -273,37 +340,38 @@
     </div>
 </div>
 
-<!-- 原版页脚设计 -->
-<footer><div  style="background:#DCDCDC;height：100%;width:100%;"><br/></div><br/>
-    <h3  style ="padding-left : 6%;width：100% ;height:100%">Gango Studio</h3>
-    <h4 style = "width：100% ;height:100%"><a style ="color:black;text-decoration: none;padding-left : 10%;" href = "https://gango-studio.github.io">🏠主页</a></h4>
-    <div  style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/main.html">🔗Vlog</h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+<!-- 严格按照Gango Tools设计的页脚 -->
+<footer>
+    <h3>Gango Studio</h3>
+    <div>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
     </div>
-   <div style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;"  href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-   </div>
+    <div>
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        <h5>&nbsp;<a></a></h5>
+    </div>
 </footer>
 
 <script>
-    // 响应式调整
-    window.addEventListener('resize', function() {
-        var cards = document.querySelectorAll('.card');
-        var width = window.innerWidth;
+    // 确保导航栏选中状态颜色正确
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取当前页面URL
+        var currentUrl = window.location.href;
         
-        if (width >= 768) {
-            cards.forEach(function(card) {
-                card.style.maxWidth = '600px';
-            });
-        } else {
-            cards.forEach(function(card) {
-                card.style.maxWidth = '100%';
-            });
-        }
+        // 检查每个导航链接是否匹配当前URL
+        document.querySelectorAll('.nav-link').forEach(function(link) {
+            if (link.href === currentUrl || 
+                (link.tagName === 'SELECT' && link.value === currentUrl)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     });
 </script>
 </body>
