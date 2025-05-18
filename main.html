@@ -54,37 +54,42 @@
       font-weight: 500;
   }
 
-  /* 导航栏容器 */
+  /* 导航栏容器 - 修复水平排列问题 */
   .nav-container {
       background-color: #ffffff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       padding: 0;
       margin-bottom: 20px;
+      width: 100%;
   }
 
-  /* 导航栏 - 横屏布局 */
+  /* 导航栏 - 修复水平排列问题 */
   .nav {
       display: flex;
+      flex-direction: row; /* 强制横向排列 */
       flex-wrap: nowrap;
-      justify-content: space-between;
+      justify-content: space-around; /* 均匀分布 */
+      align-items: stretch;
       padding: 0;
       margin: 0;
       width: 100%;
   }
 
   .nav-item {
-      flex: 1;
+      flex: 1; /* 等分宽度 */
       text-align: center;
       list-style: none;
+      display: flex;
   }
 
-  /* 导航链接样式 - 恢复原颜色方案 */
+  /* 导航链接样式 */
   .nav-link {
       color: #1d1d1f;
       padding: 12px 0;
       display: block;
       transition: all 0.3s ease;
       font-size: 0.95em;
+      width: 100%;
   }
 
   /* 选中状态 - 深蓝背景+白色文字 */
@@ -93,7 +98,7 @@
       background-color: #007aff !important;
   }
 
-  .nav-link:hover {
+  .nav-link:hover:not(.active) {
       color: #007aff;
       background-color: rgba(0, 122, 255, 0.1);
   }
@@ -101,8 +106,9 @@
   /* Apple风格下拉菜单 */
   .apple-dropdown {
       position: relative;
-      display: block;
+      display: flex;
       height: 100%;
+      width: 100%;
   }
 
   .apple-dropdown select {
@@ -174,7 +180,7 @@
       text-align: center;
   }
 
-  /* 页脚样式 - 完全还原Gango Tools的设计 */
+  /* 严格按照Gango Tools设计的页脚 */
   footer {
       width: 100%;
       background-color: #ffffff;
@@ -215,7 +221,6 @@
   footer div {
       width: 50%;
       box-sizing: border-box;
-      background-color: #ffffff;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -229,8 +234,8 @@
       }
       
       .nav-item {
-          flex: none;
           width: 100%;
+          flex: none;
       }
       
       footer div {
@@ -271,6 +276,7 @@
     </div>
     
     <div class="card-container">
+        <!-- 卡片内容保持不变 -->
         <h2 name="guitar" id="guitar">古典吉他</h2>
         <div class="card">
             <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img-top">
@@ -365,8 +371,10 @@
         
         // 检查每个导航链接是否匹配当前URL
         document.querySelectorAll('.nav-link').forEach(function(link) {
-            if (link.href === currentUrl || 
-                (link.tagName === 'SELECT' && link.value === currentUrl)) {
+            if (link.href && (link.href === currentUrl || 
+                currentUrl.includes(link.href))) {
+                link.classList.add('active');
+            } else if (link.tagName === 'SELECT' && link.value === currentUrl) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
