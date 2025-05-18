@@ -5,22 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Gango Studios</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <style>
-  <!--
-.STYLE1 {font-size: xx-large}
-.STYLE2 {font-size: x-large}
-.STYLE3 {font-size: large}
--->
   /* 全局样式 */
   body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f5f5f7;
       color: #1d1d1f;
       display: flex;
@@ -41,10 +30,8 @@
   /* 页首样式 */
   header {
       text-align: center;
-      margin-bottom: 0;
-      padding: 20px 0 10px;
+      padding: 20px 0 0;
       background-color: #ffffff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   header h1 {
@@ -54,81 +41,76 @@
       font-weight: 500;
   }
 
-  /* 导航栏容器 - 修复水平排列问题 */
-  .nav-container {
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 0;
-      margin-bottom: 20px;
+  /* 导航栏容器 */
+  .nav-wrapper {
       width: 100%;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
   }
 
-  /* 导航栏 - 修复水平排列问题 */
-  .nav {
+  /* 导航菜单 - 水平排列 */
+  .nav-menu {
       display: flex;
-      flex-direction: row; /* 强制横向排列 */
-      flex-wrap: nowrap;
-      justify-content: space-around; /* 均匀分布 */
-      align-items: stretch;
       padding: 0;
       margin: 0;
-      width: 100%;
-  }
-
-  .nav-item {
-      flex: 1; /* 等分宽度 */
-      text-align: center;
       list-style: none;
-      display: flex;
-  }
-
-  /* 导航链接样式 */
-  .nav-link {
-      color: #1d1d1f;
-      padding: 12px 0;
-      display: block;
-      transition: all 0.3s ease;
-      font-size: 0.95em;
       width: 100%;
   }
 
-  /* 选中状态 - 深蓝背景+白色文字 */
-  .nav-link.active {
-      color: white !important;
-      background-color: #007aff !important;
-  }
-
-  .nav-link:hover:not(.active) {
-      color: #007aff;
-      background-color: rgba(0, 122, 255, 0.1);
-  }
-
-  /* Apple风格下拉菜单 */
-  .apple-dropdown {
+  /* 导航项 - 等宽 */
+  .nav-item {
+      flex: 1;
+      text-align: center;
       position: relative;
-      display: flex;
-      height: 100%;
-      width: 100%;
   }
 
-  .apple-dropdown select {
+  /* 导航链接 */
+  .nav-link {
+      display: block;
+      padding: 15px 0;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.95em;
+      transition: all 0.3s;
+  }
+
+  /* 选中状态 */
+  .nav-item.active .nav-link {
+      background: #007aff;
+      color: white !important;
+  }
+
+  /* 下拉菜单 */
+  .dropdown-select {
+      width: 100%;
+      height: 100%;
+      padding: 15px 30px 15px 15px;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 0.95em;
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      background-color: transparent;
-      border: none;
-      padding: 12px 35px 12px 20px;
-      font-size: 0.95em;
-      color: inherit;
-      cursor: pointer;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 15px center;
       background-size: 16px;
-      outline: none;
-      width: 100%;
-      height: 100%;
+      cursor: pointer;
       text-align: center;
+      text-align-last: center;
+  }
+
+  /* 内容容器 */
+  .main-content {
+      flex: 1;
+  }
+
+  /* 更多视频链接 */
+  .more-link {
+      text-align: center;
+      margin: 25px 0;
   }
 
   /* 卡片容器 */
@@ -141,51 +123,49 @@
 
   /* 卡片样式 */
   .card {
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 25px;
       width: 100%;
       max-width: 600px;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      background: white;
   }
 
   .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
 
-  .card-img-top {
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
+  .card-img {
       width: 100%;
       height: auto;
+      display: block;
+  }
+
+  .card-body {
+      padding: 15px;
+  }
+
+  .card-title {
+      margin: 0 0 10px 0;
   }
 
   .btn-primary {
-      background-color: #007aff;
-      border: none;
-      border-radius: 20px;
-      padding: 8px 20px;
+      display: inline-block;
+      background: #007aff;
       color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      text-decoration: none;
   }
 
-  .btn-primary:hover {
-      background-color: #005bb5;
-  }
-
-  /* 更多视频链接 */
-  .more-link {
-      margin: 25px 0;
-      text-align: center;
-  }
-
-  /* 严格按照Gango Tools设计的页脚 */
+  /* 页脚 - 完全复制Gango Tools */
   footer {
       width: 100%;
-      background-color: #ffffff;
+      background: white;
       padding: 20px 0;
-      text-align: left;
       margin-top: auto;
       border-top: 1px solid #e0e0e0;
       display: flex;
@@ -196,9 +176,14 @@
       font-size: 1.8em;
       margin: 0;
       padding-left: 10%;
+      width: 100%;
       color: #1d1d1f;
       font-weight: 500;
-      width: 100%;
+  }
+
+  footer div {
+      width: 50%;
+      box-sizing: border-box;
   }
 
   footer h4, footer h5 {
@@ -211,31 +196,20 @@
   footer a {
       color: #1d1d1f;
       text-decoration: none;
-      transition: color 0.3s ease;
   }
 
   footer a:hover {
       color: #007aff;
   }
 
-  footer div {
-      width: 50%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-  }
-
-  /* 移动端样式 */
+  /* 移动端响应式 */
   @media (max-width: 768px) {
-      .nav {
+      .nav-menu {
           flex-direction: column;
       }
       
       .nav-item {
           width: 100%;
-          flex: none;
       }
       
       footer div {
@@ -251,10 +225,11 @@
     </a>
 </header>
 
-<div class="nav-container">
-    <ul class="nav">
-        <li class="nav-item apple-dropdown">
-            <select class="nav-link active" onchange="window.location.href=this.value">
+<!-- 导航栏 -->
+<div class="nav-wrapper">
+    <ul class="nav-menu">
+        <li class="nav-item active">
+            <select class="dropdown-select nav-link" onchange="location.href=this.value">
                 <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
                 <option value="https://gango-studio.github.io/main.html#guitar">古典吉他</option>
                 <option value="https://gango-studio.github.io/main.html#samuel">Samuel</option>
@@ -276,77 +251,76 @@
     </div>
     
     <div class="card-container">
-        <!-- 卡片内容保持不变 -->
-        <h2 name="guitar" id="guitar">古典吉他</h2>
+        <h2 id="guitar">古典吉他</h2>
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">乌克兰仍在人间</h5>
-                <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn btn-primary">播放</a>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
         
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/red.jpeg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/red.jpeg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">英国工党-红旗歌</h5>
-                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="_blank" class="btn btn-primary">播放</a>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
         
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/als.png" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/als.png" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">友谊地久天长</h5>
-                <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="_blank" class="btn btn-primary">播放</a>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
         
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">Land of Hope and Glory</h5>
-                <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="_blank" class="btn btn-primary">播放</a>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
         
-        <h2 name="samuel" id="samuel">Samuel系列</h2>
+        <h2 id="samuel">Samuel系列</h2>
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">Samuel旗帜-2</h5>
-                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="_blank" class="btn btn-primary">播放</a>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
         
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">[微型国家]塞缪尔旗帜</h5>
-                <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn btn-primary">Go somewhere</a>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn-primary">播放</a>
             </div>
         </div>
         
-        <h2 name="trip" id="trip">游记系列</h2>
+        <h2 id="trip">游记系列</h2>
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">马六甲之旅</h5>
-                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn btn-primary">播放</a>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn-primary">播放</a>
             </div>
         </div>
         
         <div class="card">
-            <img src="https://gango-studio.github.io/image/video/桂林.jpg" class="card-img-top">
+            <img src="https://gango-studio.github.io/image/video/桂林.jpg" class="card-img">
             <div class="card-body">
                 <h5 class="card-title">桂林遇龙河漂流</h5>
-                <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn btn-primary">播放</a>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn-primary">播放</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 严格按照Gango Tools设计的页脚 -->
+<!-- 页脚 - 完全复制Gango Tools -->
 <footer>
     <h3>Gango Studio</h3>
     <div>
@@ -359,28 +333,37 @@
         <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-        <h5>&nbsp;<a></a></h5>
+        <h5>&nbsp;</h5>
     </div>
 </footer>
 
 <script>
-    // 确保导航栏选中状态颜色正确
-    document.addEventListener('DOMContentLoaded', function() {
-        // 获取当前页面URL
-        var currentUrl = window.location.href;
+// 导航栏选中状态
+document.addEventListener('DOMContentLoaded', function() {
+    // 设置初始选中状态
+    const currentUrl = window.location.href;
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    navItems.forEach(item => {
+        const link = item.querySelector('a');
+        const select = item.querySelector('select');
         
-        // 检查每个导航链接是否匹配当前URL
-        document.querySelectorAll('.nav-link').forEach(function(link) {
-            if (link.href && (link.href === currentUrl || 
-                currentUrl.includes(link.href))) {
-                link.classList.add('active');
-            } else if (link.tagName === 'SELECT' && link.value === currentUrl) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
+        if (select && select.value === currentUrl) {
+            item.classList.add('active');
+        } else if (link && currentUrl.includes(link.href)) {
+            item.classList.add('active');
+        }
     });
+    
+    // 下拉菜单变化时更新状态
+    const dropdown = document.querySelector('.dropdown-select');
+    if (dropdown) {
+        dropdown.addEventListener('change', function() {
+            navItems.forEach(item => item.classList.remove('active'));
+            this.parentElement.classList.add('active');
+        });
+    }
+});
 </script>
 </body>
 </html>
