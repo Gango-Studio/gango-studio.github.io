@@ -27,7 +27,7 @@
       color: #005bb5;
   }
 
-  /* 页首样式 */
+  /* 页首样式 - 保持不变 */
   header {
       text-align: center;
       padding: 20px 0 0;
@@ -41,7 +41,7 @@
       font-weight: 500;
   }
 
-  /* 导航栏容器 - 圆角效果 */
+  /* 导航栏容器 - 添加响应式 */
   .nav-wrapper {
       width: 100%;
       background: white;
@@ -51,7 +51,7 @@
       overflow: hidden;
   }
 
-  /* 导航菜单 - 横屏竖屏都保持水平 */
+  /* 导航菜单 - 桌面端默认展开 */
   .nav-menu {
       display: flex;
       padding: 0;
@@ -83,18 +83,18 @@
       color: white !important;
   }
 
-  /* 下拉菜单容器 - 修复箭头显示 */
+  /* 下拉菜单容器 */
   .dropdown-container {
       position: relative;
       width: 100%;
       height: 100%;
   }
 
-  /* 下拉菜单 - 确保箭头可见 */
+  /* 下拉菜单 */
   .dropdown-select {
       width: 100%;
       height: 100%;
-      padding: 15px 35px 15px 15px; /* 右侧留出箭头空间 */
+      padding: 15px 35px 15px 15px;
       border: none;
       background: transparent;
       color: inherit;
@@ -119,6 +119,16 @@
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: center;
+  }
+
+  /* 移动端导航切换按钮 */
+  .nav-toggle {
+      display: none;
+      padding: 15px;
+      text-align: center;
+      background: #007aff;
+      color: white;
+      cursor: pointer;
   }
 
   /* 内容区 */
@@ -181,7 +191,7 @@
       text-decoration: none;
   }
 
-  /* 页脚 - 始终两列布局 */
+  /* 页脚 - 保持不变 */
   footer {
       width: 100%;
       background: white;
@@ -222,28 +232,42 @@
       color: #007aff;
   }
 
-  /* 响应式设计 */
-  @media (max-width: 768px) and (orientation: portrait) {
-      /* 竖屏手机导航栏垂直排列 */
+  /* 响应式设计 - 小屏幕折叠导航 */
+  @media (max-width: 375px) { /* 针对4.7英寸及以下设备 */
+      .nav-toggle {
+          display: block;
+      }
+      
       .nav-menu {
+          display: none;
           flex-direction: column;
+      }
+      
+      .nav-menu.expanded {
+          display: flex;
       }
       
       .nav-item {
           width: 100%;
       }
       
-      /* 小屏幕文字调整 */
-      footer h3 {
-          font-size: 1.5em;
+      /* 只显示当前页面导航项 */
+      .nav-item.active {
+          display: block;
       }
       
-      footer h4, footer h5 {
-          font-size: 0.9em;
+      /* 其他导航项默认隐藏 */
+      .nav-item:not(.active) {
+          display: none;
+      }
+      
+      /* 展开时显示所有导航项 */
+      .nav-menu.expanded .nav-item {
+          display: block;
       }
   }
 
-  /* 超小屏幕调整 */
+  /* 小屏幕文字调整 */
   @media (max-width: 480px) {
       footer h3 {
           padding-left: 5%;
@@ -262,9 +286,10 @@
     </a>
 </header>
 
-<!-- 导航栏 -->
+<!-- 可折叠导航栏 -->
 <div class="nav-wrapper">
-    <ul class="nav-menu">
+    <div class="nav-toggle" id="navToggle">≡ 菜单</div>
+    <ul class="nav-menu" id="navMenu">
         <li class="nav-item active">
             <div class="dropdown-container">
                 <select class="dropdown-select nav-link" onchange="location.href=this.value">
@@ -360,7 +385,7 @@
     </div>
 </div>
 
-<!-- 页脚 - 始终两列 -->
+<!-- 页脚 - 保持不变 -->
 <footer>
     <h3>Gango Studio</h3>
     <div class="footer-column">
@@ -378,8 +403,17 @@
 </footer>
 
 <script>
-// 导航栏选中状态
+// 导航栏折叠功能
 document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('expanded');
+        });
+    }
+    
     // 设置初始选中状态
     const currentUrl = window.location.href;
     const navItems = document.querySelectorAll('.nav-item');
@@ -405,6 +439,44 @@ document.addEventListener('DOMContentLoaded', function() {
             this.closest('.nav-item').classList.add('active');
         });
     }
+    
+    // 自动折叠小屏幕导航
+    function checkScreenSize() {
+        if (window.innerWidth <= 375) { // 4.7英寸及以下设备
+            if (!navMenu.classList.contains('expanded')) {
+                const activeItem = document.querySelector('.nav-item.active');
+                if (activeItem) {
+                    navMenu.innerHTML = '';
+                    navMenu.appendChild(activeItem);
+                }
+            }
+        } else {
+            // 大屏幕确保完全展开
+            const fullMenu = `
+                <li class="nav-item active">
+                    <div class="dropdown-container">
+                        <select class="dropdown-select nav-link" onchange="location.href=this.value">
+                            <option value="https://gango-studio.github.io/main.html">Vlog&Video</option>
+                            <option value="https://gango-studio.github.io/main.html#guitar">古典吉他</option>
+                            <option value="https://gango-studio.github.io/main.html#samuel">Samuel</option>
+                            <option value="https://gango-studio.github.io/main.html#trip">游记</option>
+                        </select>
+                        <div class="dropdown-arrow"></div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://gango-studio.github.io/introduce/blog.html">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
+                </li>
+            `;
+            navMenu.innerHTML = fullMenu;
+        }
+    }
+    
+    window.addEventListener('resize', checkScreenSize);
+    checkScreenSize();
 });
 </script>
 </body>
