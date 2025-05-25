@@ -529,7 +529,7 @@
     </footer>
     
     <script>
-    // 游戏主对象
+   // 游戏主对象
 const game = {
     trainAngle: 0,
     speed: 0,
@@ -592,7 +592,7 @@ const game = {
         
         // 点击计分板直接触发通关弹窗
         document.getElementById('scoreDisplay').addEventListener('click', () => {
-            this.showCongratsMessage();
+            this.showCongratsMessage(true);
         });
         
         // 关闭弹窗按钮
@@ -633,7 +633,7 @@ const game = {
                      `完成圈数: ${laps}\n` +
                      `总停靠次数: ${stops}`;
         } else {
-            message = `おめでとうございます!\n高精度な停車を達成しました!\n\n` +
+            message = `恭喜您!\n已达成高精度停车标准!\n\n` +
                      `当前得分: ${score}\n` +
                      `停站准确率: ${accuracy}\n` +
                      `完成圈数: ${laps}\n` +
@@ -787,7 +787,8 @@ const game = {
             this.totalStops++;
             
             if (this.speed * this.kmhConversionFactor < 3.6) {
-                const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
+                // 修改：理想停车线改为20米，计算准确率
+                const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 20) * 5)); // 每偏离1米扣5%
                 this.successfulStops++;
                 this.score += 100 + stopAccuracy;
                 
@@ -796,8 +797,8 @@ const game = {
                 const accuracy = this.totalStops > 0 ? 
                     Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
                 
-                // 检查是否触发自动弹窗
-                if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
+                // 修改：触发祝贺提示改为50%以上
+                if (accuracy >= 50 && this.totalStops >= 2 && !this.hasShownCongrats) {
                     this.showCongratsMessage(false);
                 }
                 
