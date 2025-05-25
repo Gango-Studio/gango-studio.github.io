@@ -482,7 +482,7 @@
             </div>
         </div>
         
-        <!-- 控制区 - 移除了停车按钮 -->
+        <!-- 控制区-->
         <div id="controls">
             <div id="speedNotches">
                 <div class="speed-notch" data-level="1">1</div>
@@ -507,7 +507,7 @@
             <h2>おめでとうございます!</h2>
             <p id="congrats-message"></p>
             <img id="success-image" src="https://gango-studio.github.io/games/pic/metro.JPG" alt="祝贺图片" onerror="this.onerror=null; this.style.display='none'">
-            <button id="close-modal">閉じる</button>
+            <button id="close-modal">关闭</button>
         </div>
     </div>
     
@@ -530,304 +530,330 @@
     
     <script>
     // 游戏主对象
-    const game = {
-        trainAngle: 0,
-        speed: 0,
-        maxSpeed: 0.0025, // 调整最大速度使1900米需要约8分钟
-        speedLevel: 0,
-        speedLevels: [0, 0.0005, 0.0010, 0.0015, 0.0020, 0.0025], // 调整速度档位
-        acceleration: 0.0001,
-        deceleration: 0.00015,
-        brakingDeceleration: 0.0002,
-        currentStationIndex: 0,
-        approachingStation: null,
-        isInStation: false,
-        laps: 0,
-        score: 0,
-        totalStops: 0,
-        successfulStops: 0,
-        stations: [
-            { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
-            { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI }
-        ],
-        gameLoopId: null,
-        kmhConversionFactor: 72000, // 调整转换因子
-        meterConversionFactor: 1,
-        trackLength: 3800,
-        accelerating: false,
-        braking: false,
-        accelerationInterval: null,
-        brakeInterval: null,
-        hasShownCongrats: false,
+const game = {
+    trainAngle: 0,
+    speed: 0,
+    maxSpeed: 0.0025,
+    speedLevel: 0,
+    speedLevels: [0, 0.0005, 0.0010, 0.0015, 0.0020, 0.0025],
+    acceleration: 0.0001,
+    deceleration: 0.00015,
+    brakingDeceleration: 0.0002,
+    currentStationIndex: 0,
+    approachingStation: null,
+    isInStation: false,
+    laps: 0,
+    score: 0,
+    totalStops: 0,
+    successfulStops: 0,
+    stations: [
+        { name: "Pigsty", code: ["PSY", "SY00"], angle: 0 },
+        { name: "新桥", code: ["SMB", "SY01"], angle: Math.PI }
+    ],
+    gameLoopId: null,
+    kmhConversionFactor: 72000,
+    meterConversionFactor: 1,
+    trackLength: 3800,
+    accelerating: false,
+    braking: false,
+    accelerationInterval: null,
+    brakeInterval: null,
+    hasShownCongrats: false,
+    
+    init() {
+        const accelerateBtn = document.getElementById('accelerate');
+        const brakeBtn = document.getElementById('brake');
         
-        init() {
-            const accelerateBtn = document.getElementById('accelerate');
-            const brakeBtn = document.getElementById('brake');
-            
-            // 触摸事件
-            accelerateBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.increaseSpeedLevel();
-            }, { passive: false });
-            
-            brakeBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.decreaseSpeedLevel();
-            }, { passive: false });
-            
-            // 鼠标事件
-            accelerateBtn.addEventListener('mousedown', () => {
-                this.increaseSpeedLevel();
-            });
-            
-            brakeBtn.addEventListener('mousedown', () => {
-                this.decreaseSpeedLevel();
-            });
-            
-            // 键盘控制
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowUp') this.increaseSpeedLevel();
-                if (e.key === 'ArrowDown') this.decreaseSpeedLevel();
-            });
-            
-            // 点击计分板直接触发通关弹窗
-            document.getElementById('scoreDisplay').addEventListener('click', () => {
-                this.showCongratsMessage(true);
-            });
-            
-            // 关闭弹窗按钮
-            document.getElementById('close-modal').addEventListener('click', () => {
-                document.getElementById('success-modal').style.display = 'none';
-            });
-            
-            // 点击任意位置关闭弹窗
-            document.getElementById('success-modal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('success-modal')) {
-                    document.getElementById('success-modal').style.display = 'none';
-                }
-            });
-            
-            // 初始化显示
-            this.updateStationDisplay();
+        // 触摸事件
+        accelerateBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.increaseSpeedLevel();
+        }, { passive: false });
+        
+        brakeBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.decreaseSpeedLevel();
+        }, { passive: false });
+        
+        // 鼠标事件
+        accelerateBtn.addEventListener('mousedown', () => {
+            this.increaseSpeedLevel();
+        });
+        
+        brakeBtn.addEventListener('mousedown', () => {
+            this.decreaseSpeedLevel();
+        });
+        
+        // 键盘控制
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') this.increaseSpeedLevel();
+            if (e.key === 'ArrowDown') this.decreaseSpeedLevel();
+        });
+        
+        // 点击计分板直接触发通关弹窗
+        document.getElementById('scoreDisplay').addEventListener('click', () => {
+            this.showCongratsMessage();
+        });
+        
+        // 关闭弹窗按钮
+        document.getElementById('close-modal').addEventListener('click', () => {
+            this.hideCongratsMessage();
+        });
+        
+        // 点击任意位置关闭弹窗
+        document.getElementById('success-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('success-modal')) {
+                this.hideCongratsMessage();
+            }
+        });
+        
+        // 初始化显示
+        this.updateStationDisplay();
+        this.updateSpeedNotches();
+        this.gameLoop();
+    },
+
+    hideCongratsMessage() {
+        document.getElementById('success-modal').style.display = 'none';
+    },
+
+    // 整合后的弹窗显示方法
+    showCongratsMessage(isManual = false) {
+        const accuracy = document.getElementById('accuracyValue').textContent;
+        const stops = this.totalStops;
+        const score = this.score;
+        const laps = this.laps;
+        
+        // 构建消息内容
+        let message;
+        if (isManual) {
+            message = `手动查看当前状态\n\n` +
+                     `当前得分: ${score}\n` +
+                     `停站准确率: ${accuracy}\n` +
+                     `完成圈数: ${laps}\n` +
+                     `总停靠次数: ${stops}`;
+        } else {
+            message = `おめでとうございます!\n高精度な停車を達成しました!\n\n` +
+                     `当前得分: ${score}\n` +
+                     `停站准确率: ${accuracy}\n` +
+                     `完成圈数: ${laps}\n` +
+                     `总停靠次数: ${stops}`;
+        }
+        
+        // 设置消息内容
+        document.getElementById('congrats-message').textContent = message;
+        
+        // 确保图片显示
+        const successImage = document.getElementById('success-image');
+        successImage.style.display = 'block';
+        successImage.src = "https://gango-studio.github.io/games/pic/metro.JPG";
+        
+        successImage.onerror = function() {
+            this.style.display = 'none';
+        };
+        
+        // 显示弹窗
+        document.getElementById('success-modal').style.display = 'flex';
+        this.hasShownCongrats = true;
+    },
+
+    increaseSpeedLevel() {
+        if (this.speedLevel < this.speedLevels.length - 1) {
+            this.speedLevel++;
             this.updateSpeedNotches();
-            this.gameLoop();
-        },
-    
-        increaseSpeedLevel() {
-            if (this.speedLevel < this.speedLevels.length - 1) {
-                this.speedLevel++;
-                this.updateSpeedNotches();
-                this.adjustSpeedToLevel();
-            }
-        },
-    
-        decreaseSpeedLevel() {
-            if (this.speedLevel > 0) {
-                this.speedLevel--;
-                this.updateSpeedNotches();
-                this.adjustSpeedToLevel();
-            }
-        },
-    
-        updateSpeedNotches() {
-            const notches = document.querySelectorAll('.speed-notch');
-            notches.forEach((notch, index) => {
-                notch.classList.toggle('active', index < this.speedLevel);
-            });
-        },
-    
-        adjustSpeedToLevel() {
-            const targetSpeed = this.speedLevels[this.speedLevel];
-            
-            if (this.speed < targetSpeed) {
-                this.accelerating = true;
-                this.braking = false;
-                
-                if (this.accelerationInterval) {
-                    clearInterval(this.accelerationInterval);
-                }
-                
-                this.accelerationInterval = setInterval(() => {
-                    this.speed = Math.min(this.speed + this.acceleration, targetSpeed);
-                    
-                    if (this.speed >= targetSpeed) {
-                        clearInterval(this.accelerationInterval);
-                        this.accelerating = false;
-                    }
-                }, 16);
-            } else if (this.speed > targetSpeed) {
-                this.braking = true;
-                this.accelerating = false;
-                
-                if (this.brakeInterval) {
-                    clearInterval(this.brakeInterval);
-                }
-                
-                this.brakeInterval = setInterval(() => {
-                    this.speed = Math.max(this.speed - this.deceleration, targetSpeed);
-                    
-                    if (this.speed <= targetSpeed) {
-                        clearInterval(this.brakeInterval);
-                        this.braking = false;
-                    }
-                }, 16);
-            }
-        },
-    
-        showCongratsMessage(isManual = false) {
-            const accuracy = document.getElementById('accuracyValue').textContent;
-            const stops = this.totalStops;
-            
-            let message;
-            if (isManual) {
-                message = "手动触发: 通关祝贺!\n\n当前停站准确率: " + accuracy + "\n停靠次数: " + stops;
-            } else {
-                message = "おめでとうございます!\n高精度な停車を達成しました!\n\n停站准确率: " + accuracy + "\n停靠次数: " + stops;
-            }
-            
-            document.getElementById('congrats-message').textContent = message;
-            document.getElementById('success-modal').style.display = 'flex';
-            this.hasShownCongrats = true;
-        },
-    
-        updateStationDisplay() {
-            const currentStation = this.stations[this.currentStationIndex];
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            
-            document.querySelector('.station-name').textContent = currentStation.name;
-            document.querySelector('.station-code-line1').textContent = currentStation.code[0];
-            document.querySelector('.station-code-line2').textContent = currentStation.code[1];
-            document.querySelector('.next-station-name').textContent = nextStation.name;
-        },
-    
-        gameLoop() {
-            this.update();
-            this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
-        },
-    
-        update() {
-            // 调整速度计算使1900米需要约8分钟
-            const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
-            this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
-            
-            if (this.trainAngle >= Math.PI * 2) {
-                this.trainAngle -= Math.PI * 2;
-                this.laps++;
-                document.getElementById('lapsValue').textContent = this.laps;
-            }
-            
-            this.checkStations();
-            this.updateUI();
-        },
-    
-        updateUI() {
-            const speedKmh = Math.round(this.speed * this.kmhConversionFactor);
-            document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
-            
-            // 修复里程显示BUG
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            let angleDiff = nextStation.angle - this.trainAngle;
-            
-            // 处理角度差为负值的情况
-            if (angleDiff < 0) angleDiff += Math.PI * 2;
-            
-            // 确保不会显示3800米的BUG
-            const distance = Math.min(Math.floor(angleDiff * this.trackLength / (2 * Math.PI)), this.trackLength/2);
-            document.querySelector('.distance-value').textContent = `${distance} m`;
-        },
-    
-        checkStations() {
-            const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
-            const nextStation = this.stations[nextStationIndex];
-            
-            let angleDiff = nextStation.angle - this.trainAngle;
-            if (angleDiff < 0) angleDiff += Math.PI * 2;
-            
-            const distance = angleDiff * this.trackLength / (2 * Math.PI);
-            
-            if (distance < 150 && !this.isInStation) {
-                this.approachingStation = nextStationIndex;
-                document.querySelector('.next-station-name').textContent = nextStation.name;
-                
-                const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
-                
-                if (requiredDeceleration > this.brakingDeceleration * 1.5) {
-                    this.showMessage("减速不足! 请降低速度!");
-                }
-            }
-            
-            if (distance < 20) {
-                this.isInStation = true;
-                this.totalStops++;
-                
-                if (this.speed * this.kmhConversionFactor < 3.6) {
-                    const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
-                    this.successfulStops++;
-                    this.score += 100 + stopAccuracy;
-                    
-                    this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
-                    
-                    const accuracy = this.totalStops > 0 ? 
-                        Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-                    if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
-                        this.showCongratsMessage(false);
-                    }
-                    
-                    this.updateScore();
-                    this.currentStationIndex = nextStationIndex;
-                    this.updateStationDisplay();
-                    
-                    setTimeout(() => {
-                        this.isInStation = false;
-                    }, 3000);
-                } else {
-                    this.showMessage(`通过: ${nextStation.name}`);
-                    this.updateScore();
-                    
-                    setTimeout(() => {
-                        this.isInStation = false;
-                        this.currentStationIndex = nextStationIndex;
-                        this.updateStationDisplay();
-                    }, 1000);
-                }
-                
-                this.approachingStation = null;
-            }
-        },
-    
-        updateScore() {
-            document.getElementById('scoreValue').textContent = this.score;
-            const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
-            document.getElementById('accuracyValue').textContent = `${accuracy}%`;
-        },
-    
-        showMessage(msg, duration = 2000) {
-            const messageElement = document.getElementById('message');
-            messageElement.textContent = msg;
-            messageElement.style.display = 'block';
-            
-            setTimeout(() => {
-                messageElement.style.display = 'none';
-            }, duration);
-        },
+            this.adjustSpeedToLevel();
+        }
+    },
+
+    decreaseSpeedLevel() {
+        if (this.speedLevel > 0) {
+            this.speedLevel--;
+            this.updateSpeedNotches();
+            this.adjustSpeedToLevel();
+        }
+    },
+
+    updateSpeedNotches() {
+        const notches = document.querySelectorAll('.speed-notch');
+        notches.forEach((notch, index) => {
+            notch.classList.toggle('active', index < this.speedLevel);
+        });
+    },
+
+    adjustSpeedToLevel() {
+        const targetSpeed = this.speedLevels[this.speedLevel];
         
-        stopGameLoop() {
-            if (this.gameLoopId) {
-                cancelAnimationFrame(this.gameLoopId);
-                this.gameLoopId = null;
+        if (this.speed < targetSpeed) {
+            this.accelerating = true;
+            this.braking = false;
+            
+            if (this.accelerationInterval) {
+                clearInterval(this.accelerationInterval);
+            }
+            
+            this.accelerationInterval = setInterval(() => {
+                this.speed = Math.min(this.speed + this.acceleration, targetSpeed);
+                
+                if (this.speed >= targetSpeed) {
+                    clearInterval(this.accelerationInterval);
+                    this.accelerating = false;
+                }
+            }, 16);
+        } else if (this.speed > targetSpeed) {
+            this.braking = true;
+            this.accelerating = false;
+            
+            if (this.brakeInterval) {
+                clearInterval(this.brakeInterval);
+            }
+            
+            this.brakeInterval = setInterval(() => {
+                this.speed = Math.max(this.speed - this.deceleration, targetSpeed);
+                
+                if (this.speed <= targetSpeed) {
+                    clearInterval(this.brakeInterval);
+                    this.braking = false;
+                }
+            }, 16);
+        }
+    },
+
+    updateStationDisplay() {
+        const currentStation = this.stations[this.currentStationIndex];
+        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+        const nextStation = this.stations[nextStationIndex];
+        
+        document.querySelector('.station-name').textContent = currentStation.name;
+        document.querySelector('.station-code-line1').textContent = currentStation.code[0];
+        document.querySelector('.station-code-line2').textContent = currentStation.code[1];
+        document.querySelector('.next-station-name').textContent = nextStation.name;
+    },
+
+    gameLoop() {
+        this.update();
+        this.gameLoopId = requestAnimationFrame(this.gameLoop.bind(this));
+    },
+
+    update() {
+        const distancePerFrame = this.speed * this.trackLength / (2 * Math.PI);
+        this.trainAngle += (distancePerFrame / this.trackLength) * 2 * Math.PI;
+        
+        if (this.trainAngle >= Math.PI * 2) {
+            this.trainAngle -= Math.PI * 2;
+            this.laps++;
+            document.getElementById('lapsValue').textContent = this.laps;
+        }
+        
+        this.checkStations();
+        this.updateUI();
+    },
+
+    updateUI() {
+        const speedKmh = Math.round(this.speed * this.kmhConversionFactor);
+        document.querySelector('.speed-value').textContent = `${speedKmh} km/h`;
+        
+        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+        const nextStation = this.stations[nextStationIndex];
+        let angleDiff = nextStation.angle - this.trainAngle;
+        
+        if (angleDiff < 0) angleDiff += Math.PI * 2;
+        
+        const distance = Math.min(Math.floor(angleDiff * this.trackLength / (2 * Math.PI)), this.trackLength/2);
+        document.querySelector('.distance-value').textContent = `${distance} m`;
+    },
+
+    checkStations() {
+        const nextStationIndex = (this.currentStationIndex + 1) % this.stations.length;
+        const nextStation = this.stations[nextStationIndex];
+        
+        let angleDiff = nextStation.angle - this.trainAngle;
+        if (angleDiff < 0) angleDiff += Math.PI * 2;
+        
+        const distance = angleDiff * this.trackLength / (2 * Math.PI);
+        
+        if (distance < 150 && !this.isInStation) {
+            this.approachingStation = nextStationIndex;
+            document.querySelector('.next-station-name').textContent = nextStation.name;
+            
+            const requiredDeceleration = (this.speed * this.speed * this.trackLength * this.trackLength) / (2 * angleDiff * (2 * Math.PI) * (2 * Math.PI));
+            
+            if (requiredDeceleration > this.brakingDeceleration * 1.5) {
+                this.showMessage("减速不足! 请降低速度!");
             }
         }
-    };
+        
+        if (distance < 20) {
+            this.isInStation = true;
+            this.totalStops++;
+            
+            if (this.speed * this.kmhConversionFactor < 3.6) {
+                const stopAccuracy = Math.max(0, 100 - Math.floor(Math.abs(distance - 10)));
+                this.successfulStops++;
+                this.score += 100 + stopAccuracy;
+                
+                this.showMessage(`${nextStation.name} 停站成功! 精度: ${stopAccuracy}%`);
+                
+                const accuracy = this.totalStops > 0 ? 
+                    Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+                
+                // 检查是否触发自动弹窗
+                if (accuracy >= 70 && this.totalStops >= 2 && !this.hasShownCongrats) {
+                    this.showCongratsMessage(false);
+                }
+                
+                this.updateScore();
+                this.currentStationIndex = nextStationIndex;
+                this.updateStationDisplay();
+                
+                setTimeout(() => {
+                    this.isInStation = false;
+                }, 3000);
+            } else {
+                this.showMessage(`通过: ${nextStation.name}`);
+                this.updateScore();
+                
+                setTimeout(() => {
+                    this.isInStation = false;
+                    this.currentStationIndex = nextStationIndex;
+                    this.updateStationDisplay();
+                }, 1000);
+            }
+            
+            this.approachingStation = null;
+        }
+    },
 
-    // 启动游戏
-    window.onload = () => game.init();
+    updateScore() {
+        document.getElementById('scoreValue').textContent = this.score;
+        const accuracy = this.totalStops > 0 ? Math.floor((this.successfulStops / this.totalStops) * 100) : 0;
+        document.getElementById('accuracyValue').textContent = `${accuracy}%`;
+    },
 
-    // 确保游戏循环在页面卸载时停止
-    window.addEventListener('beforeunload', () => {
-        game.stopGameLoop();
-    });
+    showMessage(msg, duration = 2000) {
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = msg;
+        messageElement.style.display = 'block';
+        
+        setTimeout(() => {
+            messageElement.style.display = 'none';
+        }, duration);
+    },
+    
+    stopGameLoop() {
+        if (this.gameLoopId) {
+            cancelAnimationFrame(this.gameLoopId);
+            this.gameLoopId = null;
+        }
+    }
+};
+
+// 启动游戏
+window.onload = () => game.init();
+
+// 确保游戏循环在页面卸载时停止
+window.addEventListener('beforeunload', () => {
+    game.stopGameLoop();
+});
     </script>
 </body>
 </html>
