@@ -51,13 +51,23 @@
       overflow: hidden;
   }
 
+  /* 当前页面标题 */
+  .current-page-title {
+      display: block;
+      padding: 15px;
+      text-align: center;
+      background: #007aff;
+      color: white;
+      position: relative;
+      cursor: pointer;
+  }
+
   /* 导航菜单 */
   .nav-menu {
       display: flex;
       padding: 0;
       margin: 0;
       list-style: none;
-      width: 100%;
       flex-direction: column;
   }
 
@@ -68,13 +78,14 @@
 
   /* 导航链接 */
   .nav-link {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 15px 20px;
       color: #1d1d1f;
       text-decoration: none;
       font-size: 0.95em;
       transition: all 0.3s;
-      position: relative;
   }
 
   /* 选中状态 */
@@ -83,24 +94,11 @@
       color: white !important;
   }
 
-  /* 当前页面标题 */
-  .current-page-title {
-      display: block;
-      padding: 15px;
-      text-align: center;
-      background: #007aff;
-      color: white;
-      position: relative;
-  }
-
-  /* 折叠按钮 */
+  /* 折叠图标 */
   .collapse-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
       font-size: 1.2em;
-      cursor: pointer;
+      transition: transform 0.3s;
+      margin-left: 10px;
   }
 
   /* 二级导航菜单 */
@@ -250,7 +248,7 @@
           display: none;
       }
       
-      .collapse-icon {
+      .nav-link .collapse-icon {
           display: none;
       }
       
@@ -284,10 +282,6 @@
           display: block;
       }
       
-      .collapse-icon {
-          display: block;
-      }
-      
       /* 二级导航总是折叠 */
       .sub-nav-menu {
           display: none;
@@ -295,6 +289,11 @@
       
       .sub-nav-menu.expanded {
           display: block;
+      }
+      
+      /* 旋转箭头图标 */
+      .nav-link.active .collapse-icon {
+          transform: rotate(90deg);
       }
   }
 </style>
@@ -308,12 +307,17 @@
 
 <!-- 导航栏 -->
 <div class="nav-wrapper">
-    <div class="current-page-title" id="currentPageTitle">Vlog&Video</div>
+    <div class="current-page-title" id="currentPageTitle" onclick="toggleMenu()">
+        Vlog&Video
+        <span class="collapse-icon">›</span>
+    </div>
     <ul class="nav-menu" id="navMenu">
         <li class="nav-item active has-submenu">
-            <a href="https://gango-studio.github.io/main.html" class="nav-link">Vlog&Video</a>
-            <span class="collapse-icon" onclick="toggleSubMenu(this)">+</span>
-            <ul class="sub-nav-menu">
+            <a href="https://gango-studio.github.io/main.html" class="nav-link" onclick="return handleNavClick(this)">
+                Vlog&Video
+                <span class="collapse-icon">›</span>
+            </a>
+            <ul class="sub-nav-menu" id="subNavMenu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
                 </li>
@@ -327,11 +331,9 @@
         </li>
         <li class="nav-item">
             <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
-            <span class="collapse-icon" onclick="toggleMenu()">+</span>
         </li>
         <li class="nav-item">
             <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
-            <span class="collapse-icon" onclick="toggleMenu()">+</span>
         </li>
     </ul>
 </div>
@@ -411,7 +413,6 @@
     </div>
 </div>
 
-<!-- 页脚 -->
 <footer>
     <h3>Gango Studio</h3>
     <div class="footer-column">
@@ -433,33 +434,40 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.getElementById('navMenu');
     const currentPageTitle = document.getElementById('currentPageTitle');
-    const collapseIcons = document.querySelectorAll('.collapse-icon');
+    const subNavMenu = document.getElementById('subNavMenu');
     
     // 设置当前页面标题
     function setCurrentPageTitle() {
         const activeItem = document.querySelector('.nav-item.active');
         if (activeItem) {
             const link = activeItem.querySelector('.nav-link');
-            currentPageTitle.textContent = link.textContent;
+            const titleText = link.textContent.replace('›', '').trim();
+            currentPageTitle.innerHTML = titleText + ' <span class="collapse-icon">›</span>';
         }
     }
     
     // 切换主菜单
     function toggleMenu() {
         navMenu.classList.toggle('expanded');
-        // 更新所有图标状态
-        collapseIcons.forEach(icon => {
-            if (!icon.closest('.has-submenu')) {
-                icon.textContent = navMenu.classList.contains('expanded') ? '-' : '+';
-            }
-        });
+        const icon = currentPageTitle.querySelector('.collapse-icon');
+        icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
     }
     
     // 切换子菜单
-    function toggleSubMenu(icon) {
-        const subMenu = icon.parentElement.querySelector('.sub-nav-menu');
+    function toggleSubMenu(link) {
+        const subMenu = link.parentElement.querySelector('.sub-nav-menu');
         subMenu.classList.toggle('expanded');
-        icon.textContent = subMenu.classList.contains('expanded') ? '-' : '+';
+        const icon = link.querySelector('.collapse-icon');
+        icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+    }
+    
+    // 处理导航点击
+    function handleNavClick(link) {
+        if (link.parentElement.classList.contains('has-submenu')) {
+            toggleSubMenu(link);
+            return false; // 阻止默认行为
+        }
+        return true;
     }
     
     // 设置初始选中状态
@@ -484,9 +492,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const parentMenu = targetItem.closest('.sub-nav-menu');
             if (parentMenu) {
                 parentMenu.classList.add('expanded');
-                const collapseIcon = parentMenu.previousElementSibling;
-                if (collapseIcon && collapseIcon.classList.contains('collapse-icon')) {
-                    collapseIcon.textContent = '-';
+                const navLink = parentMenu.previousElementSibling;
+                if (navLink && navLink.classList.contains('nav-link')) {
+                    const icon = navLink.querySelector('.collapse-icon');
+                    if (icon) icon.style.transform = 'rotate(90deg)';
                 }
             }
             targetItem.classList.add('active');
@@ -495,51 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 更新当前页面标题
     setCurrentPageTitle();
-    
-    // 为所有折叠图标添加事件
-    collapseIcons.forEach(icon => {
-        if (icon.closest('.has-submenu')) {
-            icon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSubMenu(this);
-            });
-        } else {
-            icon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleMenu();
-            });
-        }
-    });
-    
-    // 响应式调整
-    function checkResponsive() {
-        if (window.innerWidth >= 769) {
-            // 桌面端 - 水平导航
-            navMenu.style.flexDirection = 'row';
-            navMenu.style.display = 'flex';
-            currentPageTitle.style.display = 'none';
-            
-            // 隐藏所有折叠图标
-            collapseIcons.forEach(icon => icon.style.display = 'none');
-        } else {
-            // 移动端 - 竖排导航
-            navMenu.style.flexDirection = 'column';
-            currentPageTitle.style.display = 'block';
-            
-            // 显示所有折叠图标
-            collapseIcons.forEach(icon => icon.style.display = 'block');
-            
-            // 默认折叠
-            if (!navMenu.classList.contains('expanded')) {
-                navMenu.style.display = 'none';
-            } else {
-                navMenu.style.display = 'flex';
-            }
-        }
-    }
-    
-    window.addEventListener('resize', checkResponsive);
-    checkResponsive();
     
     // 子菜单项点击后平滑滚动
     document.querySelectorAll('.sub-nav-link').forEach(link => {
@@ -553,27 +517,33 @@ document.addEventListener('DOMContentLoaded', function() {
             // 更新活动状态
             subNavItems.forEach(item => item.classList.remove('active'));
             this.parentElement.classList.add('active');
+            
+            // 在移动端点击后折叠菜单
+            if (window.innerWidth <= 768) {
+                navMenu.classList.remove('expanded');
+                currentPageTitle.querySelector('.collapse-icon').style.transform = '';
+            }
         });
     });
 });
 
 // 暴露函数到全局作用域
-window.toggleSubMenu = function(icon) {
-    const subMenu = icon.parentElement.querySelector('.sub-nav-menu');
-    subMenu.classList.toggle('expanded');
-    icon.textContent = subMenu.classList.contains('expanded') ? '-' : '+';
-};
-
 window.toggleMenu = function() {
     const navMenu = document.getElementById('navMenu');
     navMenu.classList.toggle('expanded');
-    const collapseIcons = document.querySelectorAll('.collapse-icon');
-    
-    collapseIcons.forEach(icon => {
-        if (!icon.closest('.has-submenu')) {
-            icon.textContent = navMenu.classList.contains('expanded') ? '-' : '+';
-        }
-    });
+    const icon = document.querySelector('.current-page-title .collapse-icon');
+    icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+};
+
+window.handleNavClick = function(link) {
+    if (link.parentElement.classList.contains('has-submenu')) {
+        const subMenu = link.parentElement.querySelector('.sub-nav-menu');
+        subMenu.classList.toggle('expanded');
+        const icon = link.querySelector('.collapse-icon');
+        icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+        return false;
+    }
+    return true;
 };
 </script>
 </body>
