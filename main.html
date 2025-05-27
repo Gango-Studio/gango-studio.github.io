@@ -3,10 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312;width= device-width,user-scalable = 0" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Gango Studios</title>
 <style>
-  /* 全局样式 */
   body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -16,32 +14,25 @@
       flex-direction: column;
       min-height: 100vh;
   }
-
   a {
       text-decoration: none;
       color: #007aff;
       transition: color 0.3s ease;
   }
-
   a:hover {
       color: #005bb5;
   }
-
-  /* 页首样式 */
   header {
       text-align: center;
       padding: 20px 0 0;
       background-color: #ffffff;
   }
-
   header h1 {
       font-size: 2.5em;
       margin: 0;
       color: #1d1d1f;
       font-weight: 500;
   }
-
-  /* 导航栏容器 */
   .nav-wrapper {
       width: 100%;
       background: white;
@@ -50,35 +41,28 @@
       border-radius: 10px;
       overflow: hidden;
   }
-
-  /* 当前页面标题 (仅移动端竖屏显示) */
   .current-page-title {
       display: none;
       padding: 15px;
       text-align: center;
       background: #007aff;
       color: white;
-      position: relative;
       cursor: pointer;
   }
-
-  /* 导航菜单 */
   .nav-menu {
       display: flex;
       padding: 0;
       margin: 0;
       list-style: none;
   }
-
-  /* 导航项 */
   .nav-item {
       position: relative;
       flex: 1;
   }
-
-  /* 导航链接 */
   .nav-link {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 15px 20px;
       color: #1d1d1f;
       text-decoration: none;
@@ -86,22 +70,16 @@
       transition: all 0.3s;
       text-align: center;
   }
-
-  /* 选中状态 */
   .nav-item.active > .nav-link {
       background: #007aff;
       color: white !important;
   }
-
-  /* 折叠图标 (仅移动端竖屏显示) */
   .collapse-icon {
       display: none;
       font-size: 1.2em;
       transition: transform 0.3s;
       margin-left: 10px;
   }
-
-  /* 二级导航菜单 */
   .sub-nav-menu {
       display: none;
       padding: 0;
@@ -109,13 +87,9 @@
       list-style: none;
       background-color: #f8f8f8;
   }
-
-  /* 二级导航项 */
   .sub-nav-item {
       padding-left: 30px;
   }
-
-  /* 二级导航链接 */
   .sub-nav-link {
       display: block;
       padding: 12px 20px;
@@ -124,34 +98,24 @@
       font-size: 0.9em;
       transition: all 0.3s;
   }
-
-  /* 二级导航选中状态 */
   .sub-nav-item.active .sub-nav-link {
       color: #007aff;
       font-weight: bold;
   }
-
-  /* 内容区 */
   .main-content {
       flex: 1;
       padding-bottom: 20px;
   }
-
-  /* 更多视频链接 */
   .more-link {
       text-align: center;
       margin: 25px 0;
   }
-
-  /* 卡片容器 */
   .card-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 0 20px;
   }
-
-  /* 卡片样式 */
   .card {
       width: 100%;
       max-width: 600px;
@@ -162,26 +126,21 @@
       transition: transform 0.3s, box-shadow 0.3s;
       background: white;
   }
-
   .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
-
   .card-img {
       width: 100%;
       height: auto;
       display: block;
   }
-
   .card-body {
       padding: 15px;
   }
-
   .card-title {
       margin: 0 0 10px 0;
   }
-
   .btn-primary {
       display: inline-block;
       background: #007aff;
@@ -190,8 +149,6 @@
       border-radius: 20px;
       text-decoration: none;
   }
-
-  /* 页脚 */
   footer {
       width: 100%;
       background: white;
@@ -201,7 +158,6 @@
       display: flex;
       flex-wrap: wrap;
   }
-
   footer h3 {
       font-size: 1.8em;
       margin: 0;
@@ -210,44 +166,33 @@
       color: #1d1d1f;
       font-weight: 500;
   }
-
-  footer .footer-column {
+  footer > div {
       width: 50%;
       box-sizing: border-box;
   }
-
   footer h4, footer h5 {
       margin: 0;
       padding: 5px 0;
       padding-left: 10%;
       color: #1d1d1f;
   }
-
   footer a {
       color: #1d1d1f;
       text-decoration: none;
   }
-
   footer a:hover {
       color: #007aff;
   }
-
-  /* 响应式设计 */
   @media (min-width: 769px), (orientation: landscape) {
-      /* 桌面端和横屏 - 水平导航 */
       .nav-menu {
           flex-direction: row;
       }
-      
-      .nav-item {
-          text-align: center;
-      }
-      
       .current-page-title {
           display: none;
       }
-      
-      /* 二级导航 - 悬停展开 */
+      .collapse-icon {
+          display: none !important;
+      }
       .nav-item.has-submenu:hover .sub-nav-menu {
           display: block;
           position: absolute;
@@ -255,42 +200,33 @@
           z-index: 100;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       }
-      
       .sub-nav-item {
           padding-left: 0;
           text-align: center;
       }
   }
-
   @media (max-width: 768px) and (orientation: portrait) {
-      /* 竖屏手机 - 垂直导航 */
       .nav-menu {
           flex-direction: column;
           display: none;
       }
-      
       .nav-menu.expanded {
           display: flex;
       }
-      
       .current-page-title {
-          display: block;
+          display: flex;
+          justify-content: center;
+          align-items: center;
       }
-      
-      .collapse-icon {
+      .nav-item.has-submenu .nav-link .collapse-icon {
           display: inline-block;
       }
-      
-      /* 二级导航总是折叠 */
       .sub-nav-menu {
           display: none;
       }
-      
       .sub-nav-menu.expanded {
           display: block;
       }
-      
-      /* 旋转箭头图标 */
       .nav-link.active .collapse-icon {
           transform: rotate(90deg);
       }
@@ -304,9 +240,8 @@
     </a>
 </header>
 
-<!-- 导航栏 -->
 <div class="nav-wrapper">
-    <div class="current-page-title" id="currentPageTitle" onclick="toggleMenu()">
+    <div class="current-page-title" id="currentPageTitle">
         Vlog&Video
         <span class="collapse-icon">›</span>
     </div>
@@ -314,7 +249,7 @@
         <li class="nav-item active has-submenu">
             <a href="https://gango-studio.github.io/main.html" class="nav-link">
                 Vlog&Video
-                <span class="collapse-icon" onclick="toggleSubMenu(event, this)">›</span>
+                <span class="collapse-icon">›</span>
             </a>
             <ul class="sub-nav-menu" id="subNavMenu">
                 <li class="sub-nav-item" data-section="guitar">
@@ -414,13 +349,13 @@
 
 <footer>
     <h3>Gango Studio</h3>
-    <div class="footer-column">
+    <div>
         <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
         <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
         <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
     </div>
-    <div class="footer-column">
+    <div>
         <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
         <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
@@ -429,13 +364,14 @@
 </footer>
 
 <script>
-// 导航栏功能
 document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.getElementById('navMenu');
     const currentPageTitle = document.getElementById('currentPageTitle');
-    const subNavMenu = document.getElementById('subNavMenu');
     
-    // 设置当前页面标题
+    function shouldShowMobileMenu() {
+        return window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
+    }
+    
     function setCurrentPageTitle() {
         const activeItem = document.querySelector('.nav-item.active');
         if (activeItem) {
@@ -445,42 +381,66 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 切换主菜单 (仅移动端竖屏)
     function toggleMenu() {
-        if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
+        if (shouldShowMobileMenu()) {
             navMenu.classList.toggle('expanded');
             const icon = currentPageTitle.querySelector('.collapse-icon');
-            icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+            if (icon) {
+                icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+            }
         }
     }
     
-    // 切换子菜单
-    function toggleSubMenu(event, icon) {
-        event.stopPropagation();
-        const subMenu = icon.parentElement.nextElementSibling;
-        subMenu.classList.toggle('expanded');
-        icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+    function toggleSubMenu(event) {
+        if (event.target.classList.contains('collapse-icon')) {
+            event.preventDefault();
+            event.stopPropagation();
+            const parentLink = event.target.closest('.nav-link');
+            if (parentLink) {
+                const subMenu = parentLink.nextElementSibling;
+                if (subMenu && subMenu.classList.contains('sub-nav-menu')) {
+                    subMenu.classList.toggle('expanded');
+                    event.target.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+                }
+            }
+        }
     }
     
-    // 设置初始选中状态
+    function handleNavClick(event) {
+        const clickedLink = event.target.closest('.nav-link');
+        if (!clickedLink) return;
+        
+        if (shouldShowMobileMenu()) {
+            const parentItem = clickedLink.closest('.nav-item');
+            if (parentItem.classList.contains('has-submenu')) {
+                event.preventDefault();
+                const subMenu = clickedLink.nextElementSibling;
+                if (subMenu && subMenu.classList.contains('sub-nav-menu')) {
+                    subMenu.classList.toggle('expanded');
+                    const icon = clickedLink.querySelector('.collapse-icon');
+                    if (icon) {
+                        icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+                    }
+                }
+            }
+        }
+    }
+    
     const currentUrl = window.location.href;
     const navItems = document.querySelectorAll('.nav-item');
     const subNavItems = document.querySelectorAll('.sub-nav-item');
     
     navItems.forEach(item => {
         const link = item.querySelector('.nav-link');
-        
         if (link && currentUrl.includes(link.href)) {
             item.classList.add('active');
         }
     });
     
-    // 检查hash并激活对应的子菜单项
     const hash = window.location.hash;
     if (hash) {
         const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
         if (targetItem) {
-            // 确保父菜单是展开的
             const parentMenu = targetItem.closest('.sub-nav-menu');
             if (parentMenu) {
                 parentMenu.classList.add('expanded');
@@ -494,10 +454,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 更新当前页面标题
     setCurrentPageTitle();
     
-    // 子菜单项点击后平滑滚动
     document.querySelectorAll('.sub-nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -506,65 +464,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 behavior: 'smooth'
             });
             
-            // 更新活动状态
             subNavItems.forEach(item => item.classList.remove('active'));
             this.parentElement.classList.add('active');
             
-            // 在移动端竖屏点击后折叠菜单
-            if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
+            if (shouldShowMobileMenu()) {
                 navMenu.classList.remove('expanded');
-                currentPageTitle.querySelector('.collapse-icon').style.transform = '';
+                const icon = currentPageTitle.querySelector('.collapse-icon');
+                if (icon) {
+                    icon.style.transform = '';
+                }
             }
         });
     });
     
-    // 初始检查响应式布局
-    checkResponsiveLayout();
+    currentPageTitle.addEventListener('click', toggleMenu);
+    navMenu.addEventListener('click', handleNavClick);
+    navMenu.addEventListener('click', toggleSubMenu);
     
-    // 窗口大小变化时检查
-    window.addEventListener('resize', checkResponsiveLayout);
-});
-
-// 检查响应式布局
-function checkResponsiveLayout() {
-    const navMenu = document.getElementById('navMenu');
-    const currentPageTitle = document.getElementById('currentPageTitle');
-    
-    if (window.innerWidth >= 769 || window.matchMedia("(orientation: landscape)").matches) {
-        // 桌面端或横屏 - 水平导航
-        navMenu.style.flexDirection = 'row';
-        navMenu.style.display = 'flex';
-        currentPageTitle.style.display = 'none';
-    } else if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
-        // 竖屏手机 - 垂直导航
-        navMenu.style.flexDirection = 'column';
-        currentPageTitle.style.display = 'block';
-        
-        // 默认折叠
-        if (!navMenu.classList.contains('expanded')) {
-            navMenu.style.display = 'none';
-        } else {
+    function checkResponsiveLayout() {
+        if (window.innerWidth >= 769 || window.matchMedia("(orientation: landscape)").matches) {
+            navMenu.style.flexDirection = 'row';
             navMenu.style.display = 'flex';
+            currentPageTitle.style.display = 'none';
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.classList.remove('expanded');
+            });
+            document.querySelectorAll('.collapse-icon').forEach(icon => {
+                icon.style.transform = '';
+            });
+        } else if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
+            navMenu.style.flexDirection = 'column';
+            currentPageTitle.style.display = 'flex';
+            if (!navMenu.classList.contains('expanded')) {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'flex';
+            }
         }
     }
-}
-
-// 暴露函数到全局作用域
-window.toggleMenu = function() {
-    if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
-        const navMenu = document.getElementById('navMenu');
-        navMenu.classList.toggle('expanded');
-        const icon = document.querySelector('.current-page-title .collapse-icon');
-        icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
-    }
-};
-
-window.toggleSubMenu = function(event, icon) {
-    event.stopPropagation();
-    const subMenu = icon.parentElement.nextElementSibling;
-    subMenu.classList.toggle('expanded');
-    icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
-};
+    
+    checkResponsiveLayout();
+    window.addEventListener('resize', checkResponsiveLayout);
+});
 </script>
 </body>
 </html>
