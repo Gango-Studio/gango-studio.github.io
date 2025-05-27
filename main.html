@@ -187,6 +187,9 @@
       .nav-menu {
           flex-direction: row;
       }
+      .nav-item {
+          text-align: center;
+      }
       .current-page-title {
           display: none;
       }
@@ -229,6 +232,12 @@
       }
       .nav-link.active .collapse-icon {
           transform: rotate(90deg);
+      }
+      footer > div {
+          width: 100%;
+      }
+      footer h4, footer h5 {
+          padding-left: 5%;
       }
   }
 </style>
@@ -395,6 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.classList.contains('collapse-icon')) {
             event.preventDefault();
             event.stopPropagation();
+            
             const parentLink = event.target.closest('.nav-link');
             if (parentLink) {
                 const subMenu = parentLink.nextElementSibling;
@@ -459,8 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.sub-nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            document.querySelector(targetId).scrollIntoView({
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
                 behavior: 'smooth'
             });
             
@@ -486,15 +495,18 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.style.flexDirection = 'row';
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
+            
             document.querySelectorAll('.sub-nav-menu').forEach(menu => {
                 menu.classList.remove('expanded');
             });
+            
             document.querySelectorAll('.collapse-icon').forEach(icon => {
                 icon.style.transform = '';
             });
         } else if (window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches) {
             navMenu.style.flexDirection = 'column';
             currentPageTitle.style.display = 'flex';
+            
             if (!navMenu.classList.contains('expanded')) {
                 navMenu.style.display = 'none';
             } else {
@@ -503,8 +515,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    checkResponsiveLayout();
     window.addEventListener('resize', checkResponsiveLayout);
+    checkResponsiveLayout();
 });
 </script>
 </body>
