@@ -17,7 +17,6 @@
   a {
       text-decoration: none;
       color: #007aff;
-      transition: color 0.3s ease;
   }
   a:hover {
       color: #005bb5;
@@ -69,7 +68,6 @@
       color: #1d1d1f;
       text-decoration: none;
       font-size: 0.95em;
-      transition: all 0.3s;
       cursor: pointer;
   }
   .nav-item.active > .nav-link {
@@ -97,7 +95,6 @@
       color: #1d1d1f;
       text-decoration: none;
       font-size: 0.9em;
-      transition: all 0.3s;
   }
   .sub-nav-item.active .sub-nav-link {
       color: #007aff;
@@ -124,12 +121,7 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
       background: white;
-  }
-  .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
   .card-img {
       width: 100%;
@@ -177,22 +169,12 @@
       padding-left: 10%;
       color: #1d1d1f;
   }
-  footer a {
-      color: #1d1d1f;
-      text-decoration: none;
-  }
-  footer a:hover {
-      color: #007aff;
-  }
   @media (min-width: 769px), (orientation: landscape) {
       .nav-menu {
           flex-direction: row;
       }
       .current-page-title {
           display: none;
-      }
-      .nav-item {
-          text-align: center;
       }
       .sub-nav-menu {
           position: absolute;
@@ -216,9 +198,6 @@
       .current-page-title {
           display: flex;
       }
-      .sub-nav-item {
-          padding-left: 30px;
-      }
   }
 </style>
 </head>
@@ -236,11 +215,11 @@
     </div>
     <ul class="nav-menu" id="navMenu">
         <li class="nav-item active has-submenu">
-            <a href="https://gango-studio.github.io/main.html" class="nav-link">
+            <a class="nav-link">
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
-            <ul class="sub-nav-menu" id="subNavMenu">
+            <ul class="sub-nav-menu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
                 </li>
@@ -362,16 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
     }
     
-    // 设置当前页面标题
-    function setCurrentPageTitle() {
-        const activeItem = document.querySelector('.nav-item.active');
-        if (activeItem) {
-            const link = activeItem.querySelector('.nav-link');
-            const titleText = link.textContent.replace('›', '').trim();
-            currentPageTitle.innerHTML = titleText + ' <span class="collapse-icon">›</span>';
-        }
-    }
-    
     // 切换主菜单（仅手机竖屏）
     function toggleMainMenu() {
         if (isMobilePortrait()) {
@@ -387,10 +356,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleSubMenu(link) {
         const subMenu = link.nextElementSibling;
         if (subMenu && subMenu.classList.contains('sub-nav-menu')) {
-            subMenu.classList.toggle('expanded');
-            const icon = link.querySelector('.collapse-icon');
-            if (icon) {
-                icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+            const isExpanded = subMenu.classList.contains('expanded');
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.classList.remove('expanded');
+                const prevIcon = menu.previousElementSibling?.querySelector('.collapse-icon');
+                if (prevIcon) prevIcon.style.transform = '';
+            });
+            
+            if (!isExpanded) {
+                subMenu.classList.add('expanded');
+                const icon = link.querySelector('.collapse-icon');
+                if (icon) {
+                    icon.style.transform = 'rotate(90deg)';
+                }
             }
         }
     }
@@ -400,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const target = e.target;
         
         // 处理主菜单标题点击
-        if (target.classList.contains('current-page-title')) {
+        if (target === currentPageTitle || target.closest('.current-page-title')) {
             toggleMainMenu();
             return;
         }
@@ -421,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (subNavLink) {
             e.preventDefault();
             const targetId = subNavLink.getAttribute('href');
-            document.querySelector(targetId).scrollIntoView({
+            document.querySelector(targetId)?.scrollIntoView({
                 behavior: 'smooth'
             });
             
@@ -469,7 +447,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    setCurrentPageTitle();
+    // 初始化事件监听
+    currentPageTitle.addEventListener('click', toggleMainMenu);
     document.addEventListener('click', handleNavClick);
     
     // 初始化响应式布局
