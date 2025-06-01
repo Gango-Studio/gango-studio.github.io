@@ -86,6 +86,9 @@
       list-style: none;
       background-color: #f8f8f8;
   }
+  .sub-nav-menu.expanded {
+      display: block;
+  }
   .sub-nav-item {
       padding-left: 30px;
   }
@@ -353,68 +356,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 切换子菜单（所有设备）
-    function toggleSubMenu(link) {
-        const subMenu = link.nextElementSibling;
-        if (subMenu && subMenu.classList.contains('sub-nav-menu')) {
-            const isExpanded = subMenu.classList.contains('expanded');
-            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+    function toggleSubMenu(navItem) {
+        const subMenu = navItem.querySelector('.sub-nav-menu');
+        if (!subMenu) return;
+        
+        const isExpanded = subMenu.classList.contains('expanded');
+        
+        // 关闭所有其他子菜单
+        document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+            if (menu !== subMenu) {
                 menu.classList.remove('expanded');
-                const prevIcon = menu.previousElementSibling?.querySelector('.collapse-icon');
-                if (prevIcon) prevIcon.style.transform = '';
-            });
-            
-            if (!isExpanded) {
-                subMenu.classList.add('expanded');
-                const icon = link.querySelector('.collapse-icon');
-                if (icon) {
-                    icon.style.transform = 'rotate(90deg)';
+                const parentItem = menu.closest('.nav-item');
+                if (parentItem) {
+                    const icon = parentItem.querySelector('.collapse-icon');
+                    if (icon) icon.style.transform = '';
                 }
             }
+        });
+        
+        // 切换当前子菜单
+        subMenu.classList.toggle('expanded');
+        const icon = navItem.querySelector('.collapse-icon');
+        if (icon) {
+            icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
         }
     }
     
     // 处理导航点击
     function handleNavClick(e) {
-        const target = e.target;
-        
         // 处理主菜单标题点击
-        if (target === currentPageTitle || target.closest('.current-page-title')) {
+        if (e.target === currentPageTitle || e.target.closest('.current-page-title')) {
             toggleMainMenu();
             return;
         }
         
         // 处理导航链接点击
-        const navLink = target.closest('.nav-link');
+        const navLink = e.target.closest('.nav-link');
         if (navLink) {
-            // 如果是带子菜单的项
-            if (navLink.parentElement.classList.contains('has-submenu')) {
-                e.preventDefault();
-                toggleSubMenu(navLink);
+            e.preventDefault();
+            const navItem = navLink.closest('.nav-item');
+            if (navItem && navItem.classList.contains('has-submenu')) {
+                toggleSubMenu(navItem);
+            } else if (navLink.href) {
+                window.location.href = navLink.href;
             }
             return;
         }
         
         // 处理子菜单项点击
-        const subNavLink = target.closest('.sub-nav-link');
+        const subNavLink = e.target.closest('.sub-nav-link');
         if (subNavLink) {
             e.preventDefault();
             const targetId = subNavLink.getAttribute('href');
-            document.querySelector(targetId)?.scrollIntoView({
-                behavior: 'smooth'
-            });
-            
-            // 更新活动状态
-            document.querySelectorAll('.sub-nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            subNavLink.parentElement.classList.add('active');
-            
-            // 如果是手机竖屏，点击后折叠菜单
-            if (isMobilePortrait()) {
-                navMenu.classList.remove('expanded');
-                const icon = currentPageTitle.querySelector('.collapse-icon');
-                if (icon) {
-                    icon.style.transform = '';
+            if (targetId) {
+                document.querySelector(targetId)?.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // 更新URL hash但不触发滚动
+                history.replaceState(null, null, targetId);
+                
+                // 更新活动状态
+                document.querySelectorAll('.sub-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                subNavLink.parentElement.classList.add('active');
+                
+                // 如果是手机竖屏，点击后折叠菜单
+                if (isMobilePortrait()) {
+                    navMenu.classList.remove('expanded');
+                    const icon = currentPageTitle.querySelector('.collapse-icon');
+                    if (icon) {
+                        icon.style.transform = '';
+                    }
                 }
             }
         }
@@ -424,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentUrl = window.location.href;
     document.querySelectorAll('.nav-item').forEach(item => {
         const link = item.querySelector('.nav-link');
-        if (link && currentUrl.includes(link.href)) {
+        if (link && currentUrl.includes(link.getAttribute('href'))) {
             item.classList.add('active');
         }
     });
@@ -435,13 +449,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
         if (targetItem) {
             const parentMenu = targetItem.closest('.sub-nav-menu');
-            if (parentMenu) {
+            const parentNavItem = targetItem.closest('.nav-item');
+            if (parentMenu && parentNavItem) {
                 parentMenu.classList.add('expanded');
-                const navLink = parentMenu.previousElementSibling;
-                if (navLink && navLink.classList.contains('nav-link')) {
-                    const icon = navLink.querySelector('.collapse-icon');
-                    if (icon) icon.style.transform = 'rotate(90deg)';
-                }
+                const icon = parentNavItem.querySelector('.collapse-icon');
+                if (icon) icon.style.transform = 'rotate(90deg)';
             }
             targetItem.classList.add('active');
         }
@@ -458,6 +470,14 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.style.flexDirection = 'row';
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
+            
+            // 确保子菜单默认隐藏
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.classList.remove('expanded');
+            });
+            document.querySelectorAll('.collapse-icon').forEach(icon => {
+                icon.style.transform = '';
+            });
         } else if (isMobilePortrait()) {
             // 手机竖屏布局
             navMenu.style.flexDirection = 'column';
