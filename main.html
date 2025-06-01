@@ -201,6 +201,10 @@
       .current-page-title {
           display: flex;
       }
+      .sub-nav-menu {
+          position: static;
+          box-shadow: none;
+      }
   }
 </style>
 </head>
@@ -244,6 +248,7 @@
 </div>
 
 <div class="main-content">
+    <!-- 内容部分保持不变 -->
     <div class="more-link">
         <h2><a href="https://space.bilibili.com/1933356847">更多Sam_Mu视频 ></a></h2>
     </div>
@@ -347,38 +352,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // 切换主菜单（仅手机竖屏）
     function toggleMainMenu() {
         if (isMobilePortrait()) {
+            const isExpanding = !navMenu.classList.contains('expanded');
             navMenu.classList.toggle('expanded');
+            
             const icon = currentPageTitle.querySelector('.collapse-icon');
             if (icon) {
-                icon.style.transform = navMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+                icon.style.transform = isExpanding ? 'rotate(90deg)' : '';
+            }
+            
+            // 折叠所有子菜单
+            if (!isExpanding) {
+                document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                    menu.classList.remove('expanded');
+                });
+                document.querySelectorAll('.collapse-icon').forEach(icon => {
+                    icon.style.transform = '';
+                });
             }
         }
     }
     
-    // 切换子菜单（所有设备）
+    // 切换子菜单
     function toggleSubMenu(navItem) {
         const subMenu = navItem.querySelector('.sub-nav-menu');
         if (!subMenu) return;
         
-        const isExpanded = subMenu.classList.contains('expanded');
+        const isExpanding = !subMenu.classList.contains('expanded');
         
-        // 关闭所有其他子菜单
-        document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-            if (menu !== subMenu) {
-                menu.classList.remove('expanded');
-                const parentItem = menu.closest('.nav-item');
-                if (parentItem) {
-                    const icon = parentItem.querySelector('.collapse-icon');
-                    if (icon) icon.style.transform = '';
+        // 关闭所有其他子菜单（仅限移动端）
+        if (isMobilePortrait()) {
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                if (menu !== subMenu) {
+                    menu.classList.remove('expanded');
+                    const parentItem = menu.closest('.nav-item');
+                    if (parentItem) {
+                        const icon = parentItem.querySelector('.collapse-icon');
+                        if (icon) icon.style.transform = '';
+                    }
                 }
-            }
-        });
+            });
+        }
         
         // 切换当前子菜单
         subMenu.classList.toggle('expanded');
         const icon = navItem.querySelector('.collapse-icon');
         if (icon) {
-            icon.style.transform = subMenu.classList.contains('expanded') ? 'rotate(90deg)' : '';
+            icon.style.transform = isExpanding ? 'rotate(90deg)' : '';
         }
     }
     
@@ -395,6 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (navLink) {
             e.preventDefault();
             const navItem = navLink.closest('.nav-item');
+            
             if (navItem && navItem.classList.contains('has-submenu')) {
                 toggleSubMenu(navItem);
             } else if (navLink.href) {
@@ -409,18 +429,23 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const targetId = subNavLink.getAttribute('href');
             if (targetId) {
-                document.querySelector(targetId)?.scrollIntoView({
-                    behavior: 'smooth'
-                });
-                
-                // 更新URL hash但不触发滚动
-                history.replaceState(null, null, targetId);
-                
                 // 更新活动状态
                 document.querySelectorAll('.sub-nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 subNavLink.parentElement.classList.add('active');
+                
+                // 滚动到目标位置
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // 更新URL hash但不触发滚动
+                    history.replaceState(null, null, targetId);
+                }
                 
                 // 如果是手机竖屏，点击后折叠菜单
                 if (isMobilePortrait()) {
@@ -435,33 +460,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 初始化选中状态
-    const currentUrl = window.location.href;
-    document.querySelectorAll('.nav-item').forEach(item => {
-        const link = item.querySelector('.nav-link');
-        if (link && currentUrl.includes(link.getAttribute('href'))) {
-            item.classList.add('active');
-        }
-    });
-    
-    // 处理hash导航
-    const hash = window.location.hash;
-    if (hash) {
-        const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
-        if (targetItem) {
-            const parentMenu = targetItem.closest('.sub-nav-menu');
-            const parentNavItem = targetItem.closest('.nav-item');
-            if (parentMenu && parentNavItem) {
-                parentMenu.classList.add('expanded');
-                const icon = parentNavItem.querySelector('.collapse-icon');
-                if (icon) icon.style.transform = 'rotate(90deg)';
+    function initActiveState() {
+        const currentUrl = window.location.href;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const link = item.querySelector('.nav-link');
+            if (link) {
+                const href = link.getAttribute('href');
+                if (href && currentUrl.includes(href)) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
             }
-            targetItem.classList.add('active');
+        });
+        
+        // 处理hash导航
+        const hash = window.location.hash;
+        if (hash) {
+            const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
+            if (targetItem) {
+                const parentMenu = targetItem.closest('.sub-nav-menu');
+                const parentNavItem = targetItem.closest('.nav-item');
+                
+                if (parentMenu && parentNavItem) {
+                    parentMenu.classList.add('expanded');
+                    const icon = parentNavItem.querySelector('.collapse-icon');
+                    if (icon) icon.style.transform = 'rotate(90deg)';
+                }
+                
+                document.querySelectorAll('.sub-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                targetItem.classList.add('active');
+            }
         }
     }
-    
-    // 初始化事件监听
-    currentPageTitle.addEventListener('click', toggleMainMenu);
-    document.addEventListener('click', handleNavClick);
     
     // 初始化响应式布局
     function initResponsiveLayout() {
@@ -478,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.collapse-icon').forEach(icon => {
                 icon.style.transform = '';
             });
-        } else if (isMobilePortrait()) {
+        } else {
             // 手机竖屏布局
             navMenu.style.flexDirection = 'column';
             currentPageTitle.style.display = 'flex';
@@ -486,8 +519,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    initResponsiveLayout();
+    // 初始化事件监听
+    currentPageTitle.addEventListener('click', toggleMainMenu);
+    document.addEventListener('click', handleNavClick);
     window.addEventListener('resize', initResponsiveLayout);
+    
+    // 初始化页面
+    initActiveState();
+    initResponsiveLayout();
 });
 </script>
 </body>
