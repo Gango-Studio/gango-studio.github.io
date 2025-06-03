@@ -1,502 +1,465 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html xmlns="http://www.w3.org/1999/xhtml" style="filter: grayscale(0%);">
 <head>
-    <meta charset="gb2312">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gango Studios</title>
-    <style>
-        /* 基础样式 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        /* 导航容器 */
-        .nav-container {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        /* 手机端标题 */
-        .mobile-nav-title {
-            display: none;
-            padding: 15px;
-            background: #007aff;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .mobile-nav-title .icon {
-            transition: transform 0.3s;
-        }
-        .mobile-nav-title.active .icon {
-            transform: rotate(90deg);
-        }
-        
-        /* 主导航菜单 */
-        .main-nav {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        /* 导航项 */
-        .nav-item {
-            position: relative;
-            flex: 1;
-            text-align: center;
-        }
-        .nav-item > a {
-            display: block;
-            padding: 15px;
-            color: #333;
-            transition: all 0.3s;
-        }
-        .nav-item.active > a {
-            background: #007aff;
-            color: white;
-        }
-        .nav-item.has-children > a::after {
-            content: "›";
-            margin-left: 5px;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        .nav-item.has-children.expanded > a::after {
-            transform: rotate(90deg);
-        }
-        
-        /* 二级菜单 */
-        .sub-nav {
-            display: none;
-            list-style: none;
-            background: #f8f8f8;
-            padding: 0;
-            margin: 0;
-        }
-        .sub-nav li a {
-            display: block;
-            padding: 12px 15px;
-            color: #333;
-            transition: all 0.2s;
-        }
-        .sub-nav li.active a {
-            color: #007aff;
-            font-weight: bold;
-        }
-        .sub-nav li a:hover {
-            background: #eaeaea;
-        }
-        
-        /* 桌面布局 */
-        @media (min-width: 769px) {
-            .main-nav {
-                flex-direction: row;
-            }
-            .nav-item {
-                border-right: 1px solid #eee;
-            }
-            .nav-item:last-child {
-                border-right: none;
-            }
-            .sub-nav {
-                position: absolute;
-                width: 100%;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                z-index: 100;
-            }
-        }
-        
-        /* 手机竖屏布局 */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .mobile-nav-title {
-                display: flex;
-            }
-            .main-nav {
-                flex-direction: column;
-                display: none;
-            }
-            .main-nav.expanded {
-                display: block;
-            }
-            .sub-nav {
-                position: static;
-                width: 100%;
-            }
-            .nav-item.has-children > a {
-                padding-right: 40px;
-            }
-        }
-        
-        /* 内容区域样式 */
-        .content-container {
-            flex: 1;
-            padding: 0 15px 20px;
-        }
-        .content-section {
-            padding: 20px;
-            margin-bottom: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-        .content-section h2 {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            color: #1d1d1f;
-        }
-        .card {
-            margin-bottom: 15px;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .card img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .card-body {
-            padding: 15px;
-        }
-        .card-body h3 {
-            margin-bottom: 10px;
-            color: #1d1d1f;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #007aff;
-            color: white;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-        
-        /* 页脚样式 */
-        footer {
-            background: white;
-            padding: 30px 0;
-            border-top: 1px solid #e0e0e0;
-            margin-top: auto;
-        }
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .footer-col {
-            width: 50%;
-            padding: 0 15px;
-            margin-bottom: 20px;
-        }
-        .footer-title {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #1d1d1f;
-        }
-        .footer-links {
-            list-style: none;
-        }
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        .footer-links a {
-            color: #1d1d1f; /* 确保页脚文字为黑色 */
-            transition: color 0.2s;
-        }
-        .footer-links a:hover {
-            color: #007aff;
-        }
-        
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .footer-col {
-                width: 100%;
-            }
-        }
-    </style>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312;width= device-width,user-scalable = 0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gango Studios</title>
+<style>
+  body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+  }
+  a {
+      text-decoration: none;
+      color: #007aff;
+  }
+  a:hover {
+      color: #005bb5;
+  }
+  header {
+      text-align: center;
+      padding: 20px 0 0;
+      background-color: #ffffff;
+  }
+  header h1 {
+      font-size: 2.5em;
+      margin: 0;
+      color: #1d1d1f;
+      font-weight: 500;
+  }
+  .nav-wrapper {
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+  }
+  .current-page-title {
+      display: none;
+      padding: 15px;
+      text-align: center;
+      background: #007aff;
+      color: white;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+  }
+  .nav-menu {
+      display: flex;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  }
+  .nav-item {
+      position: relative;
+      flex: 1;
+  }
+  .nav-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.95em;
+      cursor: pointer;
+  }
+  .nav-item.active > .nav-link {
+      background: #007aff;
+      color: white !important;
+  }
+  .collapse-icon {
+      font-size: 1.2em;
+      transition: transform 0.3s;
+      margin-left: 10px;
+  }
+  .sub-nav-menu {
+      display: none;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      background-color: #f8f8f8;
+  }
+  .sub-nav-item {
+      padding-left: 30px;
+  }
+  .sub-nav-link {
+      display: block;
+      padding: 12px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.9em;
+  }
+  .sub-nav-item.active .sub-nav-link {
+      color: #007aff;
+      font-weight: bold;
+  }
+  .main-content {
+      flex: 1;
+      padding-bottom: 20px;
+  }
+  .more-link {
+      text-align: center;
+      margin: 25px 0;
+  }
+  .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+  }
+  .card {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: white;
+  }
+  .card-img {
+      width: 100%;
+      height: auto;
+      display: block;
+  }
+  .card-body {
+      padding: 15px;
+  }
+  .card-title {
+      margin: 0 0 10px 0;
+  }
+  .btn-primary {
+      display: inline-block;
+      background: #007aff;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+  }
+  footer {
+      width: 100%;
+      background: white;
+      padding: 20px 0;
+      margin-top: auto;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      flex-wrap: wrap;
+  }
+  footer h3 {
+      font-size: 1.8em;
+      margin: 0;
+      padding-left: 10%;
+      width: 100%;
+      color: #1d1d1f;
+      font-weight: 500;
+  }
+  footer > div {
+      width: 50%;
+      box-sizing: border-box;
+  }
+  footer h4, footer h5 {
+      margin: 0;
+      padding: 5px 0;
+      padding-left: 10%;
+      color: #1d1d1f;
+  }
+  @media (min-width: 769px), (orientation: landscape) {
+      .nav-menu {
+          flex-direction: row;
+      }
+      .current-page-title {
+          display: none;
+      }
+      .sub-nav-menu {
+          position: absolute;
+          width: 100%;
+          z-index: 100;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      .sub-nav-item {
+          padding-left: 0;
+          text-align: center;
+      }
+  }
+  @media (max-width: 768px) and (orientation: portrait) {
+      .nav-menu {
+          flex-direction: column;
+          display: none;
+      }
+      .nav-menu.expanded {
+          display: flex;
+      }
+      .current-page-title {
+          display: flex;
+      }
+  }
+</style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <div class="nav-container">
-        <div class="mobile-nav-title" id="mobileNavTitle">
-            <span>Vlog&Video</span>
-            <span class="icon">›</span>
-        </div>
-        
-        <ul class="main-nav" id="mainNav">
-            <li class="nav-item active has-children">
-                <a href="#">Vlog&Video</a>
-                <ul class="sub-nav">
-                    <li class="active" data-section="guitar"><a href="#guitar">古典吉他</a></li>
-                    <li data-section="samuel"><a href="#samuel">Samuel</a></li>
-                    <li data-section="trip"><a href="#trip">游记</a></li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="https://gango-studio.github.io/introduce/blog.html">Blog</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
-            </li>
-        </ul>
+<header>
+    <a href="https://gango-studio.github.io">
+        <h1>Gango</h1>
+    </a>
+</header>
+
+<div class="nav-wrapper">
+    <div class="current-page-title" id="currentPageTitle">
+        Vlog&Video
+        <span class="collapse-icon">›</span>
+    </div>
+    <ul class="nav-menu" id="navMenu">
+        <li class="nav-item active has-submenu">
+            <a class="nav-link">
+                Vlog&Video
+                <span class="collapse-icon">›</span>
+            </a>
+            <ul class="sub-nav-menu">
+                <li class="sub-nav-item" data-section="guitar">
+                    <a href="#guitar" class="sub-nav-link">古典吉他</a>
+                </li>
+                <li class="sub-nav-item" data-section="samuel">
+                    <a href="#samuel" class="sub-nav-link">Samuel</a>
+                </li>
+                <li class="sub-nav-item" data-section="trip">
+                    <a href="#trip" class="sub-nav-link">游记</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
+        </li>
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="more-link">
+        <h2><a href="https://space.bilibili.com/1933356847">更多Sam_Mu视频 ></a></h2>
     </div>
     
-    <!-- 内容区域 -->
-    <div class="content-container">
-        <section class="content-section" id="guitar">
-            <h2>古典吉他</h2>
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/UKR.jpeg" alt="乌克兰仍在人间">
-                <div class="card-body">
-                    <h3>乌克兰仍在人间</h3>
-                    <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/red.jpeg" alt="英国工党-红旗歌">
-                <div class="card-body">
-                    <h3>英国工党-红旗歌</h3>
-                    <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/als.png" alt="友谊地久天长">
-                <div class="card-body">
-                    <h3>友谊地久天长</h3>
-                    <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-        </section>
-        
-        <section class="content-section" id="samuel">
-            <h2>Samuel系列</h2>
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" alt="Samuel旗帜-2">
-                <div class="card-body">
-                    <h3>Samuel旗帜-2</h3>
-                    <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" alt="[微型国家]塞缪尔旗帜">
-                <div class="card-body">
-                    <h3>[微型国家]塞缪尔旗帜</h3>
-                    <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-        </section>
-        
-        <section class="content-section" id="trip">
-            <h2>游记系列</h2>
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/malacca.jpeg" alt="马六甲之旅">
-                <div class="card-body">
-                    <h3>马六甲之旅</h3>
-                    <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://gango-studio.github.io/image/video/桂林.jpg" alt="桂林遇龙河漂流">
-                <div class="card-body">
-                    <h3>桂林遇龙河漂流</h3>
-                    <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn" target="_blank">播放</a>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-col">
-                <h3 class="footer-title">Gango Studio</h3>
-                <ul class="footer-links">
-                    <li><a href="https://gango-studio.github.io">🏠 主页</a></li>
-                    <li><a href="https://gango-studio.github.io/main.html">🔗 Vlog</a></li>
-                    <li><a href="https://gango-studio.github.io/introduce/cfile.html">🔗 应用程序</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3 class="footer-title">更多服务</h3>
-                <ul class="footer-links">
-                    <li><a href="https://gango-studio.github.io/introduce/blog.html">🔗 Blog</a></li>
-                    <li><a href="https://gango-studio.github.io/serves/blank.html">🔗 浏览器主页</a></li>
-                    <li><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗 Gango Tool</a></li>
-                </ul>
+    <div class="card-container">
+        <h2 id="guitar">古典吉他</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">乌克兰仍在人间</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn-primary">播放</a>
             </div>
         </div>
-    </footer>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/red.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">英国工党-红旗歌</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/als.png" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">友谊地久天长</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">Land of Hope and Glory</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <h2 id="samuel">Samuel系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">Samuel旗帜-2</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">[微型国家]塞缪尔旗帜</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <h2 id="trip">游记系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">马六甲之旅</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/桂林.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">桂林遇龙河漂流</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn-primary">播放</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mobileNavTitle = document.getElementById('mobileNavTitle');
-        const mainNav = document.getElementById('mainNav');
-        
-        // 检查是否是手机竖屏
-        function isMobilePortrait() {
-            return window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
+<footer>
+    <h3>Gango Studio</h3>
+    <div>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+    <div>
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        <h5>&nbsp;</h5>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navMenu = document.getElementById('navMenu');
+    const currentPageTitle = document.getElementById('currentPageTitle');
+    
+    // 判断是否为手机竖屏模式
+    function isMobilePortrait() {
+        return window.innerWidth < 768 && window.matchMedia("(orientation: portrait)").matches;
+    }
+    
+    // 初始化导航栏状态
+    function initNavbar() {
+        if (isMobilePortrait()) {
+            // 手机竖屏模式
+            navMenu.style.display = 'none';
+            currentPageTitle.style.display = 'flex';
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        } else {
+            // 桌面端或横屏模式
+            navMenu.style.display = 'flex';
+            currentPageTitle.style.display = 'none';
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
         }
+    }
+    
+    // 处理一级导航点击
+    function handlePrimaryNavClick(e) {
+        const navItem = e.target.closest('.nav-item');
+        if (!navItem) return;
         
-        // 切换主菜单（仅手机竖屏）
-        function toggleMainMenu() {
-            if (isMobilePortrait()) {
-                mainNav.classList.toggle('expanded');
-                mobileNavTitle.classList.toggle('active');
-            }
-        }
-        
-        // 切换子菜单
-        function toggleSubMenu(navItem) {
-            const subNav = navItem.querySelector('.sub-nav');
-            if (!subNav) return;
+        // 如果是带子菜单的项
+        if (navItem.classList.contains('has-submenu')) {
+            e.preventDefault();
             
-            // 如果是桌面端，关闭其他子菜单
+            // 桌面端/横屏：点击展开子菜单
             if (!isMobilePortrait()) {
-                document.querySelectorAll('.nav-item.expanded').forEach(item => {
-                    if (item !== navItem) {
-                        item.classList.remove('expanded');
+                const subMenu = navItem.querySelector('.sub-nav-menu');
+                const isExpanded = subMenu.style.display === 'block';
+                
+                // 关闭所有其他子菜单
+                document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                    if (menu !== subMenu) {
+                        menu.style.display = 'none';
+                        menu.previousElementSibling.querySelector('.collapse-icon').style.transform = '';
                     }
                 });
+                
+                // 切换当前子菜单
+                subMenu.style.display = isExpanded ? 'none' : 'block';
+                e.currentTarget.querySelector('.collapse-icon').style.transform = isExpanded ? '' : 'rotate(90deg)';
             }
+        }
+    }
+    
+    // 处理二级导航点击
+    function handleSecondaryNavClick(e) {
+        const subNavItem = e.target.closest('.sub-nav-item');
+        if (!subNavItem) return;
+        
+        // 更新活动状态
+        document.querySelectorAll('.sub-nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        subNavItem.classList.add('active');
+        
+        // 如果是手机竖屏，点击后折叠整个菜单
+        if (isMobilePortrait()) {
+            navMenu.style.display = 'none';
+            currentPageTitle.querySelector('.collapse-icon').style.transform = '';
+        }
+    }
+    
+    // 处理当前页面标题点击（手机竖屏）
+    function handleCurrentTitleClick() {
+        if (!isMobilePortrait()) return;
+        
+        const isExpanded = navMenu.style.display === 'flex';
+        navMenu.style.display = isExpanded ? 'none' : 'flex';
+        this.querySelector('.collapse-icon').style.transform = isExpanded ? '' : 'rotate(90deg)';
+    }
+    
+    // 初始化事件监听
+    function initEventListeners() {
+        // 一级导航点击
+        navMenu.addEventListener('click', function(e) {
+            // 一级导航项点击
+            if (e.target.closest('.nav-link')) {
+                handlePrimaryNavClick(e);
+            }
+            // 二级导航项点击
+            else if (e.target.closest('.sub-nav-link')) {
+                handleSecondaryNavClick(e);
+            }
+        });
+        
+        // 手机竖屏下的标题点击
+        currentPageTitle.addEventListener('click', handleCurrentTitleClick);
+        
+        // 窗口大小变化时重新初始化
+        window.addEventListener('resize', initNavbar);
+    }
+    
+    // 初始化
+    initNavbar();
+    initEventListeners();
+    
+    // 处理hash导航
+    const hash = window.location.hash;
+    if (hash) {
+        const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
+        if (targetItem) {
+            targetItem.classList.add('active');
             
-            // 切换当前子菜单
-            navItem.classList.toggle('expanded');
-            
-            // 如果是手机端，手动控制子菜单显示
+            // 如果是手机竖屏，展开父菜单
             if (isMobilePortrait()) {
-                const isExpanded = navItem.classList.contains('expanded');
-                subNav.style.display = isExpanded ? 'block' : 'none';
-            }
-        }
-        
-        // 处理导航点击
-        function handleNavClick(e) {
-            // 处理手机标题点击
-            if (e.target.closest('#mobileNavTitle')) {
-                toggleMainMenu();
-                return;
-            }
-            
-            // 处理导航项点击
-            const navLink = e.target.closest('.nav-item > a');
-            if (navLink) {
-                const navItem = navLink.parentElement;
-                
-                // 如果是带子菜单的项
-                if (navItem.classList.contains('has-children')) {
-                    e.preventDefault();
-                    toggleSubMenu(navItem);
-                }
-                return;
-            }
-            
-            // 处理子菜单项点击
-            const subNavLink = e.target.closest('.sub-nav a');
-            if (subNavLink) {
-                e.preventDefault();
-                const targetId = subNavLink.getAttribute('href');
-                
-                // 滚动到对应区域
-                document.querySelector(targetId)?.scrollIntoView({
-                    behavior: 'smooth'
-                });
-                
-                // 更新活动状态
-                document.querySelectorAll('.sub-nav li').forEach(item => {
-                    item.classList.remove('active');
-                });
-                subNavLink.parentElement.classList.add('active');
-                
-                // 如果是手机竖屏，点击后折叠菜单
-                if (isMobilePortrait()) {
-                    mainNav.classList.remove('expanded');
-                    mobileNavTitle.classList.remove('active');
+                const parentMenu = targetItem.closest('.sub-nav-menu');
+                if (parentMenu) {
+                    parentMenu.style.display = 'block';
+                    navMenu.style.display = 'flex';
+                    currentPageTitle.querySelector('.collapse-icon').style.transform = 'rotate(90deg)';
                 }
             }
         }
-        
-        // 初始化响应式布局
-        function initResponsiveLayout() {
-            if (isMobilePortrait()) {
-                // 手机竖屏：隐藏子菜单
-                document.querySelectorAll('.sub-nav').forEach(menu => {
-                    menu.style.display = 'none';
-                });
-                // 显示手机标题
-                mobileNavTitle.style.display = 'flex';
-                // 默认折叠主菜单
-                mainNav.style.display = 'none';
-            } else {
-                // 桌面/横屏：显示所有菜单
-                document.querySelectorAll('.sub-nav').forEach(menu => {
-                    menu.style.display = '';
-                });
-                // 隐藏手机标题
-                mobileNavTitle.style.display = 'none';
-                // 显示主菜单
-                mainNav.style.display = 'flex';
-            }
-        }
-        
-        // 初始化事件监听
-        mobileNavTitle.addEventListener('click', toggleMainMenu);
-        document.addEventListener('click', handleNavClick);
-        window.addEventListener('resize', initResponsiveLayout);
-        
-        // 初始化hash导航
-        if (window.location.hash) {
-            const targetSection = window.location.hash.substring(1);
-            const targetItem = document.querySelector(`.sub-nav li[data-section="${targetSection}"]`);
-            if (targetItem) {
-                // 展开父菜单
-                const parentNavItem = targetItem.closest('.nav-item');
-                if (parentNavItem) {
-                    parentNavItem.classList.add('expanded');
-                    if (isMobilePortrait()) {
-                        parentNavItem.querySelector('.sub-nav').style.display = 'block';
-                    }
-                }
-                
-                // 设置活动状态
-                targetItem.classList.add('active');
-                
-                // 滚动到目标位置
-                setTimeout(() => {
-                    document.querySelector(window.location.hash)?.scrollIntoView();
-                }, 100);
-            }
-        }
-        
-        // 初始化布局
-        initResponsiveLayout();
-    });
-    </script>
+    }
+});
+</script>
 </body>
 </html>
