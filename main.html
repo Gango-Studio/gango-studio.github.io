@@ -347,44 +347,45 @@ document.addEventListener('DOMContentLoaded', function() {
             // 手机竖屏模式
             navMenu.style.display = 'none';
             currentPageTitle.style.display = 'flex';
-            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
+            closeAllSubMenus();
         } else {
             // 桌面端或横屏模式
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
-            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
+            closeAllSubMenus();
         }
     }
     
-    // 处理一级导航点击
+    // 关闭所有子菜单
+    function closeAllSubMenus() {
+        document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+            menu.style.display = 'none';
+            const icon = menu.previousElementSibling?.querySelector('.collapse-icon');
+            if (icon) icon.style.transform = '';
+        });
+    }
+    
+    // 处理一级导航点击（修复横屏/电脑端问题）
     function handlePrimaryNavClick(e) {
         const navLink = e.target.closest('.nav-link');
         if (!navLink) return;
         
         const navItem = navLink.parentElement;
         
-        // 如果是带子菜单的项
+        // 只处理带子菜单的项
         if (navItem.classList.contains('has-submenu')) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const subMenu = navItem.querySelector('.sub-nav-menu');
+            const isExpanded = subMenu.style.display === 'block';
             const collapseIcon = navLink.querySelector('.collapse-icon');
             
-            // 桌面端/横屏：点击展开子菜单
             if (!isMobilePortrait()) {
-                const isExpanded = subMenu.style.display === 'block';
-                
-                // 关闭所有其他子菜单
-                document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                    if (menu !== subMenu) {
-                        menu.style.display = 'none';
-                        const icon = menu.previousElementSibling.querySelector('.collapse-icon');
-                        if (icon) icon.style.transform = '';
-                    }
-                });
+                // 桌面端/横屏模式处理
+                if (!isExpanded) {
+                    closeAllSubMenus(); // 先关闭所有其他菜单
+                }
                 
                 // 切换当前子菜单
                 subMenu.style.display = isExpanded ? 'none' : 'block';
@@ -392,8 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
                 }
             } else {
-                // 手机竖屏：点击切换子菜单
-                const isExpanded = subMenu.style.display === 'block';
+                // 手机竖屏模式处理
                 subMenu.style.display = isExpanded ? 'none' : 'block';
                 if (collapseIcon) {
                     collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
@@ -428,9 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isMobilePortrait()) {
             navMenu.style.display = 'none';
             currentPageTitle.querySelector('.collapse-icon').style.transform = '';
-            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
+            closeAllSubMenus();
         }
     }
     
@@ -444,28 +442,20 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 如果折叠菜单，同时折叠所有子菜单
         if (isExpanded) {
-            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                menu.style.display = 'none';
-                const icon = menu.previousElementSibling?.querySelector('.collapse-icon');
-                if (icon) icon.style.transform = '';
-            });
+            closeAllSubMenus();
         }
     }
     
     // 初始化事件监听
     function initEventListeners() {
-        // 一级导航点击
-        navMenu.addEventListener('click', function(e) {
-            if (e.target.closest('.nav-link')) {
-                handlePrimaryNavClick(e);
-            }
+        // 一级导航点击 - 直接绑定确保可靠性
+        document.querySelectorAll('.nav-item.has-submenu .nav-link').forEach(link => {
+            link.addEventListener('click', handlePrimaryNavClick);
         });
         
         // 二级导航点击
-        navMenu.addEventListener('click', function(e) {
-            if (e.target.closest('.sub-nav-link')) {
-                handleSecondaryNavClick(e);
-            }
+        document.querySelectorAll('.sub-nav-link').forEach(link => {
+            link.addEventListener('click', handleSecondaryNavClick);
         });
         
         // 手机竖屏下的标题点击
@@ -473,50 +463,49 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 窗口大小变化时重新初始化
         window.addEventListener('resize', initNavbar);
+        
+        // 桌面端点击页面其他区域关闭子菜单
+        if (!isMobilePortrait()) {
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-item.has-submenu')) {
+                    closeAllSubMenus();
+                }
+            });
+        }
+    }
+    
+    // 处理hash导航
+    function initHashNavigation() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
+            if (targetItem) {
+                targetItem.classList.add('active');
+                
+                // 展开对应的父菜单
+                const parentMenu = targetItem.closest('.sub-nav-menu');
+                if (parentMenu) {
+                    parentMenu.style.display = 'block';
+                    const navLink = parentMenu.previousElementSibling;
+                    if (navLink && navLink.classList.contains('nav-link')) {
+                        const icon = navLink.querySelector('.collapse-icon');
+                        if (icon) icon.style.transform = 'rotate(90deg)';
+                    }
+                    
+                    // 如果是手机竖屏，展开主菜单
+                    if (isMobilePortrait()) {
+                        navMenu.style.display = 'flex';
+                        currentPageTitle.querySelector('.collapse-icon').style.transform = 'rotate(90deg)';
+                    }
+                }
+            }
+        }
     }
     
     // 初始化
     initNavbar();
     initEventListeners();
-    
-    // 处理hash导航
-    const hash = window.location.hash;
-    if (hash) {
-        const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
-        if (targetItem) {
-            targetItem.classList.add('active');
-            
-            // 展开对应的父菜单
-            const parentMenu = targetItem.closest('.sub-nav-menu');
-            if (parentMenu) {
-                parentMenu.style.display = 'block';
-                const navLink = parentMenu.previousElementSibling;
-                if (navLink && navLink.classList.contains('nav-link')) {
-                    const icon = navLink.querySelector('.collapse-icon');
-                    if (icon) icon.style.transform = 'rotate(90deg)';
-                }
-                
-                // 如果是手机竖屏，展开主菜单
-                if (isMobilePortrait()) {
-                    navMenu.style.display = 'flex';
-                    currentPageTitle.querySelector('.collapse-icon').style.transform = 'rotate(90deg)';
-                }
-            }
-        }
-    }
-    
-    // 点击文档其他区域关闭子菜单（桌面端）
-    document.addEventListener('click', function(e) {
-        if (!isMobilePortrait()) {
-            if (!e.target.closest('.nav-item.has-submenu')) {
-                document.querySelectorAll('.sub-nav-menu').forEach(menu => {
-                    menu.style.display = 'none';
-                    const icon = menu.previousElementSibling.querySelector('.collapse-icon');
-                    if (icon) icon.style.transform = '';
-                });
-            }
-        }
-    });
+    initHashNavigation();
 });
 </script>
 </body>
