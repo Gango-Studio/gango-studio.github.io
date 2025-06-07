@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return window.innerWidth < 768 && window.matchMedia("(orientation: portrait)").matches;
     }
     
-    // 设置横屏/电脑端二级导航宽度和位置
+    // 设置横屏/电脑端二级导航样式
     function setDesktopSubMenuStyles() {
         if (!isMobilePortrait()) {
             document.querySelectorAll('.has-submenu').forEach(navItem => {
@@ -351,9 +351,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     subMenu.style.width = navItem.offsetWidth + 'px';
                     // 正确定位在对应导航项下方
                     subMenu.style.left = navItem.offsetLeft + 'px';
-                    // 确保显示在最顶层
+                    // 确保显示层级
                     subMenu.style.zIndex = '100';
                 }
+            });
+        } else {
+            // 竖屏模式重置样式
+            document.querySelectorAll('.sub-nav-menu').forEach(menu => {
+                menu.style.width = '';
+                menu.style.left = '';
             });
         }
     }
@@ -379,12 +385,11 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
             closeAllSubMenus();
-            // 初始化二级菜单样式
-            setDesktopSubMenuStyles();
+            setDesktopSubMenuStyles(); // 初始化横屏样式
         }
     }
     
-    // 处理一级导航点击
+    // 处理一级导航点击（修复横屏展开问题）
     function handlePrimaryNavClick(e) {
         const navLink = e.target.closest('.nav-link');
         if (!navLink) return;
@@ -400,20 +405,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const collapseIcon = navLink.querySelector('.collapse-icon');
             
             if (!isMobilePortrait()) {
-                // 确保二级菜单样式正确
-                setDesktopSubMenuStyles();
+                // 横屏/电脑端处理
+                setDesktopSubMenuStyles(); // 确保样式正确
                 
                 if (!isExpanded) {
                     closeAllSubMenus();
                 }
                 
-                // 切换当前子菜单
                 subMenu.style.display = isExpanded ? 'none' : 'block';
                 if (collapseIcon) {
                     collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
                 }
             } else {
-                // 手机竖屏模式处理
+                // 手机竖屏处理
                 subMenu.style.display = isExpanded ? 'none' : 'block';
                 if (collapseIcon) {
                     collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
