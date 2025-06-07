@@ -341,18 +341,20 @@ document.addEventListener('DOMContentLoaded', function() {
         return window.innerWidth < 768 && window.matchMedia("(orientation: portrait)").matches;
     }
     
-    // 初始化导航栏状态
-    function initNavbar() {
-        if (isMobilePortrait()) {
-            // 手机竖屏模式
-            navMenu.style.display = 'none';
-            currentPageTitle.style.display = 'flex';
-            closeAllSubMenus();
-        } else {
-            // 桌面端或横屏模式
-            navMenu.style.display = 'flex';
-            currentPageTitle.style.display = 'none';
-            closeAllSubMenus();
+    // 设置横屏/电脑端二级导航宽度和位置
+    function setDesktopSubMenuStyles() {
+        if (!isMobilePortrait()) {
+            document.querySelectorAll('.has-submenu').forEach(navItem => {
+                const subMenu = navItem.querySelector('.sub-nav-menu');
+                if (subMenu) {
+                    // 设置宽度与父级导航项相同
+                    subMenu.style.width = navItem.offsetWidth + 'px';
+                    // 正确定位在对应导航项下方
+                    subMenu.style.left = navItem.offsetLeft + 'px';
+                    // 确保显示在最顶层
+                    subMenu.style.zIndex = '100';
+                }
+            });
         }
     }
     
@@ -365,14 +367,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 处理一级导航点击（修复横屏/电脑端问题）
+    // 初始化导航栏状态
+    function initNavbar() {
+        if (isMobilePortrait()) {
+            // 手机竖屏模式
+            navMenu.style.display = 'none';
+            currentPageTitle.style.display = 'flex';
+            closeAllSubMenus();
+        } else {
+            // 桌面端或横屏模式
+            navMenu.style.display = 'flex';
+            currentPageTitle.style.display = 'none';
+            closeAllSubMenus();
+            // 初始化二级菜单样式
+            setDesktopSubMenuStyles();
+        }
+    }
+    
+    // 处理一级导航点击
     function handlePrimaryNavClick(e) {
         const navLink = e.target.closest('.nav-link');
         if (!navLink) return;
         
         const navItem = navLink.parentElement;
         
-        // 只处理带子菜单的项
         if (navItem.classList.contains('has-submenu')) {
             e.preventDefault();
             e.stopPropagation();
@@ -382,9 +400,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const collapseIcon = navLink.querySelector('.collapse-icon');
             
             if (!isMobilePortrait()) {
-                // 桌面端/横屏模式处理
+                // 确保二级菜单样式正确
+                setDesktopSubMenuStyles();
+                
                 if (!isExpanded) {
-                    closeAllSubMenus(); // 先关闭所有其他菜单
+                    closeAllSubMenus();
                 }
                 
                 // 切换当前子菜单
@@ -448,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化事件监听
     function initEventListeners() {
-        // 一级导航点击 - 直接绑定确保可靠性
+        // 一级导航点击
         document.querySelectorAll('.nav-item.has-submenu .nav-link').forEach(link => {
             link.addEventListener('click', handlePrimaryNavClick);
         });
@@ -462,7 +482,12 @@ document.addEventListener('DOMContentLoaded', function() {
         currentPageTitle.addEventListener('click', handleCurrentTitleClick);
         
         // 窗口大小变化时重新初始化
-        window.addEventListener('resize', initNavbar);
+        window.addEventListener('resize', function() {
+            initNavbar();
+            if (!isMobilePortrait()) {
+                setDesktopSubMenuStyles();
+            }
+        });
         
         // 桌面端点击页面其他区域关闭子菜单
         if (!isMobilePortrait()) {
@@ -485,6 +510,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 展开对应的父菜单
                 const parentMenu = targetItem.closest('.sub-nav-menu');
                 if (parentMenu) {
+                    if (!isMobilePortrait()) {
+                        setDesktopSubMenuStyles();
+                    }
                     parentMenu.style.display = 'block';
                     const navLink = parentMenu.previousElementSibling;
                     if (navLink && navLink.classList.contains('nav-link')) {
