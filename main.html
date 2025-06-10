@@ -199,14 +199,24 @@
           display: flex;
       }
   }
+    .nav-wrapper {
+    position: relative;
+    z-index: 100;
+  }
   @media (min-width: 769px), (orientation: landscape) {
-    .nav-item.has-submenu {
-        position: relative; /* 建立定位上下文 */
-    }
     .sub-nav-menu {
-        transform: none !important; /* 清除可能冲突的变换 */
+      position: fixed;
+      top: calc(100% - 1px);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-}
+    .sub-nav-menu.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
 </style>
 </head>
 <body>
