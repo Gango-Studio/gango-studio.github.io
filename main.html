@@ -218,25 +218,24 @@
     }
   }
   /* 横屏/电脑端专用样式 */
+/* 横屏/电脑端专用样式 */
 @media (min-width: 769px), (orientation: landscape) {
     .sub-nav-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
+        position: fixed;
+        display: none;
         opacity: 0;
+        transform: translateY(-10px);
         transition: opacity 0.2s ease, transform 0.2s ease;
-        transform: translateY(-5px);
-        pointer-events: none;
         z-index: 1000;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .sub-nav-menu.visible {
         opacity: 1;
         transform: translateY(0);
-        pointer-events: auto;
     }
-    .nav-item.has-submenu {
-        position: relative;
+    .nav-item {
+        position: static !important;
     }
 }
 </style>
