@@ -375,33 +375,31 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 获取DOM元素
     const navMenu = document.getElementById('navMenu');
     const currentPageTitle = document.getElementById('currentPageTitle');
-    let currentOpenMenu = null;
+    let currentOpenMenu = null; // 当前打开的菜单项
 
     // 判断是否为手机竖屏模式
     function isMobilePortrait() {
         return window.innerWidth < 768 && window.matchMedia("(orientation: portrait)").matches;
     }
 
-    // 定位二级菜单（横屏专用）
+    // 横屏模式下定位二级菜单
     function positionSubMenu(navItem) {
         const subMenu = navItem.querySelector('.sub-nav-menu');
-        if (!subMenu) return null;
+        if (!subMenu) return;
         
         const navRect = navItem.getBoundingClientRect();
         subMenu.style.width = `${navRect.width}px`;
         subMenu.style.left = `${navRect.left}px`;
         subMenu.style.top = `${navRect.bottom}px`;
-        
-        return subMenu;
     }
 
     // 显示二级菜单（横屏专用）
     function showSubMenu(navItem) {
-        const subMenu = positionSubMenu(navItem);
-        if (!subMenu) return;
-        
+        positionSubMenu(navItem);
+        const subMenu = navItem.querySelector('.sub-nav-menu');
         subMenu.style.display = 'block';
         currentOpenMenu = navItem;
         
@@ -410,20 +408,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (icon) icon.style.transform = 'rotate(90deg)';
     }
 
-    // 隐藏二级菜单
+    // 隐藏二级菜单（横屏专用）
     function hideSubMenu(navItem) {
         if (!navItem) return;
         const subMenu = navItem.querySelector('.sub-nav-menu');
-        if (!subMenu) return;
-        
         subMenu.style.display = 'none';
-        if (currentOpenMenu === navItem) {
-            currentOpenMenu = null;
-        }
         
         // 重置箭头图标
         const icon = navItem.querySelector('.collapse-icon');
         if (icon) icon.style.transform = '';
+        
+        if (currentOpenMenu === navItem) {
+            currentOpenMenu = null;
+        }
     }
 
     // 关闭所有二级菜单
@@ -450,8 +447,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const isExpanded = subMenu.style.display === 'block';
             
             if (isExpanded && currentOpenMenu === navItem) {
+                // 点击已打开的菜单，则关闭
                 hideSubMenu(navItem);
             } else {
+                // 否则关闭所有并打开当前
                 closeAllSubMenus();
                 showSubMenu(navItem);
             }
@@ -466,7 +465,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 处理二级导航点击（重点修复跳转功能）
+    // 处理文档点击（点击其他地方隐藏）
+    function handleDocumentClick(e) {
+        if (isMobilePortrait()) return;
+        
+        // 如果点击的不是导航项也不是二级菜单内容
+        const clickedNavItem = e.target.closest('.nav-item.has-submenu');
+        if (!clickedNavItem && !e.target.closest('.sub-nav-menu')) {
+            closeAllSubMenus();
+        }
+    }
+
+    // 处理二级导航点击
     function handleSecondaryNavClick(e) {
         const subNavLink = e.target.closest('.sub-nav-link');
         if (!subNavLink) return;
@@ -481,19 +491,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         subNavItem.classList.add('active');
         
-        // 执行跳转
+        // 滚动到目标位置
         if (targetId) {
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                // 平滑滚动到目标位置
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                
-                // 更新URL hash（不触发页面跳转）
-                history.pushState(null, null, targetId);
-            }
+            document.querySelector(targetId)?.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
         
         // 如果是手机竖屏，点击后折叠整个菜单
@@ -504,13 +506,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 处理文档点击（点击其他地方隐藏）
-    function handleDocumentClick(e) {
-        if (isMobilePortrait()) return;
+    // 处理当前页面标题点击（手机竖屏）
+    function handleCurrentTitleClick() {
+        if (!isMobilePortrait()) return;
         
-        // 如果点击的不是导航项也不是二级菜单内容
-        const clickedNavItem = e.target.closest('.nav-item.has-submenu');
-        if (!clickedNavItem && !e.target.closest('.sub-nav-menu')) {
+        const isExpanded = navMenu.style.display === 'flex';
+        navMenu.style.display = isExpanded ? 'none' : 'flex';
+        this.querySelector('.collapse-icon').style.transform = isExpanded ? '' : 'rotate(90deg)';
+        
+        if (isExpanded) {
             closeAllSubMenus();
         }
     }
@@ -533,13 +537,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 处理hash导航（确保页面加载时能正确跳转）
+    // 处理窗口大小变化
+    function handleResize() {
+        initNavbar();
+        if (!isMobilePortrait() && currentOpenMenu) {
+            positionSubMenu(currentOpenMenu);
+        }
+    }
+
+    // 处理hash导航
     function initHashNavigation() {
         const hash = window.location.hash;
         if (hash) {
             const targetItem = document.querySelector(`.sub-nav-item[data-section="${hash.substring(1)}"]`);
             if (targetItem) {
-                // 先确保菜单展开
+                targetItem.classList.add('active');
+                
+                // 展开对应的父菜单
                 const parentMenu = targetItem.closest('.sub-nav-menu');
                 if (parentMenu) {
                     const navItem = parentMenu.closest('.nav-item');
@@ -554,54 +568,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 }
-                
-                // 延迟执行确保DOM更新完成
-                setTimeout(() => {
-                    const targetElement = document.querySelector(hash);
-                    if (targetElement) {
-                        targetElement.scrollIntoView();
-                        targetItem.classList.add('active');
-                    }
-                }, 100);
             }
         }
     }
 
+    // 初始化事件监听
+    function initEventListeners() {
+        // 一级导航点击
+        document.querySelectorAll('.nav-item.has-submenu .nav-link').forEach(link => {
+            link.addEventListener('click', handlePrimaryNavClick);
+        });
+        
+        // 二级导航点击
+        document.querySelectorAll('.sub-nav-link').forEach(link => {
+            link.addEventListener('click', handleSecondaryNavClick);
+        });
+        
+        // 手机竖屏下的标题点击
+        currentPageTitle.addEventListener('click', handleCurrentTitleClick);
+        
+        // 窗口大小变化
+        window.addEventListener('resize', handleResize);
+        
+        // 文档点击监听（实现点击其他地方隐藏）
+        document.addEventListener('click', handleDocumentClick);
+    }
+
     // 初始化执行
     initNavbar();
+    initEventListeners();
     initHashNavigation();
-    
-    // 事件监听
-    document.querySelectorAll('.nav-item.has-submenu .nav-link').forEach(link => {
-        link.addEventListener('click', handlePrimaryNavClick);
-    });
-    
-    document.querySelectorAll('.sub-nav-link').forEach(link => {
-        link.addEventListener('click', handleSecondaryNavClick);
-    });
-    
-    document.addEventListener('click', handleDocumentClick);
-    
-    // 手机竖屏标题点击
-    currentPageTitle.addEventListener('click', function() {
-        if (!isMobilePortrait()) return;
-        
-        const isExpanded = navMenu.style.display === 'flex';
-        navMenu.style.display = isExpanded ? 'none' : 'flex';
-        this.querySelector('.collapse-icon').style.transform = isExpanded ? '' : 'rotate(90deg)';
-        
-        if (isExpanded) {
-            closeAllSubMenus();
-        }
-    });
-
-    // 窗口大小变化处理
-    window.addEventListener('resize', function() {
-        initNavbar();
-        if (!isMobilePortrait() && currentOpenMenu) {
-            positionSubMenu(currentOpenMenu);
-        }
-    });
 });//cooperated with Deepseek...
 </script>
 </body>
