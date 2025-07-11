@@ -1,1 +1,103 @@
-test game here
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导航栏示例</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* 导航栏容器 */
+        .navbar-container {
+            display: flex;
+            background-color: #333;
+            padding: 10px 0;
+        }
+        
+        /* 单个导航栏样式 */
+        .navbar {
+            position: relative;
+            margin: 0 10px;
+        }
+        
+        /* 导航按钮样式 */
+        .nav-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+        
+        /* 下拉菜单样式 */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* 显示下拉菜单 */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-container">
+        <!-- 第一个导航栏 - 带下拉菜单 -->
+        <div class="navbar dropdown">
+            <button class="nav-button">菜单1 ▼</button>
+            <div class="dropdown-content">
+                <a href="#">二级菜单1</a>
+                <a href="#">二级菜单2</a>
+                <a href="#">二级菜单3</a>
+            </div>
+        </div>
+        
+        <!-- 第二个导航栏 -->
+        <div class="navbar">
+            <button class="nav-button">菜单2</button>
+        </div>
+        
+        <!-- 第三个导航栏 -->
+        <div class="navbar">
+            <button class="nav-button">菜单3</button>
+        </div>
+    </div>
+    
+    <div style="padding: 20px;">
+        <h2>页面内容</h2>
+        <p>点击"菜单1 ▼"可以看到下拉菜单效果。</p>
+    </div>
+</body>
+</html>
