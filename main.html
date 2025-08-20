@@ -178,16 +178,7 @@
       .current-page-title {
           display: none;
       }
-      /* 二级导航容器 - 始终显示 */
-      .sub-nav-container {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          width: 100%;
-          background-color: #f0f0f0;
-          border-top: 1px solid #e0e0e0;
-          padding: 0;
-      }
+      /* 横屏模式下二级导航始终显示 */
       .sub-nav-menu {
           display: flex !important;
           flex-direction: row;
@@ -195,7 +186,8 @@
           width: 100%;
           position: static;
           padding: 0;
-          background-color: transparent;
+          background-color: #f0f0f0;
+          border-top: 1px solid #e0e0e0;
       }
       .sub-nav-item {
           flex: 1;
@@ -210,10 +202,9 @@
       .sub-nav-link:hover {
           background: rgba(0,122,255,0.1);
       }
-      /* 隐藏折叠图标和竖屏的子菜单 */
-      .nav-item.has-submenu .collapse-icon,
-      .nav-item.has-submenu > .sub-nav-menu {
-          display: none !important;
+      /* 隐藏折叠图标 */
+      .nav-item.has-submenu .collapse-icon {
+          display: none;
       }
   }
 
@@ -239,10 +230,6 @@
       .nav-item.has-submenu .collapse-icon {
           display: inline-block;
       }
-      /* 隐藏横屏专用的二级导航容器 */
-      .sub-nav-container {
-          display: none !important;
-      }
   }
 </style>
 </head>
@@ -264,7 +251,7 @@
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
-            <!-- 竖屏模式下使用的子菜单 -->
+            <!-- 唯一的二级导航菜单 -->
             <ul class="sub-nav-menu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
@@ -284,21 +271,6 @@
             <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
         </li>
     </ul>
-    
-    <!-- 横屏专用的二级导航容器 - 占满屏幕一行 -->
-    <div class="sub-nav-container">
-        <ul class="sub-nav-menu">
-            <li class="sub-nav-item" data-section="guitar">
-                <a href="#guitar" class="sub-nav-link">古典吉他</a>
-            </li>
-            <li class="sub-nav-item" data-section="samuel">
-                <a href="#samuel" class="sub-nav-link">Samuel</a>
-            </li>
-            <li class="sub-nav-item" data-section="trip">
-                <a href="#trip" class="sub-nav-link">游记</a>
-            </li>
-        </ul>
-    </div>
 </div>
 
 <div class="main-content">
