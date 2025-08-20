@@ -178,9 +178,6 @@
       .current-page-title {
           display: none;
       }
-      .nav-item.has-submenu {
-          position: relative;
-      }
       /* 二级导航容器 - 始终显示 */
       .sub-nav-container {
           display: flex;
@@ -213,9 +210,10 @@
       .sub-nav-link:hover {
           background: rgba(0,122,255,0.1);
       }
-      /* 隐藏折叠图标 */
-      .nav-item.has-submenu .collapse-icon {
-          display: none;
+      /* 隐藏折叠图标和竖屏的子菜单 */
+      .nav-item.has-submenu .collapse-icon,
+      .nav-item.has-submenu > .sub-nav-menu {
+          display: none !important;
       }
   }
 
@@ -226,7 +224,7 @@
           display: none;
       }
       .nav-menu.expanded {
-          display: block; /* 改为block确保兼容性 */
+          display: block;
       }
       .current-page-title {
           display: flex;
@@ -243,7 +241,7 @@
       }
       /* 隐藏横屏专用的二级导航容器 */
       .sub-nav-container {
-          display: none;
+          display: none !important;
       }
   }
 </style>
@@ -266,6 +264,7 @@
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
+            <!-- 竖屏模式下使用的子菜单 -->
             <ul class="sub-nav-menu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
@@ -286,7 +285,7 @@
         </li>
     </ul>
     
-    <!-- 横屏专用的二级导航容器 -->
+    <!-- 横屏专用的二级导航容器 - 占满屏幕一行 -->
     <div class="sub-nav-container">
         <ul class="sub-nav-menu">
             <li class="sub-nav-item" data-section="guitar">
@@ -302,23 +301,104 @@
     </div>
 </div>
 
-<!-- 页面内容保持不变 -->
 <div class="main-content">
-    <!-- 内容部分保持不变 -->
+    <div class="more-link">
+        <h2><a href="https://space.bilibili.com/1933356847">更多Sam_Mu视频 ></a></h2>
+    </div>
+    
+    <div class="card-container">
+        <h2 id="guitar">古典吉他</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/UKR.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">乌克兰仍在人间</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1ESDaY4ECJ" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/red.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">英国工党-红旗歌</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1WupSe8EEx" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/als.png" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">友谊地久天长</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rC411x7fm" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/land.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">Land of Hope and Glory</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1rP411y7s2" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <h2 id="samuel">Samuel系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuel2.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">Samuel旗帜-2</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1ebYievERj" target="_blank" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/samuelflag.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">[微型国家]塞缪尔旗帜</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1Pi4y1B7bs" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <h2 id="trip">游记系列</h2>
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">马六甲之旅</h5>
+                <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn-primary">播放</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="https://gango-studio.github.io/image/video/桂林.jpg" class="card-img">
+            <div class="card-body">
+                <h5 class="card-title">桂林遇龙河漂流</h5>
+                <a href="https://player.bilibili.com/player.html?bvid=BV1mp4y1V71i" class="btn-primary">播放</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
-    <!-- 页脚保持不变 -->
+    <h3>Gango Studio</h3>
+    <div>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+    <div>
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        <h5>&nbsp;</h5>
+    </div>
 </footer>
 
 <script>
-// 兼容iOS 12.5的代码 - 参考Apple.com的实现方式
+// 兼容iOS 12.5的代码
 (function() {
-    // 使用传统的DOM操作方式确保兼容性
     var navMenu = document.getElementById('navMenu');
     var currentPageTitle = document.getElementById('currentPageTitle');
     
-    // 判断是否为手机竖屏模式 - 使用传统方法
+    // 判断是否为手机竖屏模式
     function isMobilePortrait() {
         return window.innerWidth < 768 && window.matchMedia && window.matchMedia("(orientation: portrait)").matches;
     }
@@ -326,7 +406,7 @@
     // 初始化导航栏状态
     function initNavbar() {
         if (isMobilePortrait()) {
-            // 手机竖屏模式
+            // 手机竖屏模式 - 显示折叠菜单
             navMenu.style.display = 'none';
             currentPageTitle.style.display = 'flex';
             // 关闭所有子菜单
@@ -335,14 +415,14 @@
                 subMenus[i].style.display = 'none';
             }
         } else {
-            // 桌面端或横屏模式
+            // 桌面端或横屏模式 - 显示完整导航
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
             // 横屏模式下二级导航由CSS控制显示
         }
     }
     
-    // 处理一级导航点击 - 兼容性写法
+    // 处理一级导航点击 - 仅竖屏模式
     function handlePrimaryNavClick(e) {
         if (!isMobilePortrait()) return;
         
@@ -457,9 +537,9 @@
         }
     }
     
-    // 初始化事件监听 - 使用传统的事件绑定方式
+    // 初始化事件监听
     function initEventListeners() {
-        // 一级导航点击
+        // 一级导航点击（仅竖屏模式需要）
         var primaryLinks = document.querySelectorAll('.nav-item.has-submenu .nav-link');
         for (var i = 0; i < primaryLinks.length; i++) {
             if (primaryLinks[i].addEventListener) {
