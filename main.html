@@ -177,9 +177,6 @@
       .current-page-title {
           display: none;
       }
-      .nav-item.has-submenu {
-          position: static;
-      }
       .sub-nav-menu {
           display: flex !important;
           flex-direction: row;
@@ -189,19 +186,21 @@
           padding: 0;
           background-color: #f0f0f0;
           border-top: 1px solid #e0e0e0;
+          box-sizing: border-box;
       }
       .sub-nav-item {
           flex: 1;
           padding: 0;
           text-align: center;
           white-space: nowrap;
-          max-width: 33.33%;
+          max-width: 33.333%;
       }
       .sub-nav-link {
           padding: 15px 0;
           display: block;
           width: 100%;
           transition: background 0.2s;
+          box-sizing: border-box;
       }
       .sub-nav-link:hover {
           background: rgba(0,122,255,0.1);
