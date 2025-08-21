@@ -170,7 +170,6 @@
       color: #1d1d1f;
   }
 
-  /* 横屏/电脑端专用样式 */
   @media (min-width: 769px), (orientation: landscape) {
       .nav-menu {
           flex-direction: row;
@@ -178,7 +177,6 @@
       .current-page-title {
           display: none;
       }
-      /* 横屏模式下二级导航始终显示 */
       .sub-nav-menu {
           display: flex !important;
           flex-direction: row;
@@ -191,24 +189,23 @@
       }
       .sub-nav-item {
           flex: 1;
-          padding-left: 0;
+          padding: 0;
           text-align: center;
           white-space: nowrap;
       }
       .sub-nav-link {
-          padding: 12px 15px;
+          padding: 15px 20px;
+          display: block;
           transition: background 0.2s;
       }
       .sub-nav-link:hover {
           background: rgba(0,122,255,0.1);
       }
-      /* 隐藏折叠图标 */
       .nav-item.has-submenu .collapse-icon {
           display: none;
       }
   }
 
-  /* 手机竖屏专用样式 */
   @media (max-width: 768px) and (orientation: portrait) {
       .nav-menu {
           flex-direction: column;
@@ -226,7 +223,6 @@
       .sub-nav-menu.expanded {
           display: block;
       }
-      /* 显示折叠图标 */
       .nav-item.has-submenu .collapse-icon {
           display: inline-block;
       }
@@ -251,7 +247,6 @@
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
-            <!-- 唯一的二级导航菜单 -->
             <ul class="sub-nav-menu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
@@ -333,7 +328,7 @@
         <div class="card">
             <img src="https://gango-studio.github.io/image/video/malacca.jpeg" class="card-img">
             <div class="card-body">
-                <h5 class="card-title">马六甲之旅</h5>
+                <h5 class="card-title">马六甲之旅</a>
                 <a href="https://www.bilibili.com/blackboard/webplayer/mbplayer.html?bvid=BV1R4421c7iG" class="btn-primary">播放</a>
             </div>
         </div>
@@ -365,36 +360,28 @@
 </footer>
 
 <script>
-// 兼容iOS 12.5的代码
 (function() {
     var navMenu = document.getElementById('navMenu');
     var currentPageTitle = document.getElementById('currentPageTitle');
     
-    // 判断是否为手机竖屏模式
     function isMobilePortrait() {
         return window.innerWidth < 768 && window.matchMedia && window.matchMedia("(orientation: portrait)").matches;
     }
     
-    // 初始化导航栏状态
     function initNavbar() {
         if (isMobilePortrait()) {
-            // 手机竖屏模式 - 显示折叠菜单
             navMenu.style.display = 'none';
             currentPageTitle.style.display = 'flex';
-            // 关闭所有子菜单
             var subMenus = document.querySelectorAll('.sub-nav-menu');
             for (var i = 0; i < subMenus.length; i++) {
                 subMenus[i].style.display = 'none';
             }
         } else {
-            // 桌面端或横屏模式 - 显示完整导航
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
-            // 横屏模式下二级导航由CSS控制显示
         }
     }
     
-    // 处理一级导航点击 - 仅竖屏模式
     function handlePrimaryNavClick(e) {
         if (!isMobilePortrait()) return;
         
@@ -414,7 +401,6 @@
             var isExpanded = subMenu.style.display === 'block';
             var collapseIcon = navLink.querySelector('.collapse-icon');
             
-            // 关闭其他子菜单
             var allSubMenus = document.querySelectorAll('.sub-nav-menu');
             for (var i = 0; i < allSubMenus.length; i++) {
                 if (allSubMenus[i] !== subMenu) {
@@ -425,7 +411,6 @@
                 }
             }
             
-            // 切换当前子菜单
             subMenu.style.display = isExpanded ? 'none' : 'block';
             if (collapseIcon) {
                 collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
@@ -433,7 +418,6 @@
         }
     }
     
-    // 兼容性的父元素查找函数
     function findParent(element, className) {
         while (element && element !== document) {
             if (element.className && element.className.indexOf(className) > -1) {
@@ -444,7 +428,6 @@
         return null;
     }
     
-    // 处理二级导航点击
     function handleSecondaryNavClick(e) {
         var target = e.target || e.srcElement;
         var subNavLink = target.closest ? target.closest('.sub-nav-link') : findParent(target, 'sub-nav-link');
@@ -456,27 +439,23 @@
         var subNavItem = subNavLink.parentElement;
         var targetId = subNavLink.getAttribute('href');
         
-        // 更新活动状态
         var allItems = document.querySelectorAll('.sub-nav-item');
         for (var i = 0; i < allItems.length; i++) {
             allItems[i].className = allItems[i].className.replace('active', '').trim();
         }
         subNavItem.className += ' active';
         
-        // 滚动到目标位置
         if (targetId) {
             var targetElement = document.querySelector(targetId);
             if (targetElement) {
                 if (targetElement.scrollIntoView) {
                     targetElement.scrollIntoView({ behavior: 'smooth' });
                 } else {
-                    // 兼容性回退
                     window.scrollTo(0, targetElement.offsetTop);
                 }
             }
         }
         
-        // 如果是手机竖屏，点击后折叠整个菜单
         if (isMobilePortrait()) {
             navMenu.style.display = 'none';
             if (currentPageTitle.querySelector('.collapse-icon')) {
@@ -489,7 +468,6 @@
         }
     }
     
-    // 处理当前页面标题点击
     function handleCurrentTitleClick() {
         if (!isMobilePortrait()) return;
         
@@ -500,7 +478,6 @@
             icon.style.transform = isExpanded ? '' : 'rotate(90deg)';
         }
         
-        // 如果折叠菜单，同时折叠所有子菜单
         if (isExpanded) {
             var subMenus = document.querySelectorAll('.sub-nav-menu');
             for (var i = 0; i < subMenus.length; i++) {
@@ -509,9 +486,7 @@
         }
     }
     
-    // 初始化事件监听
     function initEventListeners() {
-        // 一级导航点击（仅竖屏模式需要）
         var primaryLinks = document.querySelectorAll('.nav-item.has-submenu .nav-link');
         for (var i = 0; i < primaryLinks.length; i++) {
             if (primaryLinks[i].addEventListener) {
@@ -521,7 +496,6 @@
             }
         }
         
-        // 二级导航点击
         var secondaryLinks = document.querySelectorAll('.sub-nav-link');
         for (var i = 0; i < secondaryLinks.length; i++) {
             if (secondaryLinks[i].addEventListener) {
@@ -531,14 +505,12 @@
             }
         }
         
-        // 标题点击
         if (currentPageTitle.addEventListener) {
             currentPageTitle.addEventListener('click', handleCurrentTitleClick);
         } else if (currentPageTitle.attachEvent) {
             currentPageTitle.attachEvent('onclick', handleCurrentTitleClick);
         }
         
-        // 窗口大小变化
         if (window.addEventListener) {
             window.addEventListener('resize', initNavbar);
         } else if (window.attachEvent) {
@@ -546,7 +518,6 @@
         }
     }
     
-    // 初始化
     initNavbar();
     initEventListeners();
 })();
