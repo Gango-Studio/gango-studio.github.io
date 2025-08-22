@@ -39,7 +39,6 @@
       margin-bottom: 20px;
       border-radius: 10px;
       overflow: hidden;
-      position: relative;
   }
   .current-page-title {
       display: none;
@@ -171,6 +170,7 @@
       color: #1d1d1f;
   }
 
+  /* 横屏模式下的导航样式 */
   @media (min-width: 769px), (orientation: landscape) {
       .nav-menu {
           flex-direction: row;
@@ -178,41 +178,48 @@
       .current-page-title {
           display: none;
       }
+      
+      /* 一级导航样式 */
       .nav-item.has-submenu {
-          position: static;
+          position: relative;
       }
+      
+      /* 二级导航样式 - 修改为独立行 */
       .sub-nav-menu {
           display: flex !important;
           flex-direction: row;
           justify-content: center;
           width: 100%;
-          position: absolute;
-          left: 0;
+          position: static;
           padding: 0;
           background-color: #f0f0f0;
           border-top: 1px solid #e0e0e0;
-          z-index: 10;
       }
+      
       .sub-nav-item {
           flex: 1;
           padding: 0;
           text-align: center;
           white-space: nowrap;
-          max-width: 33.33%;
       }
+      
       .sub-nav-link {
-          padding: 15px 20px;
+          padding: 12px 20px;
           display: block;
           transition: background 0.2s;
+          font-size: 0.9em;
       }
+      
       .sub-nav-link:hover {
           background: rgba(0,122,255,0.1);
       }
+      
       .nav-item.has-submenu .collapse-icon {
           display: none;
       }
   }
 
+  /* 竖屏模式下的导航样式 */
   @media (max-width: 768px) and (orientation: portrait) {
       .nav-menu {
           flex-direction: column;
@@ -257,23 +264,25 @@
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
-            <ul class="sub-nav-menu">
-                <li class="sub-nav-item" data-section="guitar">
-                    <a href="#guitar" class="sub-nav-link">古典吉他</a>
-                </li>
-                <li class="sub-nav-item" data-section="samuel">
-                    <a href="#samuel" class="sub-nav-link">Samuel</a>
-                </li>
-                <li class="sub-nav-item" data-section="trip">
-                    <a href="#trip" class="sub-nav-link">游记</a>
-                </li>
-            </ul>
         </li>
         <li class="nav-item">
             <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
         </li>
         <li class="nav-item">
             <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
+        </li>
+    </ul>
+    
+    <!-- 二级导航 - 独立行 -->
+    <ul class="sub-nav-menu">
+        <li class="sub-nav-item" data-section="guitar">
+            <a href="#guitar" class="sub-nav-link">古典吉他</a>
+        </li>
+        <li class="sub-nav-item" data-section="samuel">
+            <a href="#samuel" class="sub-nav-link">Samuel</a>
+        </li>
+        <li class="sub-nav-item" data-section="trip">
+            <a href="#trip" class="sub-nav-link">游记</a>
         </li>
     </ul>
 </div>
@@ -389,6 +398,12 @@
         } else {
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
+            
+            // 横屏模式下显示二级导航
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'flex';
+            }
         }
     }
     
