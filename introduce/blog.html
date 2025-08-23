@@ -8,35 +8,264 @@
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
  <style>
-  <!--
-.STYLE1 {font-size: xx-large}
-.STYLE2 {font-size: x-large}
-.STYLE3 {font-size: large}
--->
-               a{
-                   text-decoration: none;
-                   color:blue;
-               }
-               .a1:visited{color:Blue;}
-               .a1:hover{color:Purple;}
-               .a1:active{color:Red;}
-          .nav1 {
-            display:block;
-            padding:20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-        }
-      .navs {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 26px;
-            box-shadow:  20px 20px 60px #a8b7d1,
-             			     -20px -20px 60px #daedff;
-        }
-      .mainpara{
-           padding-left : 10%;
-       }
+body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+  }
+  a {
+      text-decoration: none;
+      color: #007aff;
+  }
+  a:hover {
+      color: #005bb5;
+  }
+  header {
+      text-align: center;
+      padding: 20px 0 0;
+      background-color: #ffffff;
+  }
+  header h1 {
+      font-size: 2.5em;
+      margin: 0;
+      color: #1d1d1f;
+      font-weight: 500;
+  }
+  .nav-wrapper {
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+  }
+  .current-page-title {
+      display: none;
+      padding: 15px;
+      text-align: center;
+      background: #007aff;
+      color: white;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+  }
+  .nav-menu {
+      display: flex;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  }
+  .nav-item {
+      position: relative;
+      flex: 1;
+  }
+  .nav-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.95em;
+      cursor: pointer;
+  }
+  .nav-item.active > .nav-link {
+      background: #007aff;
+      color: white !important;
+  }
+  .collapse-icon {
+      font-size: 1.2em;
+      transition: transform 0.3s;
+      margin-left: 10px;
+  }
+  .sub-nav-menu {
+      display: none;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      background-color: #f8f8f8;
+  }
+  .sub-nav-item {
+      padding-left: 30px;
+  }
+  .sub-nav-link {
+      display: block;
+      padding: 12px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.9em;
+  }
+  .sub-nav-item.active .sub-nav-link {
+      color: #007aff;
+      font-weight: bold;
+  }
+  
+  /* 横屏专用二级导航 */
+  .sub-nav-row {
+      display: none;
+      width: 100%;
+      background-color: #f0f0f0;
+      border-top: 1px solid #e0e0e0;
+  }
+  .sub-nav-row-inner {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  }
+  .sub-nav-row-item {
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      max-width: 33.33%;
+  }
+  .sub-nav-row-link {
+      display: block;
+      padding: 15px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: background 0.2s;
+  }
+  .sub-nav-row-link:hover {
+      background: rgba(0,122,255,0.1);
+  }
+  .sub-nav-row-item.active .sub-nav-row-link {
+      color: #007aff;
+      font-weight: bold;
+  }
+  
+  .main-content {
+      flex: 1;
+      padding-bottom: 20px;
+  }
+  .more-link {
+      text-align: center;
+      margin: 25px 0;
+  }
+  .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+  }
+  .card {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: white;
+  }
+  .card-img {
+      width: 100%;
+      height: auto;
+      display: block;
+  }
+  .card-body {
+      padding: 15px;
+  }
+  .card-title {
+      margin: 0 0 10px 0;
+  }
+  .btn-primary {
+      display: inline-block;
+      background: #007aff;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+  }
+  footer {
+      width: 100%;
+      background: white;
+      padding: 20px 0;
+      margin-top: auto;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      flex-wrap: wrap;
+  }
+  footer h3 {
+      font-size: 1.8em;
+      margin: 0;
+      padding-left: 10%;
+      width: 100%;
+      color: #1d1d1f;
+      font-weight: 500;
+  }
+  footer > div {
+      width: 50%;
+      box-sizing: border-box;
+  }
+  footer h4, footer h5 {
+      margin: 0;
+      padding: 5px 0;
+      padding-left: 10%;
+      color: #1d1d1f;
+  }
+
+  /* 横屏模式下的导航样式 */
+  @media (min-width: 769px), (orientation: landscape) {
+      .nav-menu {
+          flex-direction: row;
+      }
+      .current-page-title {
+          display: none;
+      }
+      
+      /* 隐藏竖屏二级导航 */
+      .sub-nav-menu {
+          display: none !important;
+      }
+      
+      /* 显示横屏专用二级导航 */
+      .sub-nav-row {
+          display: block;
+      }
+      
+      .nav-item.has-submenu .collapse-icon {
+          display: none;
+      }
+  }
+
+  /* 竖屏模式下的导航样式 */
+  @media (max-width: 768px) and (orientation: portrait) {
+      .nav-menu {
+          flex-direction: column;
+          display: none;
+      }
+      .nav-menu.expanded {
+          display: block;
+      }
+      .current-page-title {
+          display: flex;
+      }
+      
+      /* 隐藏横屏专用二级导航 */
+      .sub-nav-row {
+          display: none !important;
+      }
+      
+      /* 竖屏二级导航样式 */
+      .sub-nav-menu {
+          display: none;
+      }
+      .sub-nav-menu.expanded {
+          display: block;
+      }
+      .nav-item.has-submenu .collapse-icon {
+          display: inline-block;
+      }
+      .sub-nav-item {
+          max-width: none;
+      }
+  }
   </style>
 </head>
 <body>
@@ -44,20 +273,38 @@
        <h1 align="center">Gango</h1>
 </div></a>
 <br/>
-<nav class="nav nav-pills flex-column flex-sm-row">
-  <a class="flex-sm-fill text-sm-center nav-link" href="https://gango-studio.github.io/main.html">Vlog</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="#">Blog</a>
-  <a class="flex-sm-fill text-sm-center nav-link" href="https://gango-studio.github.io/introduce/cfile.html">应用程序</a>
-  <!--<a class="flex-sm-fill text-sm-center nav-link" href="#">else</a>-->
-</nav>
- <br/>
- <div style = "background:url(../image/background/back4.jpg);">
-    <!--<h3>快捷方式：</h3>
-    <br/>
-    <div class="nav1">
-      <nobr><a href = "#talk"><div style= "display:inline-block;float:left;width:20%">杂谈</div></a><a href = "#travel"><div  style= "display:inline-block;float:left;width:20%">游记</div></a><a href = "#memory"><div  style= "display:inline-block;float:left;width:20%">往事</div></a></a><a href = "#more"  style= "display:inline-block;float:left;width:20%"><div  style= "display:inline-block;float:left;width:20%">更多</div></a></nobr>
+<div class="nav-wrapper">
+    <div class="current-page-title" id="currentPageTitle">
+        Vlog&Video
+        <span class="collapse-icon">›</span>
     </div>
-    <br/>-->
+    <ul class="nav-menu" id="navMenu">
+        <li class="nav-item active has-submenu">
+            <a class="nav-link">
+                Vlog&Video
+                <span class="collapse-icon">›</span>
+            </a>
+            <!-- 竖屏模式下的二级导航 -->
+            <ul class="sub-nav-menu">
+                <li class="sub-nav-item" data-section="guitar">
+                    <a href="#guitar" class="sub-nav-link">古典吉他</a>
+                </li>
+                <li class="sub-nav-item" data-section="samuel">
+                    <a href="#samuel" class="sub-nav-link">Samuel</a>
+                </li>
+                <li class="sub-nav-item" data-section="trip">
+                    <a href="#trip" class="sub-nav-link">游记</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
+        </li>
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
+        </li>
+    </ul>
+ <div style = "background:url(../image/background/back4.jpg);">
     <br/>
     <div id = "talk" class = "navs">
        <h2 style = " text-align : center;color:black; ">杂谈</h2>
