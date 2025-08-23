@@ -39,6 +39,7 @@
       margin-bottom: 20px;
       border-radius: 10px;
       overflow: hidden;
+      position: relative;
   }
   .current-page-title {
       display: none;
@@ -181,7 +182,7 @@
       
       /* 一级导航样式 */
       .nav-item.has-submenu {
-          position: relative;
+          position: static;
       }
       
       /* 二级导航样式 - 修改为独立行 */
@@ -192,6 +193,7 @@
           width: 100%;
           position: absolute;
           left: 0;
+          top: 100%;
           padding: 0;
           background-color: #f0f0f0;
           border-top: 1px solid #e0e0e0;
@@ -203,13 +205,13 @@
           padding: 0;
           text-align: center;
           white-space: nowrap;
+          max-width: 33.33%;
       }
       
       .sub-nav-link {
-          padding: 12px 20px;
+          padding: 15px 20px;
           display: block;
           transition: background 0.2s;
-          font-size: 0.9em;
       }
       
       .sub-nav-link:hover {
