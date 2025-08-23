@@ -343,20 +343,187 @@ body {
       <h3  style = " text-align : center "><a href = "https://space.bilibili.com/1933356847" class = "a1"  style="text-decoration: none;color:black;">🔗更多博客</a></h4>
     </div>
  </div>
+</div>
 <br/>
-<footer><div  style="background:#DCDCDC;height：100%;width:100%;"><br/></div><br/>
-    <h3  style ="padding-left : 6%;width：100% ;height:100%">Gango Studio</h3>
-    <h4 style = "width：100% ;height:100%"><a style ="color:black;text-decoration: none;padding-left : 10%;" href = "https://gango-studio.github.io">🏠主页</a></h4>
-    <div  style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/main.html">🔗Vlog</h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/cfile.html">🔗C++</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+ <footer>
+    <h3>Gango Studio</h3>
+    <div>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
     </div>
-   <div style ="padding-left : 10%;float:left;width：100% ;height:100%">
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;" href = "https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
-          <h5><a  style ="text-decoration: none;color:black;"  href = "https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
-   </div>
+    <div>
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        <h5>&nbsp;</h5>
+    </div>
 </footer>
+
+<script>
+(function() {
+    var navMenu = document.getElementById('navMenu');
+    var currentPageTitle = document.getElementById('currentPageTitle');
+    
+    function isMobilePortrait() {
+        return window.innerWidth < 768 && window.matchMedia && window.matchMedia("(orientation: portrait)").matches;
+    }
+    
+    function initNavbar() {
+        if (isMobilePortrait()) {
+            navMenu.style.display = 'none';
+            currentPageTitle.style.display = 'flex';
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        } else {
+            navMenu.style.display = 'flex';
+            currentPageTitle.style.display = 'none';
+        }
+    }
+    
+    function handlePrimaryNavClick(e) {
+        if (!isMobilePortrait()) return;
+        
+        var target = e.target || e.srcElement;
+        var navLink = target.closest ? target.closest('.nav-link') : findParent(target, 'nav-link');
+        if (!navLink) return;
+        
+        var navItem = navLink.parentElement;
+        
+        if (navItem.className.indexOf('has-submenu') > -1) {
+            if (e.preventDefault) e.preventDefault();
+            e.returnValue = false;
+            if (e.stopPropagation) e.stopPropagation();
+            e.cancelBubble = true;
+            
+            var subMenu = navItem.querySelector('.sub-nav-menu');
+            var isExpanded = subMenu.style.display === 'block';
+            var collapseIcon = navLink.querySelector('.collapse-icon');
+            
+            var allSubMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < allSubMenus.length; i++) {
+                if (allSubMenus[i] !== subMenu) {
+                    allSubMenus[i].style.display = 'none';
+                    var otherIcon = allSubMenus[i].previousElementSibling ? 
+                        allSubMenus[i].previousElementSibling.querySelector('.collapse-icon') : null;
+                    if (otherIcon) otherIcon.style.transform = '';
+                }
+            }
+            
+            subMenu.style.display = isExpanded ? 'none' : 'block';
+            if (collapseIcon) {
+                collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
+            }
+        }
+    }
+    
+    function findParent(element, className) {
+        while (element && element !== document) {
+            if (element.className && element.className.indexOf(className) > -1) {
+                return element;
+            }
+            element = element.parentNode;
+        }
+        return null;
+    }
+    
+    function handleSecondaryNavClick(e) {
+        var target = e.target || e.srcElement;
+        var subNavLink = target.closest ? target.closest('.sub-nav-link, .sub-nav-row-link') : findParent(target, 'sub-nav-link');
+        if (!subNavLink) return;
+        
+        if (e.preventDefault) e.preventDefault();
+        e.returnValue = false;
+        
+        var subNavItem = subNavLink.parentElement;
+        var targetId = subNavLink.getAttribute('href');
+        
+        // 更新所有二级导航项的激活状态
+        var allItems = document.querySelectorAll('.sub-nav-item, .sub-nav-row-item');
+        for (var i = 0; i < allItems.length; i++) {
+            allItems[i].className = allItems[i].className.replace('active', '').trim();
+        }
+        subNavItem.className += ' active';
+        
+        if (targetId) {
+            var targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                if (targetElement.scrollIntoView) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.scrollTo(0, targetElement.offsetTop);
+                }
+            }
+        }
+        
+        if (isMobilePortrait()) {
+            navMenu.style.display = 'none';
+            if (currentPageTitle.querySelector('.collapse-icon')) {
+                currentPageTitle.querySelector('.collapse-icon').style.transform = '';
+            }
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        }
+    }
+    
+    function handleCurrentTitleClick() {
+        if (!isMobilePortrait()) return;
+        
+        var isExpanded = navMenu.style.display === 'flex' || navMenu.style.display === 'block';
+        navMenu.style.display = isExpanded ? 'none' : 'block';
+        var icon = this.querySelector('.collapse-icon');
+        if (icon) {
+            icon.style.transform = isExpanded ? '' : 'rotate(90deg)';
+        }
+        
+        if (isExpanded) {
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        }
+    }
+    
+    function initEventListeners() {
+        var primaryLinks = document.querySelectorAll('.nav-item.has-submenu .nav-link');
+        for (var i = 0; i < primaryLinks.length; i++) {
+            if (primaryLinks[i].addEventListener) {
+                primaryLinks[i].addEventListener('click', handlePrimaryNavClick);
+            } else if (primaryLinks[i].attachEvent) {
+                primaryLinks[i].attachEvent('onclick', handlePrimaryNavClick);
+            }
+        }
+        
+        var secondaryLinks = document.querySelectorAll('.sub-nav-link, .sub-nav-row-link');
+        for (var i = 0; i < secondaryLinks.length; i++) {
+            if (secondaryLinks[i].addEventListener) {
+                secondaryLinks[i].addEventListener('click', handleSecondaryNavClick);
+            } else if (secondaryLinks[i].attachEvent) {
+                secondaryLinks[i].attachEvent('onclick', handleSecondaryNavClick);
+            }
+        }
+        
+        if (currentPageTitle.addEventListener) {
+            currentPageTitle.addEventListener('click', handleCurrentTitleClick);
+        } else if (currentPageTitle.attachEvent) {
+            currentPageTitle.attachEvent('onclick', handleCurrentTitleClick);
+        }
+        
+        if (window.addEventListener) {
+            window.addEventListener('resize', initNavbar);
+        } else if (window.attachEvent) {
+            window.attachEvent('onresize', initNavbar);
+        }
+    }
+    
+    initNavbar();
+    initEventListeners();
+})();
+</script>
 </body>
 </html><!--出事找9/6-->
