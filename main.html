@@ -39,7 +39,6 @@
       margin-bottom: 20px;
       border-radius: 10px;
       overflow: hidden;
-      position: relative;
   }
   .current-page-title {
       display: none;
@@ -101,6 +100,43 @@
       color: #007aff;
       font-weight: bold;
   }
+  
+  /* 横屏专用二级导航 */
+  .sub-nav-row {
+      display: none;
+      width: 100%;
+      background-color: #f0f0f0;
+      border-top: 1px solid #e0e0e0;
+  }
+  .sub-nav-row-inner {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  }
+  .sub-nav-row-item {
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      max-width: 33.33%;
+  }
+  .sub-nav-row-link {
+      display: block;
+      padding: 15px 20px;
+      color: #1d1d1f;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: background 0.2s;
+  }
+  .sub-nav-row-link:hover {
+      background: rgba(0,122,255,0.1);
+  }
+  .sub-nav-row-item.active .sub-nav-row-link {
+      color: #007aff;
+      font-weight: bold;
+  }
+  
   .main-content {
       flex: 1;
       padding-bottom: 20px;
@@ -180,42 +216,14 @@
           display: none;
       }
       
-      /* 一级导航样式 */
-      .nav-item.has-submenu {
-          position: static;
-      }
-      
-      /* 二级导航样式 - 修改为独立行 */
+      /* 隐藏竖屏二级导航 */
       .sub-nav-menu {
-          display: flex !important;
-          flex-direction: row;
-          justify-content: center;
-          width: 100%;
-          position: absolute;
-          left: 0;
-          top: 100%;
-          padding: 0;
-          background-color: #f0f0f0;
-          border-top: 1px solid #e0e0e0;
-          z-index: 10;
+          display: none !important;
       }
       
-      .sub-nav-item {
-          flex: 1;
-          padding: 0;
-          text-align: center;
-          white-space: nowrap;
-          max-width: 33.33%;
-      }
-      
-      .sub-nav-link {
-          padding: 15px 20px;
+      /* 显示横屏专用二级导航 */
+      .sub-nav-row {
           display: block;
-          transition: background 0.2s;
-      }
-      
-      .sub-nav-link:hover {
-          background: rgba(0,122,255,0.1);
       }
       
       .nav-item.has-submenu .collapse-icon {
@@ -235,6 +243,13 @@
       .current-page-title {
           display: flex;
       }
+      
+      /* 隐藏横屏专用二级导航 */
+      .sub-nav-row {
+          display: none !important;
+      }
+      
+      /* 竖屏二级导航样式 */
       .sub-nav-menu {
           display: none;
       }
@@ -268,6 +283,7 @@
                 Vlog&Video
                 <span class="collapse-icon">›</span>
             </a>
+            <!-- 竖屏模式下的二级导航 -->
             <ul class="sub-nav-menu">
                 <li class="sub-nav-item" data-section="guitar">
                     <a href="#guitar" class="sub-nav-link">古典吉他</a>
@@ -287,6 +303,21 @@
             <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
         </li>
     </ul>
+    
+    <!-- 横屏模式下的二级导航（独立行） -->
+    <div class="sub-nav-row">
+        <ul class="sub-nav-row-inner">
+            <li class="sub-nav-row-item" data-section="guitar">
+                <a href="#guitar" class="sub-nav-row-link">古典吉他</a>
+            </li>
+            <li class="sub-nav-row-item" data-section="samuel">
+                <a href="#samuel" class="sub-nav-row-link">Samuel</a>
+            </li>
+            <li class="sub-nav-row-item" data-section="trip">
+                <a href="#trip" class="sub-nav-row-link">游记</a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <div class="main-content">
@@ -400,12 +431,6 @@
         } else {
             navMenu.style.display = 'flex';
             currentPageTitle.style.display = 'none';
-            
-            // 横屏模式下显示二级导航
-            var subMenus = document.querySelectorAll('.sub-nav-menu');
-            for (var i = 0; i < subMenus.length; i++) {
-                subMenus[i].style.display = 'flex';
-            }
         }
     }
     
@@ -457,7 +482,7 @@
     
     function handleSecondaryNavClick(e) {
         var target = e.target || e.srcElement;
-        var subNavLink = target.closest ? target.closest('.sub-nav-link') : findParent(target, 'sub-nav-link');
+        var subNavLink = target.closest ? target.closest('.sub-nav-link, .sub-nav-row-link') : findParent(target, 'sub-nav-link');
         if (!subNavLink) return;
         
         if (e.preventDefault) e.preventDefault();
@@ -466,7 +491,8 @@
         var subNavItem = subNavLink.parentElement;
         var targetId = subNavLink.getAttribute('href');
         
-        var allItems = document.querySelectorAll('.sub-nav-item');
+        // 更新所有二级导航项的激活状态
+        var allItems = document.querySelectorAll('.sub-nav-item, .sub-nav-row-item');
         for (var i = 0; i < allItems.length; i++) {
             allItems[i].className = allItems[i].className.replace('active', '').trim();
         }
@@ -523,7 +549,7 @@
             }
         }
         
-        var secondaryLinks = document.querySelectorAll('.sub-nav-link');
+        var secondaryLinks = document.querySelectorAll('.sub-nav-link, .sub-nav-row-link');
         for (var i = 0; i < secondaryLinks.length; i++) {
             if (secondaryLinks[i].addEventListener) {
                 secondaryLinks[i].addEventListener('click', handleSecondaryNavClick);
