@@ -35,6 +35,44 @@ body {
       color: #1d1d1f;
       font-weight: 500;
   }
+  /* 工具容器样式 */
+	.nodiv{
+		/*background-color: #f5f5f7; /* 浅色背景 */*/
+	}
+        .tools-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: transparent; 
+        }
+
+        /* 工具项样式 */
+        .tool-item {
+            margin: 20px 0;
+            padding: 16px;
+            background-color: #ffffff; /* 白色背景 */
+            border-radius: 12px; /* 圆角 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-5px); /* 悬停效果 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-item h2 {
+            font-size: 1.5em;
+            margin: 0 0 8px;
+            color: #1d1d1f; /* 深色文字 */
+        }
+
+        .tool-item p {
+            font-size: 1em;
+            color: #666; /* 灰色文字 */
+            margin: 0;
+        }
   .nav-wrapper {
       width: 100%;
       background: white;
@@ -284,7 +322,6 @@ body {
         <li class="nav-item">
             <a href="https://gango-studio.github.io/main.html" class="nav-link">
                 Vlog&Video
-                <span class="collapse-icon">›</span>
             </a>
             <!-- 竖屏模式下的二级导航 -->
             <!--<ul class="sub-nav-menu">
@@ -308,31 +345,31 @@ body {
     </ul>
  <div style = "background:url(../image/background/back4.jpg);">
     <br/>
-    <div id = "talk" class = "navs">
+    <div id = "talk" class = "main-content">
        <h2 style = " text-align : center;color:black; ">杂谈</h2>
        <br/>
-       <p class = "mainpara"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv9773295"  class = "a1" target= "_blank" >🔗【杂谈】日本纪念品</a></p>
-       <p class = "mainpara"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv12898212"  class = "a1" target= "_blank" >🔗【杂谈】关于iPod touch4(2010)</a></p>
-       <p class = "mainpara"><a style="text-decoration: none;color:black;" href = "https://zhuanlan.zhihu.com/p/589177788"  class = "a1" target= "_blank" >🔗【杂谈】Freedom For IRAN</a></p>
-       <p class = "mainpara"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv21306034"  class = "a1" target= "_blank" >🔗【杂谈】记Gango.ml春节更新</a></p>
+       <p class = "tool-item"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv9773295"  class = "a1" target= "_blank" >🔗【杂谈】日本纪念品</a></p>
+       <p class = "tool-item"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv12898212"  class = "a1" target= "_blank" >🔗【杂谈】关于iPod touch4(2010)</a></p>
+       <p class = "tool-item"><a style="text-decoration: none;color:black;" href = "https://zhuanlan.zhihu.com/p/589177788"  class = "a1" target= "_blank" >🔗【杂谈】Freedom For IRAN</a></p>
+       <p class = "tool-item"><a style="text-decoration: none;color:black;" href = "https://www.bilibili.com/read/cv21306034"  class = "a1" target= "_blank" >🔗【杂谈】记Gango.ml春节更新</a></p>
       <br/>
       <br/>
     </div>
       <br/>
       <br/>
-    <div id = "travel" class = "navs">
+    <div id = "travel" class = "main-content">
       <h2 style = " text-align : center;color:black; ">游记</h2>
       <br/>
-      <p class = "mainpara" style ="color:black;">敬请期待</p>
+      <p class = "tool-item" style ="color:black;">敬请期待</p>
       <br/>
       <br/>
       </div>
        <br/>
       <br/>
-     <div id = "memory" class = "navs">
+     <div id = "memory" class = "main-content">
       <h2 style = " text-align : center;color:black; ">往事</h2>
       <br/>
-      <p class = "mainpara"><a style="text-decoration: none;color:black;" href = "https://zhuanlan.zhihu.com/p/587226324"  class = "a1" target= "_blank" >🔗【往事】我与世界杯</a></p>
+      <p class = "tool-item"><a style="text-decoration: none;color:black;" href = "https://zhuanlan.zhihu.com/p/587226324"  class = "a1" target= "_blank" >🔗【往事】我与世界杯</a></p>
       <br/>
       <br/>
       <br/>
@@ -341,8 +378,8 @@ body {
       <br/>
       <br/>
       <br/>
-    <div id = "more" class = "navs">
-      <h3  style = " text-align : center "><a href = "https://space.bilibili.com/1933356847" class = "a1"  style="text-decoration: none;color:black;">🔗更多博客</a></h4>
+    <div id = "more" class = "main-content">
+      <h3  style = " text-align : center " class ="tool-item"><a href = "https://space.bilibili.com/1933356847" class = "a1"  style="text-decoration: none;color:black;">🔗更多博客</a></h4>
     </div>
  </div>
 </div>
