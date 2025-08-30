@@ -5,327 +5,383 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Gango Studios</title>
- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>  
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>  
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
- <style>
- body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: #f5f5f7;
-      color: #1d1d1f;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-	text-align: center;
-  }
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* 修复中间内容居中问题 */
+.main-content {
+    flex: 1;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .glass-container {
-	
-            background-color: rgba(255, 255, 255, 0.25);
-backdrop-filter: blur(6px);
--webkit-backdrop-filter: blur(6px);
-border: 1px solid rgba(255, 255, 255, 0.18);
-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
--webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-border-radius: 12px;
--webkit-border-radius: 12px;
-color: rgba(255, 255, 255, 0.75);
-        }	 
-  a {
-      text-decoration: none;
-      color: #007aff;
-  }
-  a:hover {
-      color: #005bb5;
-  }
-  header {
-      text-align: center;
-      padding: 20px 0 0;
-      background-color: #ffffff;
-  }
-  header h1 {
-      font-size: 2.5em;
-      margin: 0;
-      color: #1d1d1f;
-      font-weight: 500;
-  }
-  /* 工具容器样式 */
-	.nodiv{
-		/*background-color: #f5f5f7; /* 浅色背景 */*/
-	}
-        .tools-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: transparent; 
-        }
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    color: rgba(255, 255, 255, 0.75);
+}	 
 
-        /* 工具项样式 */
-        .tool-item {
-            margin: 20px 0;
-            padding: 16px;
-            background-color: #ffffff; /* 白色背景 */
-            border-radius: 12px; /* 圆角 */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: left;
-        }
+a {
+    text-decoration: none;
+    color: #007aff;
+}
 
-        .tool-item:hover {
-            transform: translateY(-5px); /* 悬停效果 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+a:hover {
+    color: #005bb5;
+}
 
-        .tool-item h2 {
-            font-size: 1.5em;
-            margin: 0 0 8px;
-            color: #1d1d1f; /* 深色文字 */
-        }
+header {
+    text-align: center;
+    padding: 20px 0 0;
+    background-color: #ffffff;
+}
 
-        .tool-item p {
-            font-size: 1em;
-            color: #666; /* 灰色文字 */
-            margin: 0;
-        }
-  .nav-wrapper {
-      width: 100%;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      border-radius: 10px;
-      overflow: hidden;
-  }
-  .current-page-title {
-      display: none;
-      padding: 15px;
-      text-align: center;
-      background: #007aff;
-      color: white;
-      cursor: pointer;
-      justify-content: center;
-      align-items: center;
-  }
-  .nav-menu {
-      display: flex;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-  }
-  .nav-item {
-      position: relative;
-      flex: 1;
-  }
-  .nav-link {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px 20px;
-      color: #1d1d1f;
-      text-decoration: none;
-      font-size: 0.95em;
-      cursor: pointer;
-  }
-  .nav-item.active > .nav-link {
-      background: #007aff;
-      color: white !important;
-  }
-  .collapse-icon {
-      font-size: 1.2em;
-      transition: transform 0.3s;
-      margin-left: 10px;
-  }
-  .sub-nav-menu {
-      display: none;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      background-color: #f8f8f8;
-  }
-  .sub-nav-item {
-      padding-left: 30px;
-  }
-  .sub-nav-link {
-      display: block;
-      padding: 12px 20px;
-      color: #1d1d1f;
-      text-decoration: none;
-      font-size: 0.9em;
-  }
-  .sub-nav-item.active .sub-nav-link {
-      color: #007aff;
-      font-weight: bold;
-  }
-  
-  /* 横屏专用二级导航 */
-  .sub-nav-row {
-      display: none;
-      width: 100%;
-      background-color: #f0f0f0;
-      border-top: 1px solid #e0e0e0;
-  }
-  .sub-nav-row-inner {
-      display: flex;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-  }
-  .sub-nav-row-item {
-      flex: 1;
-      text-align: center;
-      white-space: nowrap;
-      max-width: 33.33%;
-  }
-  .sub-nav-row-link {
-      display: block;
-      padding: 15px 20px;
-      color: #1d1d1f;
-      text-decoration: none;
-      font-size: 0.9em;
-      transition: background 0.2s;
-  }
-  .sub-nav-row-link:hover {
-      background: rgba(0,122,255,0.1);
-  }
-  .sub-nav-row-item.active .sub-nav-row-link {
-      color: #007aff;
-      font-weight: bold;
-  }
-  
-  .main-content {
-      flex: 1;
-      padding-bottom: 20px;
-  }
-  .more-link {
-      text-align: center;
-      margin: 25px 0;
-  }
-  .card-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 20px;
-  }
-  .card {
-      width: 100%;
-      max-width: 600px;
-      margin-bottom: 25px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      background: white;
-  }
-  .card-img {
-      width: 100%;
-      height: auto;
-      display: block;
-  }
-  .card-body {
-      padding: 15px;
-  }
-  .card-title {
-      margin: 0 0 10px 0;
-  }
-  .btn-primary {
-      display: inline-block;
-      background: #007aff;
-      color: white;
-      padding: 8px 20px;
-      border-radius: 20px;
-      text-decoration: none;
-  }
-  footer {
-      width: 100%;
-      background: white;
-      padding: 20px 0;
-      margin-top: auto;
-      border-top: 1px solid #e0e0e0;
-      display: flex;
-      flex-wrap: wrap;
-  }
-  footer h3 {
-      font-size: 1.8em;
-      margin: 0;
-      padding-left: 10%;
-      width: 100%;
-      color: #1d1d1f;
-      font-weight: 500;
-  }
-  footer > div {
-      width: 50%;
-      box-sizing: border-box;
-  }
-  footer h4, footer h5 {
-      margin: 0;
-      padding: 5px 0;
-      padding-left: 10%;
-      color: #1d1d1f;
-  }
-  footer a {
-      color: #1d1d1f;
-  }
-  /* 横屏模式下的导航样式 */
-  @media (min-width: 769px), (orientation: landscape) {
-      .nav-menu {
-          flex-direction: row;
-      }
-      .current-page-title {
-          display: none;
-      }
-      
-      /* 隐藏竖屏二级导航 */
-      .sub-nav-menu {
-          display: none !important;
-      }
-      
-      /* 显示横屏专用二级导航 */
-      .sub-nav-row {
-          display: block;
-      }
-      
-      .nav-item.has-submenu .collapse-icon {
-          display: none;
-      }
-  }
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #1d1d1f;
+    font-weight: 500;
+}
 
-  /* 竖屏模式下的导航样式 */
-  @media (max-width: 768px) and (orientation: portrait) {
-      .nav-menu {
-          flex-direction: column;
-          display: none;
-      }
-      .nav-menu.expanded {
-          display: block;
-      }
-      .current-page-title {
-          display: flex;
-      }
-      
-      /* 隐藏横屏专用二级导航 */
-      .sub-nav-row {
-          display: none !important;
-      }
-      
-      /* 竖屏二级导航样式 */
-      .sub-nav-menu {
-          display: none;
-      }
-      .sub-nav-menu.expanded {
-          display: block;
-      }
-      .nav-item.has-submenu .collapse-icon {
-          display: inline-block;
-      }
-      .sub-nav-item {
-          max-width: none;
-      }
-  }
-  </style>
+/* 工具容器样式 */
+.nodiv{
+    /*background-color: #f5f5f7; /* 浅色背景 */*/
+}
+
+.tools-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent; 
+}
+
+/* 工具项样式 */
+.tool-item {
+    margin: 20px 0;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+.tool-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tool-item h2 {
+    font-size: 1.5em;
+    margin: 0 0 8px;
+    color: #1d1d1f;
+}
+
+.tool-item p {
+    font-size: 1em;
+    color: #666;
+    margin: 0;
+}
+
+.nav-wrapper {
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.current-page-title {
+    display: none;
+    padding: 15px;
+    text-align: center;
+    background: #007aff;
+    color: white;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.nav-item {
+    position: relative;
+    flex: 1;
+}
+
+.nav-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.95em;
+    cursor: pointer;
+}
+
+.nav-item.active > .nav-link {
+    background: #007aff;
+    color: white !important;
+}
+
+.collapse-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s;
+    margin-left: 10px;
+}
+
+.sub-nav-menu {
+    display: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background-color: #f8f8f8;
+}
+
+.sub-nav-item {
+    padding-left: 30px;
+}
+
+.sub-nav-link {
+    display: block;
+    padding: 12px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.sub-nav-item.active .sub-nav-link {
+    color: #007aff;
+    font-weight: bold;
+}
+
+/* 横屏专用二级导航 */
+.sub-nav-row {
+    display: none;
+    width: 100%;
+    background-color: #f0f0f0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.sub-nav-row-inner {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.sub-nav-row-item {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 33.33%;
+}
+
+.sub-nav-row-link {
+    display: block;
+    padding: 15px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background 0.2s;
+}
+
+.sub-nav-row-link:hover {
+    background: rgba(0,122,255,0.1);
+}
+
+.sub-nav-row-item.active .sub-nav-row-link {
+    color: #007aff;
+    font-weight: bold;
+}
+
+.more-link {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    margin: 0 0 10px 0;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #007aff;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+/* 修复页脚样式 */
+footer {
+    width: 100%;
+    background: white;
+    padding: 20px 0;
+    margin-top: auto;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+footer h3 {
+    font-size: 1.8em;
+    margin: 0;
+    padding-left: 10%;
+    width: 100%;
+    color: #1d1d1f;
+    font-weight: 500;
+    text-align: left;
+}
+
+footer > div {
+    width: 50%;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+footer h4, footer h5 {
+    margin: 0;
+    padding: 5px 0;
+    padding-left: 10%;
+    color: #1d1d1f;
+    text-align: left;
+}
+
+footer a {
+    color: #1d1d1f;
+    text-align: left;
+    display: block;
+    width: 100%;
+}
+
+/* 横屏模式下的导航样式 */
+@media (min-width: 769px), (orientation: landscape) {
+    .nav-menu {
+        flex-direction: row;
+    }
+    
+    .current-page-title {
+        display: none;
+    }
+    
+    /* 隐藏竖屏二级导航 */
+    .sub-nav-menu {
+        display: none !important;
+    }
+    
+    /* 显示横屏专用二级导航 */
+    .sub-nav-row {
+        display: block;
+    }
+    
+    .nav-item.has-submenu .collapse-icon {
+        display: none;
+    }
+}
+
+/* 竖屏模式下的导航样式 */
+@media (max-width: 768px) and (orientation: portrait) {
+    .nav-menu {
+        flex-direction: column;
+        display: none;
+    }
+    
+    .nav-menu.expanded {
+        display: block;
+    }
+    
+    .current-page-title {
+        display: flex;
+    }
+    
+    /* 隐藏横屏专用二级导航 */
+    .sub-nav-row {
+        display: none !important;
+    }
+    
+    /* 竖屏二级导航样式 */
+    .sub-nav-menu {
+        display: none;
+    }
+    
+    .sub-nav-menu.expanded {
+        display: block;
+    }
+    
+    .nav-item.has-submenu .collapse-icon {
+        display: inline-block;
+    }
+    
+    .sub-nav-item {
+        max-width: none;
+    }
+}
+</style>
 </head>
 <body>
-<a href = "https://gango-studio.github.io/" style="text-decoration: none;color:black"><div>
-       <h1 align="center">Gango</h1>
-</div></a>
+<a href="https://gango-studio.github.io/" style="text-decoration: none;color:black">
+    <div>
+        <h1 align="center">Gango</h1>
+    </div>
+</a>
 <br/>
 <div class="nav-wrapper">
     <div class="current-page-title" id="currentPageTitle">
@@ -337,6 +393,7 @@ color: rgba(255, 255, 255, 0.75);
             <a href="https://gango-studio.github.io/main.html" class="nav-link">
                 Vlog&Video
             </a>
+        </li>
         <li class="nav-item">
             <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
         </li>
@@ -344,23 +401,23 @@ color: rgba(255, 255, 255, 0.75);
             <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
         </li>
     </ul>
- <br/>
- <br/>
-	<div class="main-content">
-	<div class="card">
-            <img src="https://gango-studio.github.io/image/CPP/屏幕截图 2020-10-13 215421.png" class="card-img">
-            <div class="card-body">
-                <h5 class="card-title">CourtYard</h5>
-				<p class="card-title">提取码：pyjj </p>
-    			<br/>
-    			<p class="card-title">这是一个2019年编写的C++小游戏......有点简陋</p>
-    			<br/>
-    			<p class="card-title">Windows only</p>
-                <a href="https://pan.baidu.com/s/1ACoQijhVa-c7klennQ3Pcg" target="_blank" class="btn-primary">下载</a>
-            </div>
-	</div>
-	</div>
- <br/>
+</div>
+
+<div class="main-content">
+    <div class="card">
+        <img src="https://gango-studio.github.io/image/CPP/屏幕截图 2020-10-13 215421.png" class="card-img">
+        <div class="card-body">
+            <h5 class="card-title">CourtYard</h5>
+            <p class="card-title">提取码：pyjj </p>
+            <br/>
+            <p class="card-title">这是一个2019年编写的C++小游戏......有点简陋</p>
+            <br/>
+            <p class="card-title">Windows only</p>
+            <a href="https://pan.baidu.com/s/1ACoQijhVa-c7klennQ3Pcg" target="_blank" class="btn-primary">下载</a>
+        </div>
+    </div>
+</div>
+
 <footer>
     <h3>Gango Studio</h3>
     <div>
@@ -540,4 +597,6 @@ color: rgba(255, 255, 255, 0.75);
     initNavbar();
     initEventListeners();
 })();                    
-</html><!--Designed in 2022 / Latest Update in 2025-->
+</script>
+</body>
+</html>
