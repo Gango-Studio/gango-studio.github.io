@@ -229,21 +229,45 @@ header h1 {
     margin: 25px 0;
 }
 
+
+
+/* 修复应用程序页面中间部分 - 与Vlog页面一致 */
+.main-content {
+    flex: 1;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .card-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 20px;
+    width: 100%;
+    max-width: 600px; /* 限制最大宽度，与Vlog页面一致 */
 }
 
 .card {
     width: 100%;
-    max-width: 600px;
+    max-width: 600px; /* 限制卡片最大宽度 */
     margin-bottom: 25px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     background: white;
+}
+
+/* 确保内容居中但不占用过多宽度 */
+.app-content {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card-img {
