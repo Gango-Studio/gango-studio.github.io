@@ -52,6 +52,145 @@
       <html>
   <head>
     <meta charset="UTF-8" />
+    <style>
+       /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            background-color: var(--cayman-primary-color);
+            border-color: var(--cayman-primary-color);
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 0.3rem;
+            transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--cayman-primary-color-dark);
+            border-color: var(--cayman-primary-color-dark);
+        }
+        
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 1.5rem 2rem 0;
+            border-bottom: 1px solid var(--cayman-border-color);
+        }
+        
+        .modal-title {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--cayman-heading-color);
+            font-size: 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem 2rem;
+            text-align: left;
+        }
+        
+        .modal-footer {
+            padding: 0 2rem 1.5rem;
+            text-align: right;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            cursor: pointer;
+            color: var(--cayman-text-color);
+        }
+        
+        .close-btn:hover {
+            color: var(--cayman-primary-color);
+        }
+        
+        /* 公告内容样式 */
+        .announcement-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--cayman-border-color);
+        }
+        
+        .announcement-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .announcement-date {
+            font-size: 0.85rem;
+            color: #6a737d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .announcement-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--cayman-heading-color);
+        }
+        
+        /* 响应式调整 */
+        @media screen and (max-width: 640px) {
+            .modal-content {
+                width: 95%;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1rem;
+            }
+        }
+    </style>
   </head>
   <body>
   <!--  <h1 align="center" style="color:red;" id = "spc" onclick ="onc()">🧨祝大家乙巳蛇年春节快乐🧨</h1>-->
@@ -67,14 +206,91 @@
         <br />
     </h3>
     <h1>公告</h1>
-      <p>   1.全新一代大版本ver1.8.0 已发布<br />更新内容：ⅠStinger内容更新<br />Ⅱ基于Bootstrap全新框架主站<br />Ⅲ优化老旧设备与墨水屏设备使用体验<br />Ⅳ优化Blog背景图<br />Ⅴ优化页面设计<br />        2022.9.6</p>
-     <!--<p>   2.2025年一月维护更新已完成，更新了 1)全面的发展历程  2)修复已知Bug <br />        2025.1.22</p>-->
+      
       <p>   2.因不可抗因素影响，域名gango.ml已不可用，请访问gango-studio.github.io，如仍旧重定向至gango.ml是某些功能失效，请尝试刷新并清除浏览器缓存<br />        2023.7.25</p>
-      <p>   3.本站22#9#1版本更新，本次更新带来了新的主站页面，旧页面与旧路径将在不久后删除，2022年中大版本将在Stinger图片过大问题解决后发布，敬请期待。<br />        2022.9.2</p>
-      <s><p>   5.(已失效)本站已绑定新域名:www.gango.ml ， 现在gango-studio.github.io和www.gango.ml 都可以访问本站<br />        2022.6.29</p></s>
-      <p>   5.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br />        2021.8.15</p>
-      <p>   6.经本站测试发现，某些设备下(如Kindle),Gango 服务中的模块较小，因设备自身原因，难以修复，请谅解。可通过适当放大解决<br />        2022.8.17</p>
-
+      <p>   3.经本站测试发现，某些特殊情境下，本站会出现无法打开或启动缓慢的情况，因服务器不可抗原因，属正常现象，请谅解。可以重启浏览器或刷新解决。<br />        2021.8.15</p>
+        <button id="announcementBtn" class="btn">更多公告</button>
+        <!-- 弹窗结构 -->
+    <div id="announcementModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">历史公告</h2>
+            </div>
+            <div class="modal-body">
+                <div class="announcement-item">
+                    <div class="announcement-date">2022.9.6</div>
+                    <h3 class="announcement-title">全新一代大版本ver1.8.0 已发布</h3>
+                    <p>更新内容：ⅠStinger内容更新<br />Ⅱ基于Bootstrap全新框架主站<br />Ⅲ优化老旧设备与墨水屏设备使用体验<br />Ⅳ优化Blog背景图<br />Ⅴ优化页面设计</p>
+                </div>
+                
+                <div class="announcement-item">
+                    <div class="announcement-date">2022.6.29</div>
+                    <h3 class="announcement-title">域名更新</h3>
+                    <p>(已失效)本站已绑定新域名:www.gango.ml ， 现在gango-studio.github.io和www.gango.ml 都可以访问本站</p>
+                </div>
+                
+                <div class="announcement-item">
+                    <div class="announcement-date">2022.8.17</div>
+                    <h3 class="announcement-title">常见问题</h3>
+                    <p>经本站测试发现，某些设备下(如Kindle),Gango 服务中的模块较小，因设备自身原因，难以修复，请谅解。可通过适当放大解决</p>
+                </div>
+                
+                <!--<div class="announcement-item">
+                    <div class="announcement-date"></div>
+                    <h3 class="announcement-title"></h3>
+                    <p></p>
+                </div>-->
+            </div>
+            <div class="modal-footer">
+                <button class="btn close-modal-btn">关闭</button>
+            </div>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const announcementBtn = document.getElementById('announcementBtn');
+            const modal = document.getElementById('announcementModal');
+            const closeBtn = document.querySelector('.close-btn');
+            const closeModalBtn = document.querySelector('.close-modal-btn');
+            
+            // 打开弹窗
+            announcementBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                modal.classList.add('active');
+            });
+            
+            // 关闭弹窗的函数
+            function closeModal() {
+                modal.classList.remove('active');
+            }
+            
+            // 点击关闭按钮
+            closeBtn.addEventListener('click', closeModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            
+            // 点击弹窗外部关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // 点击页面任意位置关闭弹窗
+            document.addEventListener('click', function(e) {
+                if (modal.classList.contains('active') && !modal.contains(e.target) && e.target !== announcementBtn) {
+                    closeModal();
+                }
+            });
+            
+            // ESC键关闭弹窗
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+    </div>
     <h1>发展历史</h1>
     <p>介绍：Gango Studios 是一个只有一个成员的工作室，主业学习，副业开发软件【doge】</p>
     <p>Sam Mu是站长的社交媒体账号，更新视频和专栏</p>
