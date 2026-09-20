@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sim Manager - 五人制足球联赛</title>
+  <style>
+    /* ========== 全局重置与基础样式 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a472a 0%, #0d3320 100%);
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ========== 布局容器 ========== */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ========== 首页标题 ========== */
+    .game-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-align: center;
+      margin: 35px 0 8px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 0%, #a8e6cf 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #a8e6cf;
+      margin-bottom: 30px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* ========== 卡片网格 ========== */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* ========== 主页按钮 ========== */
+    .home-card {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 10px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      font-size: 1.6rem;
+      text-decoration: none;
+      z-index: 100;
+      line-height: 1;
+    }
+
+    .home-card:hover {
+      transform: translateY(-3px) scale(1.1);
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .version {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.35);
+      text-align: center;
+    }
+
+    /* ========== 弹窗模态框 ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal {
+      background: linear-gradient(135deg, #2d5a3d 0%, #1a472a 100%);
+      border-radius: 20px;
+      padding: 35px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: #a8e6cf;
+    }
+
+    .modal-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ========== 通用按钮 ========== */
+    .btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+    }
+
+    /* ========== 页面切换 ========== */
+    .page {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== 返回按钮 ========== */
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ========== 阵容页面 ========== */
+    .squad-container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .squad-title {
+      font-size: 1.8rem;
+      margin: 15px 0 15px;
+      text-align: center;
+      color: #a8e6cf;
+    }
+
+    .team-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      justify-content: center;
+    }
+
+    .team-tab {
+      padding: 8px 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .team-tab.active {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #a8e6cf;
+      color: #a8e6cf;
+    }
+
+    .team-panel {
+      display: none;
+      width: 100%;
+    }
+
+    .team-panel.active {
+      display: block;
+    }
+
+    .player-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .player-card:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateX(4px);
+    }
+
+    .player-number {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #a8e6cf;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .player-info {
+      flex: 1;
+    }
+
+    .player-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .player-position {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 6px;
+    }
+
+    .player-emoji {
+      font-size: 2rem;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .stat-value {
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .stat-high { background: rgba(46, 204, 113, 0.3); color: #2ecc71; }
+    .stat-mid  { background: rgba(241, 196, 15, 0.3); color: #f1c40f; }
+    .stat-low  { background: rgba(231, 76, 60, 0.3);  color: #e74c3c; }
+
+    /* ========== 比赛页面 ========== */
+    .game-container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .match-header {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 18px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .match-time {
+      font-size: 1.1rem;
+      color: #a8e6cf;
+      margin-bottom: 12px;
+    }
+
+    .score-board {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+
+    .team-name {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 4px;
+    }
+
+    .vs {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* ========== 战术选择 ========== */
+    .tactic-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .tactic-btn {
+      padding: 8px 16px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+    }
+
+    .tactic-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tactic-btn.selected {
+      border-color: #a8e6cf;
+      background: rgba(168, 230, 207, 0.2);
+      color: #a8e6cf;
+      font-weight: 700;
+    }
+
+    .tactic-info {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    /* ========== 事件日志 ========== */
+    .event-log {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 15px 0;
+      min-height: 160px;
+      max-height: 260px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .event-item {
+      padding: 10px;
+      margin-bottom: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border-left: 3px solid #a8e6cf;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .event-time {
+      font-size: 0.75rem;
+      color: #a8e6cf;
+      margin-bottom: 3px;
+    }
+
+    .event-text {
+      font-size: 0.9rem;
+    }
+
+    .event-goal {
+      color: #2ecc71;
+      font-weight: 700;
+    }
+
+    /* ========== 继续按钮与赛果 ========== */
+    .continue-btn {
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 45px;
+      border-radius: 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 8px 0;
+      box-shadow: 0 5px 20px rgba(46, 204, 113, 0.3);
+    }
+
+    .continue-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(46, 204, 113, 0.4);
+    }
+
+    .continue-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .match-result {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin: 12px 0;
+      padding: 18px;
+      border-radius: 14px;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .win  { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+    .lose { background: rgba(231, 76, 60, 0.2);  color: #e74c3c; }
+    .draw { background: rgba(241, 196, 15, 0.2);  color: #f1c40f; }
+
+    /* ========== 体能条 ========== */
+    .power-bar {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 10px 0;
+    }
+
+    .power-title {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .power-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .power-label {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .power-track {
+      flex: 1;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .power-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    .fill-home { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+    .fill-away { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+    /* ========== 队伍头部 ========== */
+    .team-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .team-emoji {
+      font-size: 1.4rem;
+    }
+
+    .team-header-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* ========== 赛前准备 ========== */
+    .pre-match {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 18px;
+      padding: 22px;
+      margin: 12px 0;
+      width: 100%;
+    }
+
+    .pre-match-title {
+      font-size: 1.2rem;
+      color: #a8e6cf;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .compare-table {
+      width: 100%;
+      margin: 8px 0;
+    }
+
+    .compare-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .compare-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .compare-value {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .compare-home { color: #2ecc71; }
+    .compare-away { color: #e74c3c; }
+
+    /* ========== 滚动条 ========== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 首页 ==================== -->
+  <div id="home-page" class="page active">
+    <a href="https://gango-studio.github.io/games/game.html" class="home-card">🏠</a>
+    <div class="container">
+      <h1 class="game-title">Sim Manager</h1>
+      <p class="subtitle">五人制足球经理</p>
+      <div class="card-grid">
+        <div class="card" onclick="goToPreMatch()">
+          <span class="card-icon">⚽</span>
+          <div class="card-title">开球</div>
+          <div class="card-desc">Kick Off</div>
+        </div>
+        <div class="card" onclick="showSquad()">
+          <span class="card-icon">👥</span>
+          <div class="card-title">阵容</div>
+          <div class="card-desc">Squad</div>
+        </div>
+        <div class="card" onclick="showAbout()">
+          <span class="card-icon">ℹ️</span>
+          <div class="card-title">关于</div>
+          <div class="card-desc">About</div>
+        </div>
+      </div>
+      <div class="version">v1.2.0 - Gango Studios</div>
+    </div>
+  </div>
+
+  <!-- ==================== 阵容页面 ==================== -->
+  <div id="squad-page" class="page">
+    <div class="container" style="position:relative">
+      <button class="back-btn" onclick="goHome()">← 返回</button>
+      <h2 class="squad-title">球队阵容</h2>
+      <div class="team-tabs">
+        <div class="team-tab active" onclick="switchTeamTab('pig')">🐷 Pigsty FC</div>
+        <div class="team-tab" onclick="switchTeamTab('cat')">🐱 Catford FC</div>
+      </div>
+      <div class="squad-container">
+        <!-- Pigsty 阵容面板 -->
+        <div id="pig-panel" class="team-panel active">
+          <div class="team-header">
+            <span class="team-emoji">🐷</span>
+            <span class="team-header-name">Pigsty FC</span>
+            <button class="btn" id="select-pig-btn" onclick="selectPlayerTeam('pig')" style="margin-left:10px;padding:4px 12px;font-size:0.75rem">✓ 我的球队</button>
+          </div>
+          <div id="pig-players-list"></div>
+        </div>
+        <!-- Catford 阵容面板 -->
+        <div id="cat-panel" class="team-panel">
+          <div class="team-header">
+            <span class="team-emoji">🐱</span>
+            <span class="team-header-name">Catford FC</span>
+            <button class="btn" id="select-cat-btn" onclick="selectPlayerTeam('cat')" style="margin-left:10px;padding:4px 12px;font-size:0.75rem">选择为我的球队</button>
+          </div>
+          <div id="cat-players-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 赛前准备页面 ==================== -->
+  <div id="prematch-page" class="page">
+    <div class="container" style="position:relative">
+      <button class="back-btn" onclick="goHome()">← 返回</button>
+      <h2 class="squad-title">赛前准备</h2>
+      <div class="pre-match">
+        <div class="pre-match-title">⚔️ 实力对比</div>
+        <div class="compare-table">
+          <div class="compare-row">
+            <span class="compare-value compare-home" id="pre-home-att">?</span>
+            <span class="compare-label">总进攻</span>
+            <span class="compare-value compare-away" id="pre-away-att">?</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-value compare-home" id="pre-home-def">?</span>
+            <span class="compare-label">总防守</span>
+            <span class="compare-value compare-away" id="pre-away-def">?</span>
+          </div>
+          <div class="compare-row">
+            <span class="compare-value compare-home" id="pre-home-sta">?</span>
+            <span class="compare-label">总体能</span>
+            <span class="compare-value compare-away" id="pre-away-sta">?</span>
+          </div>
+        </div>
+      </div>
+      <div class="pre-match">
+        <div class="pre-match-title">📋 选择战术</div>
+        <div class="tactic-bar">
+          <button class="tactic-btn selected" data-tactic="attack" onclick="selectTactic('attack')">⚔️ 进攻</button>
+          <button class="tactic-btn" data-tactic="balance" onclick="selectTactic('balance')">⚖️ 平衡</button>
+          <button class="tactic-btn" data-tactic="defense" onclick="selectTactic('defense')">🛡️ 防守</button>
+        </div>
+        <div class="tactic-info" id="tactic-info">进攻战术：进攻+20%，防守-10%，适合压制对手</div>
+      </div>
+      <button class="btn btn-primary" onclick="startGame()" style="margin-top:20px;padding:15px 50px;font-size:1.2rem">🏟️ 开始比赛</button>
+    </div>
+  </div>
+
+  <!-- ==================== 比赛页面 ==================== -->
+  <div id="game-page" class="page">
+    <div class="container" style="position:relative">
+      <button class="back-btn" onclick="goHome()">← 退出</button>
+      <h2 class="squad-title">比赛进行中</h2>
+      <div class="game-container">
+        <div class="match-header">
+          <div class="match-time">⏱️ 第 <span id="current-time">0</span> 分钟</div>
+          <div class="score-board">
+            <div>
+              <div id="home-score">0</div>
+              <div class="team-name" id="home-team-name">主队</div>
+            </div>
+            <div class="vs">VS</div>
+            <div>
+              <div id="away-score">0</div>
+              <div class="team-name" id="away-team-name">客队</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:0.85rem;color:#a8e6cf" id="current-tactic">战术：进攻</div>
+        </div>
+        <div class="power-bar">
+          <div class="power-title">
+            <span>⚡ 球队状态</span>
+            <span style="font-size:0.75rem;color:rgba(255,255,255,0.5)">随比赛进行下降</span>
+          </div>
+          <div class="power-row">
+            <span class="power-label" id="home-stamina-label">主队体能</span>
+            <div class="power-track">
+              <div class="power-fill fill-home" id="home-stamina-bar" style="width:100%"></div>
+            </div>
+          </div>
+          <div class="power-row">
+            <span class="power-label" id="away-stamina-label">客队体能</span>
+            <div class="power-track">
+              <div class="power-fill fill-away" id="away-stamina-bar" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="event-log" id="event-log">
+          <div class="event-item">
+            <div class="event-time">第 0 分钟</div>
+            <div class="event-text">🏟️ 等待比赛开始...</div>
+          </div>
+        </div>
+        <button class="continue-btn" id="continue-btn" onclick="nextEvent()">继续 ▶</button>
+        <div id="match-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 关于弹窗 ==================== -->
+  <div class="modal-overlay" id="about-modal" onclick="closeAbout(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-title">ℹ️ 关于</div>
+      <div class="modal-text">
+        <p>Sim Manager v1.2.0</p>
+        <p>五人制足球经理网页游戏</p>
+        <p style="margin-top:15px;font-size:0.9rem;color:rgba(255,255,255,0.6)">管理你的球队，带领你的队伍走向胜利！</p>
+      </div>
+      <div class="modal-text" style="font-weight:700;color:#a8e6cf">Developed by Gango Studios</div>
+      <button class="btn" onclick="closeAbout()">关闭</button>
+    </div>
+  </div>
+
+  <!-- ==================== JavaScript ==================== -->
+  <script>
+    // ========================================
+    // 工具函数
+    // ========================================
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function randomPick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function chance(prob) {
+      return Math.random() < prob;
+    }
+
+    function sumStat(team, stat) {
+      return team.players.reduce((sum, player) => sum + player[stat], 0);
+    }
+
+    function getStatClass(value) {
+      if (value >= 8) return 'stat-high';
+      if (value >= 5) return 'stat-mid';
+      return 'stat-low';
+    }
+
+    // ========================================
+    // 球队模板与生成
+    // ========================================
+
+    // Pigsty FC 球员模板（每次随机生成属性）
+    const pigTemplate = [
+      { num: 1,  name: 'Porky Pig',    pos: 'GK' },
+      { num: 5,  name: 'Sam Pig',      pos: 'DF' },
+      { num: 8,  name: 'George Pig',   pos: 'MF' },
+      { num: 10, name: 'Percy Pig',    pos: 'FW' },
+      { num: 9,  name: 'Petunia Pig',  pos: 'FW' }
+    ];
+
+    // Catford FC 球员模板（每次随机生成属性）
+    const catTemplate = [
+      { num: 1,  name: 'Tom Cat',        pos: 'GK' },
+      { num: 4,  name: 'Felix Cat',      pos: 'DF' },
+      { num: 8,  name: 'Garfield Cat',   pos: 'MF' },
+      { num: 10, name: 'Sylvester Cat',  pos: 'FW' },
+      { num: 9,  name: 'Puss Cat',       pos: 'FW' }
+    ];
+
+    // 根据位置生成随机属性
+    function generatePlayerStats(position) {
+      let attack, defense, stamina;
+      switch (position) {
+        case 'GK':
+          attack  = rand(1, 3);
+          defense = rand(7, 9);
+          stamina = rand(6, 8);
+          break;
+        case 'DF':
+          attack  = rand(3, 5);
+          defense = rand(7, 9);
+          stamina = rand(6, 9);
+          break;
+        case 'MF':
+          attack  = rand(4, 6);
+          defense = rand(4, 6);
+          stamina = rand(5, 8);
+          break;
+        case 'FW':
+          attack  = rand(7, 9);
+          defense = rand(1, 3);
+          stamina = rand(6, 9);
+          break;
+        default:
+          attack = defense = stamina = 5;
+      }
+      return { att: attack, def: defense, sta: stamina };
+    }
+
+    // 从模板生成完整球队
+    function generateTeamFromTemplate(template, teamName, emoji) {
+      const players = template.map(p => {
+        const stats = generatePlayerStats(p.pos);
+        return {
+          num:  p.num,
+          name: p.name,
+          pos:  p.pos,
+          att:  stats.att,
+          def:  stats.def,
+          sta:  stats.sta
+        };
+      });
+      return { name: teamName, emoji: emoji, players: players };
+    }
+
+    // 当前球队数据（每次比赛前重新生成）
+    let pigTeam = { name: 'Pigsty FC', emoji: '🐷', players: [] };
+    let catTeam = { name: 'Catford FC', emoji: '🐱', players: [] };
+
+    // 玩家选择的球队键名：'pig' 或 'cat'
+    let playerTeamKey = 'pig';
+
+    function getPlayerTeam() {
+      return playerTeamKey === 'pig' ? pigTeam : catTeam;
+    }
+
+    function getOpponentTeam() {
+      return playerTeamKey === 'pig' ? catTeam : pigTeam;
+    }
+
+    // ========================================
+    // 战术配置
+    // ========================================
+    const tactics = {
+      attack: {
+        name:    '进攻',
+        attMod:  1.2,
+        defMod:  0.9,
+        desc:    '进攻+20%，防守-10%，适合压制对手'
+      },
+      balance: {
+        name:    '平衡',
+        attMod:  1.0,
+        defMod:  1.0,
+        desc:    '攻守均衡，没有明显优劣'
+      },
+      defense: {
+        name:    '防守',
+        attMod:  0.9,
+        defMod:  1.2,
+        desc:    '进攻-10%，防守+20%，适合稳守反击'
+      }
+    };
+
+    // ========================================
+    // 游戏状态
+    // ========================================
+    let gameState = {
+      time:          0,
+      homeScore:     0,
+      awayScore:     0,
+      tactic:        'attack',
+      isFinished:    false,
+      homeStamina:   100,
+      awayStamina:   100,
+      events:        []
+    };
+
+    // ========================================
+    // 页面导航
+    // ========================================
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function goHome() {
+      showPage('home-page');
+    }
+
+    function showAbout() {
+      document.getElementById('about-modal').classList.add('active');
+    }
+
+    function closeAbout(event) {
+      if (!event || event.target.id === 'about-modal' || event.target.tagName === 'BUTTON') {
+        document.getElementById('about-modal').classList.remove('active');
+      }
+    }
+
+    // ========================================
+    // 阵容页面
+    // ========================================
+    function showSquad() {
+      generateBothTeams();
+      renderPigPlayers();
+      renderCatPlayers();
+      updateTeamSelectButtons();
+      showPage('squad-page');
+    }
+
+    function switchTeamTab(teamKey) {
+      // 切换标签样式
+      document.querySelectorAll('.team-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.team-panel').forEach(panel => panel.classList.remove('active'));
+
+      if (teamKey === 'pig') {
+        document.querySelectorAll('.team-tab')[0].classList.add('active');
+        document.getElementById('pig-panel').classList.add('active');
+      } else {
+        document.querySelectorAll('.team-tab')[1].classList.add('active');
+        document.getElementById('cat-panel').classList.add('active');
+        renderCatPlayers();
+      }
+    }
+
+    function selectPlayerTeam(key) {
+      playerTeamKey = key;
+      updateTeamSelectButtons();
+    }
+
+    function updateTeamSelectButtons() {
+      const pigBtn = document.getElementById('select-pig-btn');
+      const catBtn = document.getElementById('select-cat-btn');
+
+      if (playerTeamKey === 'pig') {
+        pigBtn.textContent = '✓ 我的球队';
+        catBtn.textContent = '选择为我的球队';
+      } else {
+        catBtn.textContent = '✓ 我的球队';
+        pigBtn.textContent = '选择为我的球队';
+      }
+    }
+
+    function renderPigPlayers() {
+      const container = document.getElementById('pig-players-list');
+      if (!container) return;
+      container.innerHTML = buildPlayerCardsHtml(pigTeam.players, '🐷');
+    }
+
+    function renderCatPlayers() {
+      const container = document.getElementById('cat-players-list');
+      if (!container) return;
+      container.innerHTML = buildPlayerCardsHtml(catTeam.players, '🐱');
+    }
+
+    function buildPlayerCardsHtml(players, emoji) {
+      return players.map(player => {
+        const posText = {
+          'GK': '门将',
+          'DF': '后卫',
+          'MF': '中场',
+          'FW': '前锋'
+        }[player.pos] || player.pos;
+
+        return `
+          <div class="player-card">
+            <div class="player-number">${player.num}</div>
+            <div class="player-info">
+              <div class="player-name">${player.name}</div>
+              <div class="player-position">${posText} (${player.pos})</div>
+              <div class="stats-row">
+                <div class="stat-item">
+                  <span class="stat-label">进攻</span>
+                  <span class="stat-value ${getStatClass(player.att)}">${player.att}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">防守</span>
+                  <span class="stat-value ${getStatClass(player.def)}">${player.def}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">体能</span>
+                  <span class="stat-value ${getStatClass(player.sta)}">${player.sta}</span>
+                </div>
+              </div>
+            </div>
+            <div class="player-emoji">${emoji}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ========================================
+    // 球队生成
+    // ========================================
+    function generateBothTeams() {
+      pigTeam = generateTeamFromTemplate(pigTemplate, 'Pigsty FC', '🐷');
+      catTeam = generateTeamFromTemplate(catTemplate, 'Catford FC', '🐱');
+    }
+
+    // ========================================
+    // 赛前准备
+    // ========================================
+    function goToPreMatch() {
+      generateBothTeams();
+
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+
+      document.getElementById('pre-home-att').textContent = sumStat(playerTeam, 'att');
+      document.getElementById('pre-home-def').textContent = sumStat(playerTeam, 'def');
+      document.getElementById('pre-home-sta').textContent = sumStat(playerTeam, 'sta');
+
+      document.getElementById('pre-away-att').textContent = sumStat(opponentTeam, 'att');
+      document.getElementById('pre-away-def').textContent = sumStat(opponentTeam, 'def');
+      document.getElementById('pre-away-sta').textContent = sumStat(opponentTeam, 'sta');
+
+      selectTactic('attack');
+      showPage('prematch-page');
+    }
+
+    function selectTactic(tacticKey) {
+      gameState.tactic = tacticKey;
+      document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('selected'));
+      document.querySelector(`[data-tactic="${tacticKey}"]`).classList.add('selected');
+      document.getElementById('tactic-info').textContent = tactics[tacticKey].desc;
+    }
+
+    // ========================================
+    // 比赛开始
+    // ========================================
+    function startGame() {
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+
+      // 重置游戏状态
+      gameState = {
+        time:        0,
+        homeScore:   0,
+        awayScore:   0,
+        tactic:      gameState.tactic,
+        isFinished:  false,
+        homeStamina: 100,
+        awayStamina: 100,
+        events:      []
+      };
+
+      // 重置UI
+      document.getElementById('current-time').textContent = '0';
+      document.getElementById('home-score').textContent = '0';
+      document.getElementById('away-score').textContent = '0';
+      document.getElementById('home-stamina-bar').style.width = '100%';
+      document.getElementById('away-stamina-bar').style.width = '100%';
+      document.getElementById('current-tactic').textContent = '战术：' + tactics[gameState.tactic].name;
+
+      // 动态设置球队名称
+      document.getElementById('home-team-name').textContent    = playerTeam.emoji + ' ' + playerTeam.name;
+      document.getElementById('away-team-name').textContent    = opponentTeam.emoji + ' ' + opponentTeam.name;
+      document.getElementById('home-stamina-label').textContent = playerTeam.emoji + ' 体能';
+      document.getElementById('away-stamina-label').textContent = opponentTeam.emoji + ' 体能';
+
+      // 初始化事件日志
+      document.getElementById('event-log').innerHTML = `
+        <div class="event-item">
+          <div class="event-time">第 0 分钟</div>
+          <div class="event-text">🏟️ 比赛开始！${playerTeam.name} 对阵 ${opponentTeam.name}</div>
+        </div>
+      `;
+
+      document.getElementById('match-result').innerHTML = '';
+
+      const continueBtn = document.getElementById('continue-btn');
+      continueBtn.disabled = false;
+      continueBtn.textContent = '继续 ▶';
+
+      showPage('game-page');
+    }
+
+    // ========================================
+    // 战力计算
+    // ========================================
+    function calculatePower() {
+      const tactic = tactics[gameState.tactic];
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+
+      let homeAttack  = sumStat(playerTeam, 'att');
+      let homeDefense = sumStat(playerTeam, 'def');
+      let awayAttack  = sumStat(opponentTeam, 'att');
+      let awayDefense = sumStat(opponentTeam, 'def');
+
+      // 应用战术修正
+      homeAttack  = Math.round(homeAttack  * tactic.attMod);
+      homeDefense = Math.round(homeDefense * tactic.defMod);
+
+      // 应用体能修正
+      const homeStaminaFactor = 0.5 + (gameState.homeStamina / 200);
+      const awayStaminaFactor = 0.5 + (gameState.awayStamina / 200);
+
+      homeAttack  = Math.round(homeAttack  * homeStaminaFactor);
+      homeDefense = Math.round(homeDefense * homeStaminaFactor);
+      awayAttack  = Math.round(awayAttack  * awayStaminaFactor);
+      awayDefense = Math.round(awayDefense * awayStaminaFactor);
+
+      return { homeAttack, homeDefense, awayAttack, awayDefense };
+    }
+
+    // ========================================
+    // 比赛事件推进
+    // ========================================
+    function nextEvent() {
+      if (gameState.isFinished) return;
+
+      // 时间推进
+      gameState.time += 5;
+      gameState.homeStamina = Math.max(20, gameState.homeStamina - 8);
+      gameState.awayStamina = Math.max(20, gameState.awayStamina - 8);
+
+      // 更新体能条
+      document.getElementById('home-stamina-bar').style.width = gameState.homeStamina + '%';
+      document.getElementById('away-stamina-bar').style.width = gameState.awayStamina + '%';
+
+      // 计算战力
+      const power = calculatePower();
+      const totalThreat = power.homeAttack + power.awayAttack;
+      const homeThreatRatio = power.homeAttack / totalThreat;
+
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+
+      let eventText = '';
+      let eventClass = '';
+
+      // 决定哪一方进攻
+      if (chance(homeThreatRatio)) {
+        // 玩家球队进攻
+        const result = resolveAttack(playerTeam, opponentTeam, power.homeAttack, power.awayDefense, true);
+        eventText = result.text;
+        eventClass = result.class;
+        if (result.goal) gameState.homeScore++;
+      } else {
+        // 对手进攻
+        const result = resolveAttack(opponentTeam, playerTeam, power.awayAttack, power.homeDefense, false);
+        eventText = result.text;
+        eventClass = result.class;
+        if (result.goal) gameState.awayScore++;
+      }
+
+      // 添加事件到日志
+      const eventItem = document.createElement('div');
+      eventItem.className = 'event-item';
+      eventItem.innerHTML = `
+        <div class="event-time">第 ${gameState.time} 分钟</div>
+        <div class="event-text ${eventClass}">${eventText}</div>
+      `;
+      const log = document.getElementById('event-log');
+      log.appendChild(eventItem);
+      log.scrollTop = log.scrollHeight;
+
+      // 更新比分
+      document.getElementById('current-time').textContent = gameState.time;
+      document.getElementById('home-score').textContent = gameState.homeScore;
+      document.getElementById('away-score').textContent = gameState.awayScore;
+
+      // 比赛结束判定（30分钟）
+      if (gameState.time >= 30) {
+        endGame();
+      }
+    }
+
+    // ========================================
+    // 进攻回合解析
+    // ========================================
+    function resolveAttack(attTeam, defTeam, attPower, defPower, isPlayerAttacking) {
+      const attackers = attTeam.players.filter(p => p.pos !== 'GK');
+      const shooter   = randomPick(attackers);
+      const goalkeeper = defTeam.players.find(p => p.pos === 'GK');
+
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+      const oppName = isPlayerAttacking
+        ? (opponentTeam.emoji + ' ' + opponentTeam.name)
+        : (playerTeam.emoji + ' ' + playerTeam.name);
+
+      const attackSuccessRate = attPower / (attPower + defPower * 0.7);
+
+      // 进攻失败：被拦截
+      if (!chance(attackSuccessRate)) {
+        const defenders = defTeam.players.filter(p => p.pos !== 'GK');
+        const defender  = randomPick(defenders);
+        const texts = [
+          `🛡️ ${defender.name} 成功拦截了 ${shooter.name} 的进攻`,
+          `🛡️ ${defender.name} 铲断成功，化解危机`,
+          `🛡️ ${oppName} 防线稳固，${shooter.name} 无从下手`,
+          `🛡️ ${defender.name} 关键封堵！`
+        ];
+        return { text: randomPick(texts), goal: false, class: '' };
+      }
+
+      // 射门阶段
+      const shotTexts = [
+        `⚡ ${shooter.name} 突破防线，起脚射门！`,
+        `⚡ ${shooter.name} 获得单刀机会！`,
+        `⚡ ${shooter.name} 一脚劲射！`,
+        `⚡ ${shooter.name} 禁区外远射！`
+      ];
+      const shotText = randomPick(shotTexts);
+
+      const goalRate = shooter.att / (shooter.att + goalkeeper.def);
+
+      if (chance(goalRate)) {
+        // 进球
+        const goalTexts = [
+          `⚽ <span class="event-goal">球进了！${shooter.name} 破门得分！</span>`,
+          `⚽ <span class="event-goal">${shooter.name} 精准推射入网！</span>`,
+          `⚽ <span class="event-goal">世界波！${shooter.name} 死角破门！</span>`,
+          `⚽ <span class="event-goal">${shooter.name} 补射得手！</span>`
+        ];
+        return {
+          text: shotText + '<br>' + randomPick(goalTexts),
+          goal: true,
+          class: ''
+        };
+      } else {
+        // 未进球
+        const missTexts = [
+          `🧤 ${goalkeeper.name} 神勇扑救！`,
+          `🧤 ${goalkeeper.name} 飞身将球托出横梁！`,
+          `😅 皮球击中立柱弹出！`,
+          `😅 ${shooter.name} 稍稍打偏...`
+        ];
+        return {
+          text: shotText + '<br>' + randomPick(missTexts),
+          goal: false,
+          class: ''
+        };
+      }
+    }
+
+    // ========================================
+    // 比赛结束
+    // ========================================
+    function endGame() {
+      gameState.isFinished = true;
+
+      const continueBtn = document.getElementById('continue-btn');
+      continueBtn.disabled = true;
+      continueBtn.textContent = '比赛结束';
+
+      const playerTeam  = getPlayerTeam();
+      const opponentTeam = getOpponentTeam();
+
+      let resultClass, resultText;
+      if (gameState.homeScore > gameState.awayScore) {
+        resultClass = 'win';
+        resultText = '🎉 胜利！' + playerTeam.name + ' 击败了 ' + opponentTeam.name + '！';
+      } else if (gameState.homeScore < gameState.awayScore) {
+        resultClass = 'lose';
+        resultText = '😢 遗憾落败，' + opponentTeam.name + ' 赢得了比赛...';
+      } else {
+        resultClass = 'draw';
+        resultText = '🤝 平局！两队势均力敌！';
+      }
+
+      document.getElementById('match-result').innerHTML = `
+        <div class="match-result ${resultClass}">
+          ${resultText}<br>
+          <span style="font-size:1.2rem">最终比分 ${gameState.homeScore} - ${gameState.awayScore}</span>
+        </div>
+      `;
+
+      const eventItem = document.createElement('div');
+      eventItem.className = 'event-item';
+      eventItem.innerHTML = `
+        <div class="event-time">全场结束</div>
+        <div class="event-text">🏁 裁判吹响终场哨！比赛结束！</div>
+      `;
+      const log = document.getElementById('event-log');
+      log.appendChild(eventItem);
+      log.scrollTop = log.scrollHeight;
+    }
+  </script>
+</body>
+</html>
