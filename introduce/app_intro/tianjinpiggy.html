@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" style="filter: grayscale(0%);">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312;width= device-width,user-scalable = 0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gango Studios</title>
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 修复中间内容居中问题 */
+.main-content {
+    flex: 1;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.glass-container {
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    color: rgba(255, 255, 255, 0.75);
+}	 
+
+a {
+    text-decoration: none;
+    color: #007aff;
+}
+
+a:hover {
+    color: #005bb5;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0 0;
+    background-color: #ffffff;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+/* 工具容器样式 */
+.nodiv{
+    /*background-color: #f5f5f7; /* 浅色背景 */*/
+}
+
+.tools-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent; 
+}
+
+/* 工具项样式 */
+.tool-item {
+    margin: 20px 0;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+.tool-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tool-item h2 {
+    font-size: 1.5em;
+    margin: 0 0 8px;
+    color: #1d1d1f;
+}
+
+.tool-item p {
+    font-size: 1em;
+    color: #666;
+    margin: 0;
+}
+
+.nav-wrapper {
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.current-page-title {
+    display: none;
+    padding: 15px;
+    text-align: center;
+    background: #007aff;
+    color: white;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.nav-item {
+    position: relative;
+    flex: 1;
+}
+
+.nav-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.95em;
+    cursor: pointer;
+}
+
+.nav-item.active > .nav-link {
+    background: #007aff;
+    color: white !important;
+}
+
+.collapse-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s;
+    margin-left: 10px;
+}
+
+.sub-nav-menu {
+    display: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background-color: #f8f8f8;
+}
+
+.sub-nav-item {
+    padding-left: 30px;
+}
+
+.sub-nav-link {
+    display: block;
+    padding: 12px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.sub-nav-item.active .sub-nav-link {
+    color: #007aff;
+    font-weight: bold;
+}
+
+/* 横屏专用二级导航 */
+.sub-nav-row {
+    display: none;
+    width: 100%;
+    background-color: #f0f0f0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.sub-nav-row-inner {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.sub-nav-row-item {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 33.33%;
+}
+
+.sub-nav-row-link {
+    display: block;
+    padding: 15px 20px;
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background 0.2s;
+}
+
+.sub-nav-row-link:hover {
+    background: rgba(0,122,255,0.1);
+}
+
+.sub-nav-row-item.active .sub-nav-row-link {
+    color: #007aff;
+    font-weight: bold;
+}
+
+.more-link {
+    text-align: center;
+    margin: 25px 0;
+}
+
+
+
+/* 修复应用程序页面中间部分 - 与Vlog页面一致 */
+.main-content {
+    flex: 1;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+   /* width: 100%;*/
+    max-width: 600px; /* 限制最大宽度，与Vlog页面一致 */
+}
+
+.card {
+    width: 100%;
+    max-width: 600px; /* 限制卡片最大宽度 */
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: white;
+}
+
+/* 确保内容居中但不占用过多宽度 */
+.app-content {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    margin: 0 0 10px 0;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #007aff;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+footer {
+      width: 100%;
+      background: white;
+      padding: 20px 0;
+      margin-top: auto;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      flex-wrap: wrap;
+    text-align:inherit;
+  }
+  footer h3 {
+      font-size: 1.8em;
+      margin: 0;
+      padding-left: 10%;
+      width: 100%;
+      color: #1d1d1f;
+      font-weight: 500;
+  }
+  footer > div {
+      width: 50%;
+      box-sizing: border-box;
+  }
+  footer h4, footer h5 {
+      margin: 0;
+      padding: 5px 0;
+      padding-left: 10%;
+      color: #1d1d1f;
+  }
+footer a {
+      color: #1d1d1f;
+  }
+        footer div {
+            width: 50%;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+/* 横屏模式下的导航样式 */
+@media (min-width: 769px), (orientation: landscape) {
+    .nav-menu {
+        flex-direction: row;
+    }
+    
+    .current-page-title {
+        display: none;
+    }
+    
+    /* 隐藏竖屏二级导航 */
+    .sub-nav-menu {
+        display: none !important;
+    }
+    
+    /* 显示横屏专用二级导航 */
+    .sub-nav-row {
+        display: block;
+    }
+    
+    .nav-item.has-submenu .collapse-icon {
+        display: none;
+    }
+}
+
+/* 竖屏模式下的导航样式 */
+@media (max-width: 768px) and (orientation: portrait) {
+    .nav-menu {
+        flex-direction: column;
+        display: none;
+    }
+    
+    .nav-menu.expanded {
+        display: block;
+    }
+    
+    .current-page-title {
+        display: flex;
+    }
+    
+    /* 隐藏横屏专用二级导航 */
+    .sub-nav-row {
+        display: none !important;
+    }
+    
+    /* 竖屏二级导航样式 */
+    .sub-nav-menu {
+        display: none;
+    }
+    
+    .sub-nav-menu.expanded {
+        display: block;
+    }
+    
+    .nav-item.has-submenu .collapse-icon {
+        display: inline-block;
+    }
+    
+    .sub-nav-item {
+        max-width: none;
+    }
+}
+</style>
+</head>
+<body>
+<header>
+    <a href="https://gango-studio.github.io">
+        <h1>Gango</h1>
+    </a>
+</header>
+
+<div class="nav-wrapper">
+    <div class="current-page-title" id="currentPageTitle">
+        应用程序
+        <span class="collapse-icon">›</span>
+    </div>
+    <ul class="nav-menu" id="navMenu">
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/main.html" class="nav-link">
+                Vlog&Video
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="https://gango-studio.github.io/introduce/blog.html" class="nav-link">Blog</a>
+        </li>
+        <li class="nav-item active">
+            <a href="https://gango-studio.github.io/introduce/cfile.html" class="nav-link">应用程序</a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <h1 class="card-title">Tianjin Piggy</h1>
+    <div class="card">
+        <img src="https://gango-studio.github.io/image/CPP/Tianjinpiggy.png" class="card-img">
+    </div>
+    <div class="card">
+        <p class="card-title">假期到了，回到家乡天津的小猪Sam计划游览自己的城市，会发生什么有趣的故事呢……</p>
+    </div>
+    <div class="card">
+        <h5 class="card-title">Windows 下载</h5>
+        <p class="card-title">link</p>
+    </div>
+</div>
+<footer>
+    <h3>Gango Studio</h3>
+    <div>
+        <h4><a href="https://gango-studio.github.io">🏠主页</a></h4>
+        <h5><a href="https://gango-studio.github.io/main.html">🔗Vlog</a></h5>
+        <h5><a href="https://gango-studio.github.io/introduce/cfile.html">🔗应用程序</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Weather</a></h5>
+    </div>
+    <div>
+        <h5><a href="https://gango-studio.github.io/introduce/blog.html">🔗Blog</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/blank.html">🔗浏览器主页</a></h5>
+        <h5><a href="https://gango-studio.github.io/serves/tools/indexpage.html">🔗Gango Tool</a></h5>
+        <h5>&nbsp;</h5>
+    </div>
+</footer>
+
+<script>
+(function() {
+    var navMenu = document.getElementById('navMenu');
+    var currentPageTitle = document.getElementById('currentPageTitle');
+    
+    function isMobilePortrait() {
+        return window.innerWidth < 768 && window.matchMedia && window.matchMedia("(orientation: portrait)").matches;
+    }
+    
+    function initNavbar() {
+        if (isMobilePortrait()) {
+            navMenu.style.display = 'none';
+            currentPageTitle.style.display = 'flex';
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        } else {
+            navMenu.style.display = 'flex';
+            currentPageTitle.style.display = 'none';
+        }
+    }
+    
+    function handlePrimaryNavClick(e) {
+        if (!isMobilePortrait()) return;
+        
+        var target = e.target || e.srcElement;
+        var navLink = target.closest ? target.closest('.nav-link') : findParent(target, 'nav-link');
+        if (!navLink) return;
+        
+        var navItem = navLink.parentElement;
+        
+        if (navItem.className.indexOf('has-submenu') > -1) {
+            if (e.preventDefault) e.preventDefault();
+            e.returnValue = false;
+            if (e.stopPropagation) e.stopPropagation();
+            e.cancelBubble = true;
+            
+            var subMenu = navItem.querySelector('.sub-nav-menu');
+            var isExpanded = subMenu.style.display === 'block';
+            var collapseIcon = navLink.querySelector('.collapse-icon');
+            
+            var allSubMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < allSubMenus.length; i++) {
+                if (allSubMenus[i] !== subMenu) {
+                    allSubMenus[i].style.display = 'none';
+                    var otherIcon = allSubMenus[i].previousElementSibling ? 
+                        allSubMenus[i].previousElementSibling.querySelector('.collapse-icon') : null;
+                    if (otherIcon) otherIcon.style.transform = '';
+                }
+            }
+            
+            subMenu.style.display = isExpanded ? 'none' : 'block';
+            if (collapseIcon) {
+                collapseIcon.style.transform = isExpanded ? '' : 'rotate(90deg)';
+            }
+        }
+    }
+    
+    function findParent(element, className) {
+        while (element && element !== document) {
+            if (element.className && element.className.indexOf(className) > -1) {
+                return element;
+            }
+            element = element.parentNode;
+        }
+        return null;
+    }
+    
+    function handleSecondaryNavClick(e) {
+        var target = e.target || e.srcElement;
+        var subNavLink = target.closest ? target.closest('.sub-nav-link, .sub-nav-row-link') : findParent(target, 'sub-nav-link');
+        if (!subNavLink) return;
+        
+        if (e.preventDefault) e.preventDefault();
+        e.returnValue = false;
+        
+        var subNavItem = subNavLink.parentElement;
+        var targetId = subNavLink.getAttribute('href');
+        
+        // 更新所有二级导航项的激活状态
+        var allItems = document.querySelectorAll('.sub-nav-item, .sub-nav-row-item');
+        for (var i = 0; i < allItems.length; i++) {
+            allItems[i].className = allItems[i].className.replace('active', '').trim();
+        }
+        subNavItem.className += ' active';
+        
+        if (targetId) {
+            var targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                if (targetElement.scrollIntoView) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.scrollTo(0, targetElement.offsetTop);
+                }
+            }
+        }
+        
+        if (isMobilePortrait()) {
+            navMenu.style.display = 'none';
+            if (currentPageTitle.querySelector('.collapse-icon')) {
+                currentPageTitle.querySelector('.collapse-icon').style.transform = '';
+            }
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        }
+    }
+    
+    function handleCurrentTitleClick() {
+        if (!isMobilePortrait()) return;
+        
+        var isExpanded = navMenu.style.display === 'flex' || navMenu.style.display === 'block';
+        navMenu.style.display = isExpanded ? 'none' : 'block';
+        var icon = this.querySelector('.collapse-icon');
+        if (icon) {
+            icon.style.transform = isExpanded ? '' : 'rotate(90deg)';
+        }
+        
+        if (isExpanded) {
+            var subMenus = document.querySelectorAll('.sub-nav-menu');
+            for (var i = 0; i < subMenus.length; i++) {
+                subMenus[i].style.display = 'none';
+            }
+        }
+    }
+    
+    function initEventListeners() {
+        var primaryLinks = document.querySelectorAll('.nav-item.has-submenu .nav-link');
+        for (var i = 0; i < primaryLinks.length; i++) {
+            if (primaryLinks[i].addEventListener) {
+                primaryLinks[i].addEventListener('click', handlePrimaryNavClick);
+            } else if (primaryLinks[i].attachEvent) {
+                primaryLinks[i].attachEvent('onclick', handlePrimaryNavClick);
+            }
+        }
+        
+        var secondaryLinks = document.querySelectorAll('.sub-nav-link, .sub-nav-row-link');
+        for (var i = 0; i < secondaryLinks.length; i++) {
+            if (secondaryLinks[i].addEventListener) {
+                secondaryLinks[i].addEventListener('click', handleSecondaryNavClick);
+            } else if (secondaryLinks[i].attachEvent) {
+                secondaryLinks[i].attachEvent('onclick', handleSecondaryNavClick);
+            }
+        }
+        
+        if (currentPageTitle.addEventListener) {
+            currentPageTitle.addEventListener('click', handleCurrentTitleClick);
+        } else if (currentPageTitle.attachEvent) {
+            currentPageTitle.attachEvent('onclick', handleCurrentTitleClick);
+        }
+        
+        if (window.addEventListener) {
+            window.addEventListener('resize', initNavbar);
+        } else if (window.attachEvent) {
+            window.attachEvent('onresize', initNavbar);
+        }
+    }
+    
+    initNavbar();
+    initEventListeners();
+})();                    
+</script>
+</body>
+</html>
